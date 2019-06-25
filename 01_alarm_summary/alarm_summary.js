@@ -133,7 +133,15 @@ function getTextFromOneFile(fileName){
         let sortWhat = sortW;
         let sortOrder = sortO;
     
-        if (sortWhat === 'name') sortWhat = 0; else sortWhat = 1;
+        console.log(`${sortW} - ${sortO}`);
+
+        switch(sortWhat){
+          case 'name':    sortWhat = 0;       break;
+          case 'count':   sortWhat = 1;       break;
+          case 'prio':    sortWhat = 2;       break;
+          case 'file':    sortWhat = 3;       break;
+          default :       sortWhat = 0;       break;
+        }
     
         if (sortOrder === 'desc') 
             matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortWhat] < b[sortWhat] ? 1 : -1)  );
@@ -229,6 +237,8 @@ class UI {
    // document.querySelector('#sortAlarmSummary-name-asc')  .addEventListener('click', event => sortAlarmSummary('name', 'asc'));
     document.querySelector('#sortAlarmSummary-count-desc').addEventListener('click', event => sortAlarmSummary('count', 'desc'));
    // document.querySelector('#sortAlarmSummary-count-asc') .addEventListener('click', event => sortAlarmSummary('count', 'asc'));
+   document.querySelector('#sortAlarmSummary-prio-desc').addEventListener('click', event => sortAlarmSummary('prio', 'desc'));  
+   document.querySelector('#sortAlarmSummary-file-desc').addEventListener('click', event => sortAlarmSummary('file', 'desc'));  
   }
 
   static showEmptyAlarmSummary() {
@@ -300,14 +310,14 @@ static theadHtml() {
         </button>
       </th>
       <th>
-        <button class="btn" id="sortAlarmSummary-name-desc">
+        <button class="btn" id="sortAlarmSummary-prio-desc">
           Prio
           <i class="fas fa-arrow-up"></i>
           <i class="fas fa-arrow-down"></i>
         </button>
       </th>
       <th>
-        <button class="btn"  id="sortAlarmSummary-count-desc">
+        <button class="btn"  id="sortAlarmSummary-file-desc">
           Source
           <i class="fas fa-arrow-up"></i>
           <i class="fas fa-arrow-down"></i>
