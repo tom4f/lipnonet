@@ -1,0 +1,20 @@
+[
+    {
+        "name" : "0027 SOFTWARE PACKAGE FALLBACK COPYING NOTICE",
+        "count" : 6666,
+        "prio": 1,
+        "file": "MSSBRN2.log"
+    },
+    {
+        "name" : "0033 FILE UPDATES TO DISK PREVENTED",
+        "count" : 66,
+        "prio" : 2,
+        "file" : "CDSOST1.txt"
+    },
+    {
+        "name" : "1252 EXCESSIVE ERROR RATE ON DATA LINK CONNECTION",
+        "count" : 333,
+        "prio" : 3,
+        "file" : "MGWRZT1.txt"
+    }
+]
