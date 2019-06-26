@@ -1,6 +1,7 @@
-//"use strict";
+"use strict";
 
 let alarmSummaryForAllFiles;
+let sortOrder = 1;
 
 //imgs.forEach(img => img.addEventListener('click', imgClick));
 
@@ -127,18 +128,26 @@ function getTextFromOneFile(fileName){
         UI.outputHtmlSearch(matches);
     }
     
-    const sortAlarmSummary = (sortW, sortO) => {
+    const sortAlarmSummary = (sortW) => {
         UI.clearAlarmSummary();
         let matches;
-        let sortWhat = sortW;
-        let sortOrder = sortO;
-    
-        if (sortOrder === 'desc') 
-            matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortWhat] < b[sortWhat] ? 1 : -1)  );
-            else
-            matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortWhat] > b[sortWhat] ? 1 : -1)  );
+        if (sortOrder === 1) 
+          matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortW] < b[sortW] ? 1 : -1)  );
+        else 
+          matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortW] > b[sortW] ? 1 : -1)  );
         UI.outputHtmlSearch(matches);
-    }
+        sortOrder *= -1;
+      }
+
+      // const sortAlarmSummary = (sortW) => {
+      //   UI.clearAlarmSummary();
+      //   const lessGreater = sortOrder => sortOrder == 1 ? '<' : '>';
+      //   const condition = `a[sortW] ${lessGreater(sortOrder)} b[sortW] ? 1 : -1`;
+      //   const matches = alarmSummaryForAllFiles.sort( (a, b) => (eval(condition)) );  
+      //   UI.outputHtmlSearch(matches);
+      //   sortOrder *= -1;
+      // }
+
 
 document.querySelector('#startAlarmSummary').addEventListener('click', event => startAlarmSummary());
 document.querySelector('#showHideAlarmSummary').addEventListener('click', event => UI.showHideAlarmSummary());
@@ -160,7 +169,27 @@ class UI {
     var myJSON = JSON.stringify(alarmSummaryForAllFiles); 
     var xhr = new XMLHttpRequest();
     
-    const addLi = () => {
+    // const addLi = () => {
+    //   const readyStateText = [
+    //     '0 request not initialized',
+    //     '1 server connection established',
+    //     '2 request received',
+    //     '3 processing request',
+    //     '4 request finished and response is ready'
+    //   ];
+
+    //   const node = document.createElement('li');
+    //   const nodeText = document.createTextNode(xhr.status + ' - ' + readyStateText[xhr.readyState])
+    //   node.appendChild(nodeText);
+    //   document.querySelector('#json').appendChild(node);
+    // }
+
+
+
+    // [UI 04] show info for 3 seconds before 'form' DOM
+    // ===============================================
+    // create DOM div from scrath : <div class="alert alert-success">Message</div>
+    const showAlert = () => {
       const readyStateText = [
         '0 request not initialized',
         '1 server connection established',
@@ -169,40 +198,52 @@ class UI {
         '4 request finished and response is ready'
       ];
 
-      const node = document.createElement('li');
-      const nodeText = document.createTextNode(xhr.status + ' - ' + readyStateText[xhr.readyState])
-      node.appendChild(nodeText);
-      document.querySelector('#json').appendChild(node);
-    }
+      const div = document.createElement('div');
+      div.className = `alert`;
+      // append text
+      const text = document.createTextNode(xhr.status + ' - ' + readyStateText[xhr.readyState])
+      div.appendChild(text);
+      // store div to parent 'container' before 'form'
+      const container = document.querySelector('.container');
+      const place = document.querySelector('#selectedAlarmFile');
+      // inside '<div container>' insert '<div textAlert>' before '<form>'
+      container.insertBefore(div, place);
+      // Vanish(remove) DOM with class name 'alert' after 3 second
+      setTimeout( 
+          () => document.querySelector('.alert').remove(),
+          3000            
+          );
+  }
 
-    addLi();
+    //  addLi();
+    showAlert();
     
     xhr.open('POST', 'ajax.php', true);
-    addLi();
+    showAlert();
     // OPTIONAL - used for loaders, if waiting for something
     xhr.onprogress = function(){
-        addLi();
+      showAlert();
         }
     xhr.setRequestHeader('Content-type', 'application/json');
-    addLi();
+    showAlert();
 
     xhr.onload = function(){
-      addLi();
+      showAlert();
       if(this.status == 200){  // OK
         //console.log(this.responseText);
-        addLi();
+        showAlert();
       } else if(this.status = 404){
         document.querySelector('#json').innerHTML = 'Not Found';
       }
     }
     xhr.send(myJSON);
-    addLi();
+    showAlert();
 
     // Vanish(remove) DOM with class name 'alert' after 3 second
-    setTimeout( 
-      () => document.querySelector('#json').innerHTML = '',
-      3000            
-      )
+    // setTimeout( 
+    //   () => document.querySelector('#json').innerHTML = '',
+    //   3000            
+    //   )
 
         // readyState Values
     // 0: request not initialized 
@@ -223,12 +264,10 @@ class UI {
   };
 
   static addQuerySelectorForSearch(){
-    document.querySelector('#sortAlarmSummary-name-desc') .addEventListener('click', event => sortAlarmSummary(0, 'desc'));
-   // document.querySelector('#sortAlarmSummary-name-asc')  .addEventListener('click', event => sortAlarmSummary('name', 'asc'));
-    document.querySelector('#sortAlarmSummary-count-desc').addEventListener('click', event => sortAlarmSummary(1, 'desc'));
-   // document.querySelector('#sortAlarmSummary-count-asc') .addEventListener('click', event => sortAlarmSummary('count', 'asc'));
-   document.querySelector('#sortAlarmSummary-prio-desc').addEventListener('click', event => sortAlarmSummary(2, 'desc'));  
-   document.querySelector('#sortAlarmSummary-file-desc').addEventListener('click', event => sortAlarmSummary(3, 'desc'));  
+    document.querySelector('#sortAlarmSummary-name') .addEventListener('click', event => sortAlarmSummary(0));
+    document.querySelector('#sortAlarmSummary-count').addEventListener('click', event => sortAlarmSummary(1));
+    document.querySelector('#sortAlarmSummary-prio') .addEventListener('click', event => sortAlarmSummary(2));  
+    document.querySelector('#sortAlarmSummary-file') .addEventListener('click', event => sortAlarmSummary(3));  
   }
 
   static showEmptyAlarmSummary() {
@@ -286,28 +325,28 @@ static theadHtml() {
   <thead>
   <tr>
       <th>
-        <button class="btn" id="sortAlarmSummary-name-desc">
+        <button class="btn" id="sortAlarmSummary-name">
           Alarm Name
           <i class="fas fa-arrow-up"></i>
           <i class="fas fa-arrow-down"></i>
         </button>
       </th>
       <th>
-        <button class="btn"  id="sortAlarmSummary-count-desc">
+        <button class="btn"  id="sortAlarmSummary-count">
           Count
           <i class="fas fa-arrow-up"></i>
           <i class="fas fa-arrow-down"></i>
         </button>
       </th>
       <th>
-        <button class="btn" id="sortAlarmSummary-prio-desc">
+        <button class="btn" id="sortAlarmSummary-prio">
           Prio
           <i class="fas fa-arrow-up"></i>
           <i class="fas fa-arrow-down"></i>
         </button>
       </th>
       <th>
-        <button class="btn"  id="sortAlarmSummary-file-desc">
+        <button class="btn"  id="sortAlarmSummary-file">
           Source
           <i class="fas fa-arrow-up"></i>
           <i class="fas fa-arrow-down"></i>
