@@ -133,16 +133,6 @@ function getTextFromOneFile(fileName){
         let sortWhat = sortW;
         let sortOrder = sortO;
     
-        console.log(`${sortW} - ${sortO}`);
-
-        switch(sortWhat){
-          case 'name':    sortWhat = 0;       break;
-          case 'count':   sortWhat = 1;       break;
-          case 'prio':    sortWhat = 2;       break;
-          case 'file':    sortWhat = 3;       break;
-          default :       sortWhat = 0;       break;
-        }
-    
         if (sortOrder === 'desc') 
             matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortWhat] < b[sortWhat] ? 1 : -1)  );
             else
@@ -233,12 +223,12 @@ class UI {
   };
 
   static addQuerySelectorForSearch(){
-    document.querySelector('#sortAlarmSummary-name-desc') .addEventListener('click', event => sortAlarmSummary('name', 'desc'));
+    document.querySelector('#sortAlarmSummary-name-desc') .addEventListener('click', event => sortAlarmSummary(0, 'desc'));
    // document.querySelector('#sortAlarmSummary-name-asc')  .addEventListener('click', event => sortAlarmSummary('name', 'asc'));
-    document.querySelector('#sortAlarmSummary-count-desc').addEventListener('click', event => sortAlarmSummary('count', 'desc'));
+    document.querySelector('#sortAlarmSummary-count-desc').addEventListener('click', event => sortAlarmSummary(1, 'desc'));
    // document.querySelector('#sortAlarmSummary-count-asc') .addEventListener('click', event => sortAlarmSummary('count', 'asc'));
-   document.querySelector('#sortAlarmSummary-prio-desc').addEventListener('click', event => sortAlarmSummary('prio', 'desc'));  
-   document.querySelector('#sortAlarmSummary-file-desc').addEventListener('click', event => sortAlarmSummary('file', 'desc'));  
+   document.querySelector('#sortAlarmSummary-prio-desc').addEventListener('click', event => sortAlarmSummary(2, 'desc'));  
+   document.querySelector('#sortAlarmSummary-file-desc').addEventListener('click', event => sortAlarmSummary(3, 'desc'));  
   }
 
   static showEmptyAlarmSummary() {
