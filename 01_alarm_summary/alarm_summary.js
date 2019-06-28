@@ -3,8 +3,6 @@
 let alarmSummaryForAllFiles;
 let sortOrder = 1;
 
-//imgs.forEach(img => img.addEventListener('click', imgClick));
-
 function startAlarmSummary() {
   // Prevent actual submit
   event.preventDefault();
@@ -139,11 +137,45 @@ function getTextFromOneFile(fileName){
         sortOrder *= -1;
       }
 
-document.querySelector('#startAlarmSummary')    .addEventListener('click', ()  => startAlarmSummary());
-document.querySelector('#showHideAlarmSummary') .addEventListener('click', ()  => UI.showHideAlarmSummary());
-document.querySelector('#StringifyArray')       .addEventListener('click', ()  => UI.stringifyArray());
-document.querySelector('#search')               .addEventListener('input', ()  => searchAlarms(search.value));
+      // const sortAlarmSummary = (sortW) => {
+      //   UI.clearAlarmSummary();
+      //   const lessGreater = sortOrder => sortOrder == 1 ? '<' : '>';
+      //   const condition = `a[sortW] ${lessGreater(sortOrder)} b[sortW] ? 1 : -1`;
+      //   const matches = alarmSummaryForAllFiles.sort( (a, b) => (eval(condition)) );  
+      //   UI.outputHtmlSearch(matches);
+      //   sortOrder *= -1;
+      // }
+
+      const loadUsers = () => {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'ajax_receive_data.php', true);
+    
+        xhr.onload = function(){
+          if(this.status == 200){
+            var users = JSON.parse(this.responseText);
+            
+            console.log(users);
+
+            UI.outputHtmlSearch(users);
+    
+            //document.getElementById('users').innerHTML = output;
+          }
+        }
+    
+        xhr.send();
+      }
+
+
+document.querySelector('#startAlarmSummary').addEventListener('click', event => startAlarmSummary());
+document.querySelector('#showHideAlarmSummary').addEventListener('click', event => UI.showHideAlarmSummary());
+document.querySelector('#StringifyArray').addEventListener('click', () => UI.stringifyArray());
+document.querySelector('#ajaxFromDb')    .addEventListener('click', () => loadUsers());
+
 // Event listener 'input' or 'keyUp keyDown'
+document.querySelector('#search').addEventListener('input', () => searchAlarms(search.value));
+
+
+
 
 
 
@@ -151,11 +183,29 @@ document.querySelector('#search')               .addEventListener('input', ()  =
 
 // All UI related to DOM manipulation
 class UI {
-  
+
+ 
   static stringifyArray(){
     //UI.clearAlarmSummary();
     var myJSON = JSON.stringify(alarmSummaryForAllFiles); 
     var xhr = new XMLHttpRequest();
+    
+    // const addLi = () => {
+    //   const readyStateText = [
+    //     '0 request not initialized',
+    //     '1 server connection established',
+    //     '2 request received',
+    //     '3 processing request',
+    //     '4 request finished and response is ready'
+    //   ];
+
+    //   const node = document.createElement('li');
+    //   const nodeText = document.createTextNode(xhr.status + ' - ' + readyStateText[xhr.readyState])
+    //   node.appendChild(nodeText);
+    //   document.querySelector('#json').appendChild(node);
+    // }
+
+
 
     // [UI 04] show info for 3 seconds before 'form' DOM
     // ===============================================
@@ -178,17 +228,16 @@ class UI {
       const container = document.querySelector('.container');
       const place = document.querySelector('#selectedAlarmFile');
       // inside '<div container>' insert '<div textAlert>' before '<form>'
-      console.log(div);
       container.insertBefore(div, place);
       // Vanish(remove) DOM with class name 'alert' after 3 second
-      // setTimeout( 
-      //     () => document.querySelector('.alert').remove(),
-      //     3000            
-      //     );
-      document.querySelector('.alert')    .addEventListener('click', ()  => document.querySelector('.alert').remove());
-    }
+      setTimeout( 
+          () => document.querySelector('.alert').remove(),
+          3000            
+          );
+  }
 
-  showAlert();
+    //  addLi();
+    showAlert();
     
     xhr.open('POST', 'ajax.php', true);
     showAlert();
@@ -202,6 +251,7 @@ class UI {
     xhr.onload = function(){
       showAlert();
       if(this.status == 200){  // OK
+        //console.log(this.responseText);
         showAlert();
       } else if(this.status = 404){
         document.querySelector('#json').innerHTML = 'Not Found';
@@ -209,8 +259,14 @@ class UI {
     }
     xhr.send(myJSON);
     showAlert();
-   
-    // readyState Values
+
+    // Vanish(remove) DOM with class name 'alert' after 3 second
+    // setTimeout( 
+    //   () => document.querySelector('#json').innerHTML = '',
+    //   3000            
+    //   )
+
+        // readyState Values
     // 0: request not initialized 
     // 1: server connection established
     // 2: request received 
