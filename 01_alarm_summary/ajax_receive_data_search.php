@@ -2,7 +2,8 @@
 // Create Connection
 $conn = mysqli_connect('localhost', 'root', '', 'alarmdb');
 
-$query = 'SELECT name, counter, prio, file FROM alarmtable';
+$queryFilter = "%".$_GET['search']."%";
+$query = "SELECT name, counter, prio, file FROM alarmtable WHERE name LIKE '$queryFilter'";
 
 // Get Result
 $result = mysqli_query($conn, $query);

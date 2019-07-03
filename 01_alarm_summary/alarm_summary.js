@@ -120,11 +120,31 @@ function getTextFromOneFile(fileName){
         if( searchText.length === 0 || matches.length === 0 ) {
             matches = [];
             matchList.innerHTML = '';
-            startAlarmSummary();
+            //startAlarmSummary();
         }
         //clearAlarmSummary();
+        console.log(searchText);
         UI.outputHtmlSearch(matches);
     }
+
+    const searchAlarmsFromDb = searchText1 => {
+      UI.clearAlarmSummary();
+      loadAlarmsfromMySql_search(searchText1);
+
+          let matches1 = alarmSummaryForAllFiles.filter( alarm => {
+          const regex1 = new RegExp(`${searchText1}`, 'gi');
+          // const regex = new RegExp(`^${searchText}`, 'gi');
+          return alarm[0].match(regex1) || alarm[3].match(regex1);
+      });
+      // clear search table if no searchText entered or searchText does not match 
+      if( searchText1.length === 0 || matches1.length === 0 ) {
+          matches1 = [];
+          matchList.innerHTML = '';
+          //startAlarmSummary();
+      }
+      //clearAlarmSummary();
+      UI.outputHtmlSearch(matches1);
+  }
     
     const sortAlarmSummary = (sortW) => {
         UI.clearAlarmSummary();
@@ -146,33 +166,84 @@ function getTextFromOneFile(fileName){
       //   sortOrder *= -1;
       // }
 
-      const loadUsers = () => {
+      const loadAlarmsfromMySql = (searchParams) => {
         var xhr = new XMLHttpRequest();
+        UI.showAlert(xhr);
         xhr.open('GET', 'ajax_receive_data.php', true);
-    
+        UI.showAlert(xhr);
         xhr.onload = function(){
-          if(this.status == 200){
-            var users = JSON.parse(this.responseText);
-            
-            console.log(users);
-
-            UI.outputHtmlSearch(users);
-    
-            //document.getElementById('users').innerHTML = output;
+          if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            alarmSummaryForAllFiles = JSON.parse(this.responseText);
+            UI.showAlert(xhr);
+            UI.outputHtmlSearch(alarmSummaryForAllFiles);
           }
         }
-    
+        UI.showAlert(xhr);
         xhr.send();
+        UI.showAlert(xhr);
+      }
+
+      const loadAlarmsfromMySql_search = (searchParams) => {
+        var xhr = new XMLHttpRequest();
+        const requestedUrl = `ajax_receive_data_search.php?search=${searchParams}`;
+        xhr.open('GET', requestedUrl, true);
+        xhr.onload = function(){
+          if (this.readyState == 4 && this.status == 200) {
+            alarmSummaryForAllFiles = JSON.parse(this.responseText);
+            UI.outputHtmlSearch(alarmSummaryForAllFiles);
+          }
+          else console.log('AJAX ERROR!');
+        }
+        xhr.send();
+        UI.showAlert(xhr);
+      }
+
+
+      
+      const sendAlarmsToMySql = (dataForSend) => {
+        //UI.clearAlarmSummary();
+        var myJSON = JSON.stringify(dataForSend); 
+        console.log(myJSON);
+        var xhr = new XMLHttpRequest();
+    
+        UI.showAlert(xhr);
+        
+        xhr.open('POST', 'ajax_send_data.php', true);
+        UI.showAlert(xhr);
+        // OPTIONAL - used for loaders, if waiting for something
+        xhr.onprogress = function(){
+          UI.showAlert(xhr);
+            }
+        xhr.setRequestHeader('Content-type', 'application/json');
+        UI.showAlert(xhr);;
+    
+        xhr.onload = function(){
+          UI.showAlert(xhr);
+          if (this.readyState == 4 && this.status == 200) {
+            UI.showAlert(xhr);
+          } else if(this.status = 404){
+            document.querySelector('#json').innerHTML = 'Not Found';
+          }
+        }
+        xhr.send(myJSON);
+        UI.showAlert(xhr);
       }
 
 
 document.querySelector('#startAlarmSummary').addEventListener('click', event => startAlarmSummary());
 document.querySelector('#showHideAlarmSummary').addEventListener('click', event => UI.showHideAlarmSummary());
-document.querySelector('#StringifyArray').addEventListener('click', () => UI.stringifyArray());
-document.querySelector('#ajaxFromDb')    .addEventListener('click', () => loadUsers());
+document.querySelector('#StringifyArray').addEventListener('click', () => sendAlarmsToMySql(alarmSummaryForAllFiles));
+document.querySelector('#ajaxFromDb')    .addEventListener('click', () => loadAlarmsfromMySql(''));
 
 // Event listener 'input' or 'keyUp keyDown'
-document.querySelector('#search').addEventListener('input', () => searchAlarms(search.value));
+document.querySelector('#search')             .addEventListener('input', () => searchAlarms(search.value));
+document.querySelector('#search1') .addEventListener('input', () => searchAlarmsFromDb(search1.value));
+
+
+
+
+
 
 
 
@@ -184,33 +255,10 @@ document.querySelector('#search').addEventListener('input', () => searchAlarms(s
 // All UI related to DOM manipulation
 class UI {
 
- 
-  static stringifyArray(){
-    //UI.clearAlarmSummary();
-    var myJSON = JSON.stringify(alarmSummaryForAllFiles); 
-    var xhr = new XMLHttpRequest();
-    
-    // const addLi = () => {
-    //   const readyStateText = [
-    //     '0 request not initialized',
-    //     '1 server connection established',
-    //     '2 request received',
-    //     '3 processing request',
-    //     '4 request finished and response is ready'
-    //   ];
-
-    //   const node = document.createElement('li');
-    //   const nodeText = document.createTextNode(xhr.status + ' - ' + readyStateText[xhr.readyState])
-    //   node.appendChild(nodeText);
-    //   document.querySelector('#json').appendChild(node);
-    // }
-
-
-
     // [UI 04] show info for 3 seconds before 'form' DOM
     // ===============================================
     // create DOM div from scrath : <div class="alert alert-success">Message</div>
-    const showAlert = () => {
+  static showAlert(xhr) {
       const readyStateText = [
         '0 request not initialized',
         '1 server connection established',
@@ -232,52 +280,10 @@ class UI {
       // Vanish(remove) DOM with class name 'alert' after 3 second
       setTimeout( 
           () => document.querySelector('.alert').remove(),
-          3000            
+          100            
           );
   }
-
-    //  addLi();
-    showAlert();
-    
-    xhr.open('POST', 'ajax.php', true);
-    showAlert();
-    // OPTIONAL - used for loaders, if waiting for something
-    xhr.onprogress = function(){
-      showAlert();
-        }
-    xhr.setRequestHeader('Content-type', 'application/json');
-    showAlert();
-
-    xhr.onload = function(){
-      showAlert();
-      if(this.status == 200){  // OK
-        //console.log(this.responseText);
-        showAlert();
-      } else if(this.status = 404){
-        document.querySelector('#json').innerHTML = 'Not Found';
-      }
-    }
-    xhr.send(myJSON);
-    showAlert();
-
-    // Vanish(remove) DOM with class name 'alert' after 3 second
-    // setTimeout( 
-    //   () => document.querySelector('#json').innerHTML = '',
-    //   3000            
-    //   )
-
-        // readyState Values
-    // 0: request not initialized 
-    // 1: server connection established
-    // 2: request received 
-    // 3: processing request 
-    // 4: request finished and response is ready
-
-    // HTTP Statuses
-    // 200: "OK"
-    // 403: "Forbidden"
-    // 404: "Not Found"
-  }
+  
 
   static clearAlarmSummary() {
     const list = document.querySelector('#alarm-list-table');
