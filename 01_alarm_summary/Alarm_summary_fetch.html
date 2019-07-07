@@ -19,7 +19,12 @@
       <input  id="selectedAlarmFile"    class="selectFiles"   type="file" multiple>
     <div class="menu1">
       <button id="ajaxFromDb"           class="btn" type="button">ajaxFromDb</button>
-      <button id="ajaxFromDbUniversal"  class="btn" type="button">ajaxFromDbUniversal</button>
+
+      <select id="ajaxFromDbUniversal"  class="btn">
+        <option value="select_all">select_all</option>
+        <option value="count_all">count_all</option>
+        <option value="sum_count" selected>sum_count</option>
+      </select>
       <input  id="search1"              class="btn" type="text" placeholder="Search AJAX">
     </div>
     <div class="menu1">
@@ -33,7 +38,9 @@
     
     <table id="alarm-list-table" class="table"></table>
 
-</div>
+    <div id="universal"></div>
+
+  </div>
 
 <script src="alarm_summary.js"></script>
 

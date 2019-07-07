@@ -1,3 +1,5 @@
+// http://youmightnotneedjquery.com/
+
 "use strict";
 
 let alarmSummaryForAllFiles=[];
@@ -168,6 +170,21 @@ function getTextFromOneFile(fileName){
         xhr.send();
       }
 
+      const loadAlarmsfromMySqlUniversal = (selected) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', `ajax_receive_data_universal.php?request=${selected}`, true);
+        xhr.onload = function(){
+          if (this.readyState == 4 && this.status == 200) {
+            //UI.showAlert(xhr);
+            //console.log(this.responseText);
+            UI.showAlertUniversal(`${selected} : ${JSON.parse(this.responseText)}`);
+          }
+        }
+        xhr.send();
+      }
+
+
+
       const loadAlarmsfromMySql_search = (searchParams) => {
         var xhr = new XMLHttpRequest();
         const requestedUrl = `ajax_receive_data_search.php?search=${searchParams}`;
@@ -212,11 +229,12 @@ document.querySelector('#startAlarmSummary')    .addEventListener('click', () =>
 document.querySelector('#showHideAlarmSummary') .addEventListener('click', () => UI.showHideAlarmSummary());
 document.querySelector('#StringifyArray')       .addEventListener('click', () => sendAlarmsToMySql(alarmSummaryForAllFiles));
 document.querySelector('#ajaxFromDb')           .addEventListener('click', () => loadAlarmsfromMySql(''));
+document.querySelector('#ajaxFromDbUniversal')  .addEventListener('change', () => loadAlarmsfromMySqlUniversal(ajaxFromDbUniversal.value));
 
 // Event listener 'input' or 'keyUp keyDown'
 document.querySelector('#search')               .addEventListener('input', () => searchAlarmsLocaly(search.value));
 document.querySelector('#search1')              .addEventListener('input', () => searchAlarmsFromDb(search1.value));
-
+// removeEventListener() 
 
 
 
@@ -261,6 +279,25 @@ class UI {
           );
   }
   
+
+  static showAlertUniversal(text1) {
+    const div = document.createElement('div');
+    div.className = `alert`;
+    // append text
+    const text = document.createTextNode(text1);
+    div.appendChild(text);
+    // store div to parent 'container' before 'form'
+    const container = document.querySelector('.container');
+    const place = document.querySelector('#alarm-list-filtered');
+    // inside '<div container>' insert '<div textAlert>' before '<form>'
+    container.insertBefore(div, place);
+    // Vanish(remove) DOM with class name 'alert' after 3 second
+    setTimeout( 
+        () => document.querySelector('.alert').remove(),
+        10000            
+        );
+}
+
 
   static clearAlarmSummary() {
     const list = document.querySelector('#alarm-list-table');

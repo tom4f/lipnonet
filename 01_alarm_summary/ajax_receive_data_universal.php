@@ -2,13 +2,27 @@
 // Create Connection
 $conn = mysqli_connect('localhost', 'root', '', 'alarmdb');
 
-$query = 'SELECT name, counter, prio, file FROM alarmtable';
+$request = isset($_GET['request']) ? $_GET['request'] : 0;
+
+switch ($request){
+    case 'select_all':
+       $query = 'SELECT name, counter, prio, file FROM alarmtable';
+       break;
+    case 'count_all':
+        $query = 'SELECT COUNT(id) FROM alarmtable';
+        break;
+    case 'sum_count':
+        $query = 'SELECT SUM(counter) FROM alarmtable';
+        break;
+    default:  $query = '';
+  }
+
 
 // Get Result
 $result = mysqli_query($conn, $query);
 
-// Fetch Data
+// Fetch Data as array
 $users = mysqli_fetch_all($result, MYSQLI_NUM);
 
-//echo json_encode($users, true);
-echo $users;
+// convert to JSON, true=array type
+echo json_encode($users, true);
