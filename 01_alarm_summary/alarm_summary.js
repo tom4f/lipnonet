@@ -1,6 +1,6 @@
 "use strict";
 
-let alarmSummaryForAllFiles;
+let alarmSummaryForAllFiles=[];
 let sortOrder = 1;
 
 function startAlarmSummary() {
@@ -109,7 +109,7 @@ function getTextFromOneFile(fileName){
 
     const matchList = document.querySelector('#alarm-list-filtered');
     
-    const searchAlarms = searchText => {
+    const searchAlarmsLocaly = searchText => {
         UI.clearAlarmSummary();
             let matches = alarmSummaryForAllFiles.filter( alarm => {
             const regex = new RegExp(`${searchText}`, 'gi');
@@ -128,23 +128,11 @@ function getTextFromOneFile(fileName){
     }
 
     const searchAlarmsFromDb = searchText1 => {
-      UI.clearAlarmSummary();
       loadAlarmsfromMySql_search(searchText1);
-
-          let matches1 = alarmSummaryForAllFiles.filter( alarm => {
-          const regex1 = new RegExp(`${searchText1}`, 'gi');
-          // const regex = new RegExp(`^${searchText}`, 'gi');
-          return alarm[0].match(regex1) || alarm[3].match(regex1);
-      });
-      // clear search table if no searchText entered or searchText does not match 
-      if( searchText1.length === 0 || matches1.length === 0 ) {
-          matches1 = [];
-          matchList.innerHTML = '';
-          //startAlarmSummary();
-      }
-      //clearAlarmSummary();
-      UI.outputHtmlSearch(matches1);
+      searchAlarmsLocaly(searchText1);
   }
+
+
     
     const sortAlarmSummary = (sortW) => {
         UI.clearAlarmSummary();
@@ -168,20 +156,16 @@ function getTextFromOneFile(fileName){
 
       const loadAlarmsfromMySql = (searchParams) => {
         var xhr = new XMLHttpRequest();
-        UI.showAlert(xhr);
         xhr.open('GET', 'ajax_receive_data.php', true);
-        UI.showAlert(xhr);
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
+            UI.showAlert(xhr);
             console.log(this.responseText);
             alarmSummaryForAllFiles = JSON.parse(this.responseText);
-            UI.showAlert(xhr);
             UI.outputHtmlSearch(alarmSummaryForAllFiles);
           }
         }
-        UI.showAlert(xhr);
         xhr.send();
-        UI.showAlert(xhr);
       }
 
       const loadAlarmsfromMySql_search = (searchParams) => {
@@ -190,13 +174,13 @@ function getTextFromOneFile(fileName){
         xhr.open('GET', requestedUrl, true);
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
+            UI.showAlert(xhr);
             alarmSummaryForAllFiles = JSON.parse(this.responseText);
             UI.outputHtmlSearch(alarmSummaryForAllFiles);
           }
           else console.log('AJAX ERROR!');
         }
         xhr.send();
-        UI.showAlert(xhr);
       }
 
 
@@ -204,19 +188,13 @@ function getTextFromOneFile(fileName){
       const sendAlarmsToMySql = (dataForSend) => {
         //UI.clearAlarmSummary();
         var myJSON = JSON.stringify(dataForSend); 
-        console.log(myJSON);
         var xhr = new XMLHttpRequest();
-    
-        UI.showAlert(xhr);
-        
         xhr.open('POST', 'ajax_send_data.php', true);
-        UI.showAlert(xhr);
         // OPTIONAL - used for loaders, if waiting for something
         xhr.onprogress = function(){
           UI.showAlert(xhr);
-            }
+          }
         xhr.setRequestHeader('Content-type', 'application/json');
-        UI.showAlert(xhr);;
     
         xhr.onload = function(){
           UI.showAlert(xhr);
@@ -227,18 +205,17 @@ function getTextFromOneFile(fileName){
           }
         }
         xhr.send(myJSON);
-        UI.showAlert(xhr);
       }
 
 
-document.querySelector('#startAlarmSummary').addEventListener('click', event => startAlarmSummary());
-document.querySelector('#showHideAlarmSummary').addEventListener('click', event => UI.showHideAlarmSummary());
-document.querySelector('#StringifyArray').addEventListener('click', () => sendAlarmsToMySql(alarmSummaryForAllFiles));
-document.querySelector('#ajaxFromDb')    .addEventListener('click', () => loadAlarmsfromMySql(''));
+document.querySelector('#startAlarmSummary')    .addEventListener('click', () => startAlarmSummary());
+document.querySelector('#showHideAlarmSummary') .addEventListener('click', () => UI.showHideAlarmSummary());
+document.querySelector('#StringifyArray')       .addEventListener('click', () => sendAlarmsToMySql(alarmSummaryForAllFiles));
+document.querySelector('#ajaxFromDb')           .addEventListener('click', () => loadAlarmsfromMySql(''));
 
 // Event listener 'input' or 'keyUp keyDown'
-document.querySelector('#search')             .addEventListener('input', () => searchAlarms(search.value));
-document.querySelector('#search1') .addEventListener('input', () => searchAlarmsFromDb(search1.value));
+document.querySelector('#search')               .addEventListener('input', () => searchAlarmsLocaly(search.value));
+document.querySelector('#search1')              .addEventListener('input', () => searchAlarmsFromDb(search1.value));
 
 
 
@@ -280,7 +257,7 @@ class UI {
       // Vanish(remove) DOM with class name 'alert' after 3 second
       setTimeout( 
           () => document.querySelector('.alert').remove(),
-          100            
+          10000            
           );
   }
   
