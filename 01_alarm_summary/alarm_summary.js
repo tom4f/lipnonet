@@ -176,7 +176,7 @@ function getTextFromOneFile(fileName){
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
             //UI.showAlert(xhr);
-            //console.log(this.responseText);
+            console.log(this.responseText);
             UI.showAlertUniversal(`${selected} : ${JSON.parse(this.responseText)}`);
           }
         }

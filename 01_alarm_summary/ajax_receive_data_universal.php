@@ -14,9 +14,11 @@ switch ($request){
     case 'sum_count':
         $query = 'SELECT SUM(counter) FROM alarmtable';
         break;
-    default:  $query = '';
+    case 'DISTINCT_alarm':
+        $query = 'SELECT DISTINCT name FROM alarmtable';
+        break;
+        default:  $query = '';
   }
-
 
 // Get Result
 $result = mysqli_query($conn, $query);
