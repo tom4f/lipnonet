@@ -176,8 +176,9 @@ function getTextFromOneFile(fileName){
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
             //UI.showAlert(xhr);
-            console.log(this.responseText);
-            UI.showAlertUniversal(`${selected} : ${JSON.parse(this.responseText)}`);
+            //console.log(this.responseText);
+            alarmSummaryForAllFiles = JSON.parse(this.responseText);
+            UI.outputHtmlSearch(alarmSummaryForAllFiles);
           }
         }
         xhr.send();
@@ -235,15 +236,6 @@ document.querySelector('#ajaxFromDbUniversal')  .addEventListener('change', () =
 document.querySelector('#search')               .addEventListener('input', () => searchAlarmsLocaly(search.value));
 document.querySelector('#search1')              .addEventListener('input', () => searchAlarmsFromDb(search1.value));
 // removeEventListener() 
-
-
-
-
-
-
-
-
-
 
 
 
@@ -411,11 +403,19 @@ static tableDataResult(alarm) {
     case '4 (minor)':   prioClass = 'td-prio-three';     break;
     default :           prioClass = '';                  break;
   }
+
+  let aaa, bbb;
+  if (alarm[0] !== "") aaa = alarm[0].substring(0, 50)
+    else aaa = alarm[0];
+
+  if (alarm[3]) bbb = alarm[3].substring(0, 8)
+    else bbb = alarm[3];
+
   return `
-    <td>${alarm[0].substring(0, 50)}</td>
+    <td>${aaa}</td>
     <td>${alarm[1]}</td>
     <td class="${prioClass}">${alarm[2]}</td>
-    <td>${alarm[3].substring(0, 8)}</td>
+    <td>${bbb}</td>
   `;
   
 }
@@ -442,4 +442,50 @@ static outputHtmlSearch(matches) {
   }
 };
 
+
+static dynamicSelectButton() {
+
+  var activities = document.getElementById("dynamicSelectButton");
+
+  activities.addEventListener("click", function() {
+      var options = activities.querySelectorAll("option");
+      var count = options.length;
+      if(typeof(count) === "undefined" || count < 2)
+      {
+          addActivityItem();
+      }
+      else {
+        console.log(activities.value);
+        searchAlarmsFromDb(activities.value);
+
+      }
+  });
+  
+  activities.addEventListener("changed", function() {
+      if(activities.value == "alarm_list")
+      {
+          addActivityItem();
+          console.log(activities.value);
+      }
+      console.log(activities.value);
+  });
+  
+  function addActivityItem() {
+      let dummyText;
+      alarmSummaryForAllFiles.forEach(dummyEntry => {
+        var option = document.createElement("option");
+        dummyText = dummyEntry[0].substring(0, 30);
+        option.value = dummyText;
+        option.innerHTML = dummyText;
+        activities.appendChild(option);
+      })
+      
+
+  }
+
 }
+
+}
+
+loadAlarmsfromMySqlUniversal('DISTINCT_alarm');
+UI.dynamicSelectButton();

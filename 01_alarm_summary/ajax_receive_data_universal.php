@@ -15,7 +15,7 @@ switch ($request){
         $query = 'SELECT SUM(counter) FROM alarmtable';
         break;
     case 'DISTINCT_alarm':
-        $query = 'SELECT DISTINCT name FROM alarmtable';
+        $query = 'SELECT DISTINCT name FROM alarmtable ORDER BY name ASC';
         break;
         default:  $query = '';
   }
