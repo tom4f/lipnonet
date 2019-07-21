@@ -102,7 +102,7 @@ table {
 /* ========================= table end ==========================*/
 
 .btn {
-    display: visible;
+    /* display: visible; */
     background: var(--light-color);
     color: #333;
     padding: 0.4rem 1.3rem;

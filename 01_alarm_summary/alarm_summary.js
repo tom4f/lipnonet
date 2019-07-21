@@ -161,7 +161,7 @@ function getTextFromOneFile(fileName){
         xhr.open('GET', 'ajax_receive_data.php', true);
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
-            UI.showAlert(xhr);
+            //UI.showAlert(xhr);
             console.log(this.responseText);
             alarmSummaryForAllFiles = JSON.parse(this.responseText);
             UI.outputHtmlSearch(alarmSummaryForAllFiles);
@@ -192,7 +192,7 @@ function getTextFromOneFile(fileName){
         xhr.open('GET', requestedUrl, true);
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
-            UI.showAlert(xhr);
+            //UI.showAlert(xhr);
             alarmSummaryForAllFiles = JSON.parse(this.responseText);
             UI.outputHtmlSearch(alarmSummaryForAllFiles);
           }
@@ -210,14 +210,14 @@ function getTextFromOneFile(fileName){
         xhr.open('POST', 'ajax_send_data.php', true);
         // OPTIONAL - used for loaders, if waiting for something
         xhr.onprogress = function(){
-          UI.showAlert(xhr);
+          //UI.showAlert(xhr);
           }
         xhr.setRequestHeader('Content-type', 'application/json');
     
         xhr.onload = function(){
-          UI.showAlert(xhr);
+          //UI.showAlert(xhr);
           if (this.readyState == 4 && this.status == 200) {
-            UI.showAlert(xhr);
+            //UI.showAlert(xhr);
           } else if(this.status = 404){
             document.querySelector('#json').innerHTML = 'Not Found';
           }
@@ -236,6 +236,14 @@ document.querySelector('#ajaxFromDbUniversal')  .addEventListener('change', () =
 document.querySelector('#search')               .addEventListener('input', () => searchAlarmsLocaly(search.value));
 document.querySelector('#search1')              .addEventListener('input', () => searchAlarmsFromDb(search1.value));
 // removeEventListener() 
+
+
+
+
+
+
+
+
 
 
 
@@ -445,14 +453,16 @@ static outputHtmlSearch(matches) {
 
 static dynamicSelectButton() {
 
-  var activities = document.getElementById("dynamicSelectButton");
+  let activities = document.getElementById("dynamicSelectButton");
 
-  activities.addEventListener("click", function() {
+  activities.addEventListener("click", () => {
       var options = activities.querySelectorAll("option");
       var count = options.length;
+      console.log(`click : ${count}`);
       if(typeof(count) === "undefined" || count < 2)
       {
-          addActivityItem();
+        loadAlarmsfromMySqlUniversal('DISTINCT_alarm');  
+        addActivityItem();
       }
       else {
         console.log(activities.value);
@@ -461,16 +471,16 @@ static dynamicSelectButton() {
       }
   });
   
-  activities.addEventListener("changed", function() {
-      if(activities.value == "alarm_list")
-      {
-          addActivityItem();
-          console.log(activities.value);
-      }
-      console.log(activities.value);
-  });
+  // activities.addEventListener("changed", () => {
+  //   console.log(`changed : ${activities.value}`);
+  //     if(activities.value == "alarm_list")
+  //     {
+  //         addActivityItem();
+  //         console.log(activities.value);
+  //     }
+  // });
   
-  function addActivityItem() {
+  const addActivityItem = () => {
       let dummyText;
       alarmSummaryForAllFiles.forEach(dummyEntry => {
         var option = document.createElement("option");
@@ -487,5 +497,5 @@ static dynamicSelectButton() {
 
 }
 
-loadAlarmsfromMySqlUniversal('DISTINCT_alarm');
+
 UI.dynamicSelectButton();
