@@ -17,18 +17,18 @@ class UI {
         
         imgs.forEach(img => img.remove());
         
-        EightPhoto
-            .forEach(onePhoto => {
-                const img = document.createElement('img');
-                img.src =   `../lipnonet/rekreace/fotogalerie/${onePhoto.id}.jpg`;
-                if (bigImgUrl == "") bigImgUrl = `../lipnonet/rekreace/fotogalerie/${onePhoto.id}b.jpg`;
-                eightImgsBlock.insertBefore(img, eightImgsPlace);
-            })
+        // EightPhoto
+        //     .forEach(onePhoto => {
+        //         const img = document.createElement('img');
+        //         img.src =   `../lipnonet/rekreace/fotogalerie/${onePhoto.id}.jpg`;
+        //         if (bigImgUrl == "") bigImgUrl = `../lipnonet/rekreace/fotogalerie/${onePhoto.id}b.jpg`;
+        //         eightImgsBlock.insertBefore(img, eightImgsPlace);
+        //     })
 
         EightPhoto
             .forEach(onePhoto => {
                 const div = document.createElement('div');
-                div.style.backgroundImage = "url('../lipnonet/rekreace/fotogalerie/" + onePhoto.id + "b.jpg')";
+                div.style.backgroundImage = "url('../lipnonet/rekreace/fotogalerie/" + onePhoto.id + ".jpg')";
                 div.style.backgroundSize = "cover";
                 div.style.width = "auto";
                 div.style.height = "100px";
@@ -69,11 +69,31 @@ class UI {
       const current =   document.querySelector('.currentnew');
       const opacity = 0.4;
         // reset opacity for all imgs
-        imgs.forEach(img => (img.style.opacity = 1));
+
+      imgs.forEach(img => ( console.log(img.style.opacity)));
+      imgs.forEach(img => (img.style.opacity = 1));
         // change current img to src of clicked image
-        current.src = event.target.src.replace(/.jpg/g, "b.jpg");
+      
+      console.log('after');
+      imgs.forEach(img => ( console.log(img.style.opacity)));
+
+        //current.src = event.target.src.replace(/.jpg/g, "b.jpg");
+
+        const divUrl = event.target
+          .style.backgroundImage
+            .replace(/url\("/g, "")
+              .replace(/.jpg"\)/g, "b.jpg");
+
+         current.src = divUrl;
+////url("../lipnonet/rekreace/fotogalerie/577.jpg")
+
         // + add photo description
-        currentPhotoId = event.target.src.substring(47, 50);
+        // currentPhotoId = event.target.src.substring(47, 50);
+        currentPhotoId = divUrl
+          .replace(/..\/lipnonet\/rekreace\/fotogalerie\//g, "")
+            .replace(/b.jpg/g, "");
+
+
         const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
         photoInfo.innerHTML = `
           <b>Id</b> :     ${currentPhotoId} - 
@@ -94,10 +114,13 @@ class UI {
 
     static slideShow() {
         const imgs =      document.querySelectorAll('.imgs img');
+        const imgsDiv =   document.querySelectorAll('.tomasDiv');
         const opacity = 0.4;
         // set first image opacity
-        imgs[0].style.opacity = opacity;
+        //imgs[0].style.opacity = opacity;
         imgs.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
+
+        imgsDiv.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
     }
 
 
