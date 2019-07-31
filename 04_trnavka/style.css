@@ -1,0 +1,88 @@
+/* reset values for all elements */
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    margin: 20px;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    color: #926239;
+    line-height: 1.6;
+    background-color: black;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    border: black solid 3px;
+    background: black;
+}
+
+.imgs img {
+    width: 100%;
+    max-height: 75px;
+}
+
+.main-img img {
+    width: 100%;
+}
+
+.imgs {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 5px;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px;
+}
+
+.next8{
+    text-align: right;
+}
+
+.play, .photoInfo{
+    text-align: center;
+}
+
+.next8, .prev8, .play, .stop{
+    font-size: 15px;
+    /* none link underline */
+    text-decoration: none;
+    color: #926239;
+    border: #926239 1px solid;
+    padding: 5px 10px;
+   /* border-radius: 10px; */
+    margin: 20px 0px 20px 0px;
+
+}
+
+.next8:hover, .prev8:hover, .play:hover, .stop:hover{
+    background: #926239;
+    color: #fff;
+}
+
+
+
+
+
+
+
+
+/* Fade in animation */
+/* film mode property */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in 1 forwards;
+}
