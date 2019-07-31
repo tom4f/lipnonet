@@ -1,4 +1,4 @@
-// http://youmightnotneedjquery.com/
+// http://youmightnotneedjquery.com//
 
 "use strict";
 
