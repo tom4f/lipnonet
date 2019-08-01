@@ -161,7 +161,7 @@ function getTextFromOneFile(fileName){
         xhr.open('GET', 'ajax_receive_data.php', true);
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
-            //UI.showAlert(xhr);
+            UI.showAlert(xhr);
             console.log(this.responseText);
             alarmSummaryForAllFiles = JSON.parse(this.responseText);
             UI.outputHtmlSearch(alarmSummaryForAllFiles);
@@ -175,7 +175,7 @@ function getTextFromOneFile(fileName){
         xhr.open('GET', `ajax_receive_data_universal.php?request=${selected}`, true);
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
-            //UI.showAlert(xhr);
+            UI.showAlert(xhr);
             //console.log(this.responseText);
             alarmSummaryForAllFiles = JSON.parse(this.responseText);
             UI.outputHtmlSearch(alarmSummaryForAllFiles);
@@ -192,7 +192,7 @@ function getTextFromOneFile(fileName){
         xhr.open('GET', requestedUrl, true);
         xhr.onload = function(){
           if (this.readyState == 4 && this.status == 200) {
-            //UI.showAlert(xhr);
+            UI.showAlert(xhr);
             alarmSummaryForAllFiles = JSON.parse(this.responseText);
             UI.outputHtmlSearch(alarmSummaryForAllFiles);
           }
@@ -204,20 +204,20 @@ function getTextFromOneFile(fileName){
 
       
       const sendAlarmsToMySql = (dataForSend) => {
-        //UI.clearAlarmSummary();
+        UI.clearAlarmSummary();
         var myJSON = JSON.stringify(dataForSend); 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'ajax_send_data.php', true);
         // OPTIONAL - used for loaders, if waiting for something
         xhr.onprogress = function(){
-          //UI.showAlert(xhr);
+          UI.showAlert(xhr);
           }
         xhr.setRequestHeader('Content-type', 'application/json');
     
         xhr.onload = function(){
-          //UI.showAlert(xhr);
+          UI.showAlert(xhr);
           if (this.readyState == 4 && this.status == 200) {
-            //UI.showAlert(xhr);
+            UI.showAlert(xhr);
           } else if(this.status = 404){
             document.querySelector('#json').innerHTML = 'Not Found';
           }
