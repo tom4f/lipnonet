@@ -275,7 +275,7 @@ class UI {
       // Vanish(remove) DOM with class name 'alert' after 3 second
       setTimeout( 
           () => document.querySelector('.alert').remove(),
-          10000            
+          1000            
           );
   }
   
@@ -294,7 +294,7 @@ class UI {
     // Vanish(remove) DOM with class name 'alert' after 3 second
     setTimeout( 
         () => document.querySelector('.alert').remove(),
-        10000            
+        1000            
         );
 }
 
