@@ -7,7 +7,8 @@ class UI {
 
         const eightImgsPlace =  document.querySelector('#imgsLocation');
         const eightImgsBlock =  document.querySelector('.imgs');
-        const imgs =            document.querySelectorAll('.imgs img');
+        //const imgs =            document.querySelectorAll('.imgs img');
+        const imgsDiv =   document.querySelectorAll('.tomasDiv');
 
         const bigImgPlace =     document.querySelector('#imgLocation');
         const bigImgBlock =     document.querySelector('.main-img');
@@ -15,7 +16,9 @@ class UI {
 
         let bigImgUrl = "";
         
-        imgs.forEach(img => img.remove());
+        // remove 8 small photo
+        //imgs.forEach(img => img.remove());
+        if (imgsDiv.length > 7)  imgsDiv.forEach(img => img.remove());
         
         // EightPhoto
         //     .forEach(onePhoto => {
@@ -25,6 +28,8 @@ class UI {
         //         eightImgsBlock.insertBefore(img, eightImgsPlace);
         //     })
 
+        
+        // create 8 small photo 
         EightPhoto
             .forEach(onePhoto => {
                 const div = document.createElement('div');
@@ -32,16 +37,15 @@ class UI {
                 div.style.backgroundSize = "cover";
                 div.style.width = "auto";
                 div.style.height = "100px";
-                div.innerHTML = "Hello";
+                div.innerHTML = onePhoto.id;
                 div.classList.add('tomasDiv');
                 if (bigImgUrl == "") bigImgUrl = `../lipnonet/rekreace/fotogalerie/${onePhoto.id}b.jpg`;
-                
                 eightImgsBlock.insertBefore(div, eightImgsPlace);
               })
 
-            document.querySelectorAll('.tomasDiv').forEach( (dummyDiv) => console.log(dummyDiv.style.backgroundImage));
+            //document.querySelectorAll('.tomasDiv').forEach( (dummyDiv) => console.log(dummyDiv.style.backgroundImage));
 
-
+            // create big photo
             const imgsBig = document.querySelectorAll('.currentnew');
             imgsBig.length > 0 ? imgsBig[0].remove() : console.log('<') ;
             const imgBig = document.createElement('img');
@@ -49,15 +53,20 @@ class UI {
             imgBig.src = bigImgUrl;
             imgBig.classList.add('currentnew');
             bigImgBlock.insertBefore(imgBig, bigImgPlace);
+            // add fade in class
+            imgBig.classList.add('fade-in');
+            // remove fade in class after 0.5s
+            setTimeout(() => imgBig.classList.remove('fade-in'), 500);
 
+            // create text for big photo
             const objOneFoto = EightPhoto[0];
             currentPhotoId = imgBig.src.substring(47, 50);
             photoInfo.innerHTML = `
-            <b>Id</b> :     ${currentPhotoId} - 
-            <b>Nazev</b> :  ${objOneFoto.header} - 
-            <b>Popis</b> :  ${objOneFoto.text} - 
-            <b>Datum</b> :  ${objOneFoto.insertDate} -
-            <b>Autor</b> :  ${objOneFoto.autor}
+            ${currentPhotoId} - 
+            <b>${objOneFoto.header}</b> -
+            ${objOneFoto.insertDate} -
+            ${objOneFoto.autor}<br>
+            ${objOneFoto.text}
             `;
     }
 
@@ -70,15 +79,17 @@ class UI {
       const opacity = 0.4;
         // reset opacity for all imgs
 
-      imgs.forEach(img => ( console.log(img.style.opacity)));
-      imgs.forEach(img => (img.style.opacity = 1));
+
+      console.log('opacity initial : ' + event.target.style.opacity);
+      if (!event.target.style.opacity) event.target.style.opacity = 1;
+      console.log('opacity modified : ' + event.target.style.opacity);
+
+      //imgs.forEach(img => (img.style.opacity = 1));
         // change current img to src of clicked image
       
-      console.log('after');
-      imgs.forEach(img => ( console.log(img.style.opacity)));
+      //imgs.forEach(img => ( console.log(img.style.opacity)));
 
         //current.src = event.target.src.replace(/.jpg/g, "b.jpg");
-
         const divUrl = event.target
           .style.backgroundImage
             .replace(/url\("/g, "")
@@ -93,21 +104,23 @@ class UI {
           .replace(/..\/lipnonet\/rekreace\/fotogalerie\//g, "")
             .replace(/b.jpg/g, "");
 
-
         const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
         photoInfo.innerHTML = `
-          <b>Id</b> :     ${currentPhotoId} - 
-          <b>Nazev</b> :  ${objOneFoto.header} - 
-          <b>Popis</b> :  ${objOneFoto.text} - 
-          <b>Datum</b> :  ${objOneFoto.insertDate} -
-          <b>Autor</b> :  ${objOneFoto.autor}
+          ${currentPhotoId} - 
+          <b>${objOneFoto.header}</b> -
+          ${objOneFoto.insertDate} -
+          ${objOneFoto.autor}<br>
+          ${objOneFoto.text}
           `;
         // add fade in class
         current.classList.add('fade-in');
         // remove fade in class after 0.5s
         setTimeout(() => current.classList.remove('fade-in'), 500);
         // change opacity
-        event.target.style.opacity = opacity;
+
+        if (event.target.style.opacity == 0.4) event.target.style.opacity = 1
+          else         event.target.style.opacity = opacity;;
+        console.log('opacity after click : ' + event.target.style.opacity);
     }
 
 
@@ -118,7 +131,7 @@ class UI {
         const opacity = 0.4;
         // set first image opacity
         //imgs[0].style.opacity = opacity;
-        imgs.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
+        //imgs.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
 
         imgsDiv.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
     }
@@ -152,29 +165,16 @@ function loadPicturesfromMySqlUniversal (limit, offset) {
 }
 
 loadPicturesfromMySqlUniversal(limit, offset);
-
-document.querySelector('.next8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset+=8));
-document.querySelector('.prev8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset-=8));
-
   
-function myFunction() {
-  console.log('Timer');
+function startPresentation() {
+  console.log('Presentation started');
+  console.log(timer);
   loadPicturesfromMySqlUniversal(1, Math.floor(Math.random() * 100) + 1  )
 }
 
-function stopPresentation(){
-  console.log('stop');
-  clearInterval(timer)
-}
-
 let timer;
+document.querySelector('.play') .addEventListener('click', () => timer = setInterval(startPresentation, 5000));
+document.querySelector('.stop') .addEventListener('click', () => clearInterval(timer));
 
-document.querySelector('.play').addEventListener('click', () =>  setInterval( timer = setInterval( myFunction, 5000)  , 5000) );
-
-document.querySelector('.stop').addEventListener('click', () =>  stopPresentation() );
-
-
-  
-
-
-  
+document.querySelector('.next8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset+=8));
+document.querySelector('.prev8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset-=8));  
