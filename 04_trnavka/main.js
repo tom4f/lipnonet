@@ -7,8 +7,7 @@ class UI {
 
         const eightImgsPlace =  document.querySelector('#imgsLocation');
         const eightImgsBlock =  document.querySelector('.imgs');
-        //const imgs =            document.querySelectorAll('.imgs img');
-        const imgsDiv =   document.querySelectorAll('.tomasDiv');
+        const imgsDiv =         document.querySelectorAll('.imgsDiv');
 
         const bigImgPlace =     document.querySelector('#imgLocation');
         const bigImgBlock =     document.querySelector('.main-img');
@@ -17,17 +16,7 @@ class UI {
         let bigImgUrl = "";
         
         // remove 8 small photo
-        //imgs.forEach(img => img.remove());
         if (imgsDiv.length > 7)  imgsDiv.forEach(img => img.remove());
-        
-        // EightPhoto
-        //     .forEach(onePhoto => {
-        //         const img = document.createElement('img');
-        //         img.src =   `../lipnonet/rekreace/fotogalerie/${onePhoto.id}.jpg`;
-        //         if (bigImgUrl == "") bigImgUrl = `../lipnonet/rekreace/fotogalerie/${onePhoto.id}b.jpg`;
-        //         eightImgsBlock.insertBefore(img, eightImgsPlace);
-        //     })
-
         
         // create 8 small photo 
         EightPhoto
@@ -38,30 +27,29 @@ class UI {
                 div.style.width = "auto";
                 div.style.height = "100px";
                 div.innerHTML = onePhoto.id;
-                div.classList.add('tomasDiv');
+                div.classList.add('imgsDiv');
                 if (bigImgUrl == "") bigImgUrl = `../lipnonet/rekreace/fotogalerie/${onePhoto.id}b.jpg`;
                 eightImgsBlock.insertBefore(div, eightImgsPlace);
               })
 
-            //document.querySelectorAll('.tomasDiv').forEach( (dummyDiv) => console.log(dummyDiv.style.backgroundImage));
+        // create big photo
+        const imgsBig = document.querySelectorAll('.currentnew');
+        imgsBig.length > 0 ? imgsBig[0].remove() : console.log('<') ;
+        const imgBig = document.createElement('img');
 
-            // create big photo
-            const imgsBig = document.querySelectorAll('.currentnew');
-            imgsBig.length > 0 ? imgsBig[0].remove() : console.log('<') ;
-            const imgBig = document.createElement('img');
-            //current.src = imgBigUrl;
-            imgBig.src = bigImgUrl;
-            imgBig.classList.add('currentnew');
-            bigImgBlock.insertBefore(imgBig, bigImgPlace);
-            // add fade in class
-            imgBig.classList.add('fade-in');
-            // remove fade in class after 0.5s
-            setTimeout(() => imgBig.classList.remove('fade-in'), 500);
+        imgBig.src = bigImgUrl;
+        imgBig.classList.add('currentnew');
+        bigImgBlock.insertBefore(imgBig, bigImgPlace);
 
-            // create text for big photo
-            const objOneFoto = EightPhoto[0];
-            currentPhotoId = imgBig.src.substring(47, 50);
-            photoInfo.innerHTML = `
+        // add fade in class
+        imgBig.classList.add('fade-in');
+        // remove fade in class after 0.5s
+        setTimeout(() => imgBig.classList.remove('fade-in'), 500);
+
+        // create text for big photo
+        const objOneFoto = EightPhoto[0];
+        currentPhotoId = imgBig.src.substring(47, 50);
+        photoInfo.innerHTML = `
             ${currentPhotoId} - 
             <b>${objOneFoto.header}</b> -
             ${objOneFoto.insertDate} -
@@ -73,66 +61,46 @@ class UI {
 
 
     static imgClick(event) {
-      const imgs =      document.querySelectorAll('.imgs img');
+      const imgsDiv =   document.querySelectorAll('.imgs div');
       const photoInfo = document.querySelector('.photoInfo');
       const current =   document.querySelector('.currentnew');
       const opacity = 0.4;
-        // reset opacity for all imgs
-
-
-      console.log('opacity initial : ' + event.target.style.opacity);
-      if (!event.target.style.opacity) event.target.style.opacity = 1;
-      console.log('opacity modified : ' + event.target.style.opacity);
-
-      //imgs.forEach(img => (img.style.opacity = 1));
-        // change current img to src of clicked image
       
-      //imgs.forEach(img => ( console.log(img.style.opacity)));
+      // reset opacity for all imgs
+      imgsDiv.forEach(div => (div.style.opacity = 1));
 
-        //current.src = event.target.src.replace(/.jpg/g, "b.jpg");
-        const divUrl = event.target
-          .style.backgroundImage
+      // change current img to src of clicked image
+      const divUrl = event.target.style.backgroundImage
             .replace(/url\("/g, "")
               .replace(/.jpg"\)/g, "b.jpg");
+      current.src = divUrl;
 
-         current.src = divUrl;
-////url("../lipnonet/rekreace/fotogalerie/577.jpg")
-
-        // + add photo description
-        // currentPhotoId = event.target.src.substring(47, 50);
-        currentPhotoId = divUrl
+      // + add photo description
+      currentPhotoId = divUrl
           .replace(/..\/lipnonet\/rekreace\/fotogalerie\//g, "")
             .replace(/b.jpg/g, "");
-
-        const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
+      const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
         photoInfo.innerHTML = `
           ${currentPhotoId} - 
           <b>${objOneFoto.header}</b> -
           ${objOneFoto.insertDate} -
           ${objOneFoto.autor}<br>
           ${objOneFoto.text}
-          `;
-        // add fade in class
-        current.classList.add('fade-in');
-        // remove fade in class after 0.5s
-        setTimeout(() => current.classList.remove('fade-in'), 500);
-        // change opacity
+        `;
 
-        if (event.target.style.opacity == 0.4) event.target.style.opacity = 1
-          else         event.target.style.opacity = opacity;;
-        console.log('opacity after click : ' + event.target.style.opacity);
+      // add fade in class
+      current.classList.add('fade-in');
+      // remove fade in class after 0.5s
+      setTimeout(() => current.classList.remove('fade-in'), 500);
+
+      // change opacity
+      event.target.style.opacity = opacity;;
     }
 
 
 
     static slideShow() {
-        const imgs =      document.querySelectorAll('.imgs img');
-        const imgsDiv =   document.querySelectorAll('.tomasDiv');
-        const opacity = 0.4;
-        // set first image opacity
-        //imgs[0].style.opacity = opacity;
-        //imgs.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
-
+        const imgsDiv =   document.querySelectorAll('.imgsDiv');
         imgsDiv.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
     }
 
