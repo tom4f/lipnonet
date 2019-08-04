@@ -1,6 +1,7 @@
 <?php 
 // Create Connection
-$connPHP7=mysqli_connect ('localhost', 'root', '', 'frymburkcom');
+include "db.php";
+
 if(!$connPHP7) die("Can't connect to MySQL server!");
 mysqli_query($connPHP7, "SET NAMES utf8");
 

@@ -1,5 +1,8 @@
 "use strict";
 
+// let photoUrlPath = '../../rekreace/fotogalerie/';
+let photoUrlPath = '../lipnonet/rekreace/fotogalerie/';
+
 // Class UI - all design 
 class UI {
 
@@ -7,28 +10,29 @@ class UI {
 
         const eightImgsPlace =  document.querySelector('#imgsLocation');
         const eightImgsBlock =  document.querySelector('.imgs');
-        const imgsDiv =         document.querySelectorAll('.imgsDiv');
+        const eightImgsAll =    document.querySelectorAll('.eightImgsAll');
 
         const bigImgPlace =     document.querySelector('#imgLocation');
         const bigImgBlock =     document.querySelector('.main-img');
-        const photoInfo =       document.querySelector('.photoInfo');
+        const bigImgInfo =      document.querySelector('.photoInfo');
 
         let bigImgUrl = "";
         
         // remove 8 small photo
-        if (imgsDiv.length > 7)  imgsDiv.forEach(img => img.remove());
+        if (eightImgsAll.length > 7)  eightImgsAll.forEach(img => img.remove());
         
         // create 8 small photo 
         EightPhoto
             .forEach(onePhoto => {
                 const div = document.createElement('div');
-                div.style.backgroundImage = "url('../lipnonet/rekreace/fotogalerie/" + onePhoto.id + ".jpg')";
+                div.style.backgroundImage = "url('" + photoUrlPath + onePhoto.id + ".jpg')";
                 div.style.backgroundSize = "cover";
-                div.style.width = "auto";
+                div.style.width = "100%";
                 div.style.height = "100px";
+                div.style.borderWidth = "2px";
                 div.innerHTML = onePhoto.id;
-                div.classList.add('imgsDiv');
-                if (bigImgUrl == "") bigImgUrl = `../lipnonet/rekreace/fotogalerie/${onePhoto.id}b.jpg`;
+                div.classList.add('eightImgsAll');
+                if (bigImgUrl == "") bigImgUrl = `${photoUrlPath}${onePhoto.id}b.jpg`;
                 eightImgsBlock.insertBefore(div, eightImgsPlace);
               })
 
@@ -47,9 +51,14 @@ class UI {
         setTimeout(() => imgBig.classList.remove('fade-in'), 500);
 
         // create text for big photo
+
+        currentPhotoId = imgBig.src
+          .split('rekreace/fotogalerie/')[1]
+            .replace(/b.jpg/g,'');
+        
         const objOneFoto = EightPhoto[0];
-        currentPhotoId = imgBig.src.substring(47, 50);
-        photoInfo.innerHTML = `
+        bigImgInfo.innerHTML = "";
+        bigImgInfo.innerHTML = `
             ${currentPhotoId} - 
             <b>${objOneFoto.header}</b> -
             ${objOneFoto.insertDate} -
@@ -58,16 +67,15 @@ class UI {
             `;
     }
 
-
-
     static imgClick(event) {
-      const imgsDiv =   document.querySelectorAll('.imgs div');
-      const photoInfo = document.querySelector('.photoInfo');
+      const eightImgsAll =   document.querySelectorAll('.imgs div');
+      const bigImgInfo = document.querySelector('.photoInfo');
+
       const current =   document.querySelector('.currentnew');
       const opacity = 0.4;
       
       // reset opacity for all imgs
-      imgsDiv.forEach(div => (div.style.opacity = 1));
+      eightImgsAll.forEach(div => (div.style.opacity = 1));
 
       // change current img to src of clicked image
       const divUrl = event.target.style.backgroundImage
@@ -76,11 +84,13 @@ class UI {
       current.src = divUrl;
 
       // + add photo description
-      currentPhotoId = divUrl
-          .replace(/..\/lipnonet\/rekreace\/fotogalerie\//g, "")
-            .replace(/b.jpg/g, "");
+            currentPhotoId = divUrl
+            .split('rekreace/fotogalerie/')[1]
+              .replace(/b.jpg/g,'');
+
       const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
-        photoInfo.innerHTML = `
+      bigImgInfo.innerHTML = "";
+      bigImgInfo.innerHTML = `
           ${currentPhotoId} - 
           <b>${objOneFoto.header}</b> -
           ${objOneFoto.insertDate} -
@@ -100,8 +110,8 @@ class UI {
 
 
     static slideShow() {
-        const imgsDiv =   document.querySelectorAll('.imgsDiv');
-        imgsDiv.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
+        const eightImgsAll =   document.querySelectorAll('.eightImgsAll');
+        eightImgsAll.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
     }
 
 
@@ -120,7 +130,6 @@ let offset = 0;
 
 function loadPicturesfromMySqlUniversal (limit, offset) {
     var xhr = new XMLHttpRequest();
-   // xhr.open('GET', `ajax_receive_data_universal.php?request=${selected}`, true);
     xhr.open('GET', `ajax_receive_data_universal.php?limit=${limit}&offset=${offset}`, true);
     xhr.onload = function(){
       if (this.readyState == 4 && this.status == 200) {
@@ -135,8 +144,6 @@ function loadPicturesfromMySqlUniversal (limit, offset) {
 loadPicturesfromMySqlUniversal(limit, offset);
   
 function startPresentation() {
-  console.log('Presentation started');
-  console.log(timer);
   loadPicturesfromMySqlUniversal(1, Math.floor(Math.random() * 100) + 1  )
 }
 
@@ -144,5 +151,5 @@ let timer;
 document.querySelector('.play') .addEventListener('click', () => timer = setInterval(startPresentation, 5000));
 document.querySelector('.stop') .addEventListener('click', () => clearInterval(timer));
 
-document.querySelector('.next8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset+=8));
-document.querySelector('.prev8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset-=8));  
+document.querySelector('.next8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset+=limit));
+document.querySelector('.prev8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset-=limit));  
