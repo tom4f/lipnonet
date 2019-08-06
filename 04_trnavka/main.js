@@ -1,6 +1,6 @@
 "use strict";
 
-// let photoUrlPath = '../../rekreace/fotogalerie/';
+//let photoUrlPath = '../../rekreace/fotogalerie/';
 let photoUrlPath = '../lipnonet/rekreace/fotogalerie/';
 
 // Class UI - all design 
@@ -22,7 +22,8 @@ class UI {
         if (eightImgsAll.length > 7)  eightImgsAll.forEach(img => img.remove());
         
         // create 8 small photo 
-        EightPhoto
+      
+          EightPhoto
             .forEach(onePhoto => {
                 const div = document.createElement('div');
                 div.style.backgroundImage = "url('" + photoUrlPath + onePhoto.id + ".jpg')";
@@ -33,8 +34,11 @@ class UI {
                 div.innerHTML = onePhoto.id;
                 div.classList.add('eightImgsAll');
                 if (bigImgUrl == "") bigImgUrl = `${photoUrlPath}${onePhoto.id}b.jpg`;
-                eightImgsBlock.insertBefore(div, eightImgsPlace);
+                if (showEightPhoto == 1) {eightImgsBlock.insertBefore(div, eightImgsPlace);}
               })
+      
+
+        
 
         // create big photo
         const imgsBig = document.querySelectorAll('.currentnew');
@@ -59,10 +63,9 @@ class UI {
         const objOneFoto = EightPhoto[0];
         bigImgInfo.innerHTML = "";
         bigImgInfo.innerHTML = `
-            ${currentPhotoId} - 
-            <b>${objOneFoto.header}</b> -
-            ${objOneFoto.insertDate} -
-            ${objOneFoto.autor}<br>
+            <b>${objOneFoto.header}</b> 
+            ${objOneFoto.insertDate} 
+            ${objOneFoto.autor} 
             ${objOneFoto.text}
             `;
     }
@@ -91,11 +94,10 @@ class UI {
       const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
       bigImgInfo.innerHTML = "";
       bigImgInfo.innerHTML = `
-          ${currentPhotoId} - 
-          <b>${objOneFoto.header}</b> -
-          ${objOneFoto.insertDate} -
-          ${objOneFoto.autor}<br>
-          ${objOneFoto.text}
+        <b>${objOneFoto.header}</b> 
+        ${objOneFoto.insertDate} 
+        ${objOneFoto.autor} 
+        ${objOneFoto.text}
         `;
 
       // add fade in class
@@ -129,6 +131,7 @@ let limit = 8;
 let offset = 0;
 
 function loadPicturesfromMySqlUniversal (limit, offset) {
+  console.log(`offset: ${offset}`)
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `ajax_receive_data_universal.php?limit=${limit}&offset=${offset}`, true);
     xhr.onload = function(){
@@ -148,8 +151,30 @@ function startPresentation() {
 }
 
 let timer;
-document.querySelector('.play') .addEventListener('click', () => timer = setInterval(startPresentation, 5000));
-document.querySelector('.stop') .addEventListener('click', () => clearInterval(timer));
+let showEightPhoto = 1;
+document.querySelector('.play')     .addEventListener('click', () => {
+  showEightPhoto = 0;
+  timer = setInterval(startPresentation, 5000)
+});
 
-document.querySelector('.next8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset+=limit));
-document.querySelector('.prev8').addEventListener('click', () => loadPicturesfromMySqlUniversal(limit, offset-=limit));  
+document.querySelector('.stop')     .addEventListener('click', () => clearInterval(timer));
+
+document.querySelector('.next8')    .addEventListener('click', () => {
+  showEightPhoto = 1;
+  loadPicturesfromMySqlUniversal(limit, offset+=limit);
+});
+
+document.querySelector('.prev8')    .addEventListener('click', () => {
+  showEightPhoto = 1;
+  offset > 7 ? loadPicturesfromMySqlUniversal(limit, offset-=limit) : console.log(`offset: ${offset}`);
+});
+
+document.querySelector('.nextPhoto').addEventListener('click', () => {
+   showEightPhoto = 0;
+   loadPicturesfromMySqlUniversal(1, offset+=1);
+ });
+
+document.querySelector('.prevPhoto').addEventListener('click', () => {
+  showEightPhoto = 0;
+  offset > 0 ? loadPicturesfromMySqlUniversal(1, offset-=1) : console.log(`offset: ${offset}`);
+});  

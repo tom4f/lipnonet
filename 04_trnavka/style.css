@@ -50,10 +50,37 @@ body{
 }
 
 /* main picture */
-.main-img img {
-    width: 100%;
+.main-img {
+    position: relative;
+    text-align: center;
+
 }
 
+.main-img img{
+    width: 100%;
+
+}
+
+.photoInfo{
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background-color: black;
+}
+
+.nextPhoto{
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+.prevPhoto {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+  }
 
 
 .next8{
@@ -76,7 +103,7 @@ body{
 
 }
 
-.next8:hover, .prev8:hover, .play:hover, .stop:hover{
+.next8:hover, .prev8:hover, .play:hover, .stop:hover, .nextPhoto:hover, .prevPhoto:hover{
     background: #926239;
     color: #fff;
 }
