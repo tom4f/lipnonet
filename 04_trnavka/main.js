@@ -27,12 +27,8 @@ class UI {
             .forEach(onePhoto => {
                 const div = document.createElement('div');
                 div.style.backgroundImage = "url('" + photoUrlPath + onePhoto.id + ".jpg')";
-                div.style.backgroundSize = "cover";
-                div.style.width = "100%";
-                div.style.height = "100px";
-                div.style.borderWidth = "2px";
-                div.innerHTML = onePhoto.id;
                 div.classList.add('eightImgsAll');
+                div.innerHTML = onePhoto.id;
                 if (bigImgUrl == "") bigImgUrl = `${photoUrlPath}${onePhoto.id}b.jpg`;
                 if (showEightPhoto == 1) {eightImgsBlock.insertBefore(div, eightImgsPlace);}
               })
@@ -61,7 +57,6 @@ class UI {
             .replace(/b.jpg/g,'');
         
         const objOneFoto = EightPhoto[0];
-        bigImgInfo.innerHTML = "";
         bigImgInfo.innerHTML = `
             <b>${objOneFoto.header}</b> 
             ${objOneFoto.insertDate} 
@@ -92,7 +87,7 @@ class UI {
               .replace(/b.jpg/g,'');
 
       const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
-      bigImgInfo.innerHTML = "";
+
       bigImgInfo.innerHTML = `
         <b>${objOneFoto.header}</b> 
         ${objOneFoto.insertDate} 

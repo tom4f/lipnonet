@@ -9,13 +9,14 @@ body{
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 17px;
-    color: #926239;
+    color: white;
     line-height: 1.6;
     background-color: black;
 }
 
 .header {
     text-align: center;
+    font-size: 2rem;
 }
 
 .container {
@@ -35,7 +36,7 @@ body{
 .menu > div {
     width: 100%;
     margin: 1px;
-    font-size: 20px;
+    font-size: 1rem;
 }
 
 /* 8 imgs */
@@ -51,6 +52,7 @@ body{
 
 /* main picture */
 .main-img {
+    display: flex;
     position: relative;
     text-align: center;
 
@@ -61,25 +63,48 @@ body{
 
 }
 
-.photoInfo{
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    background-color: black;
+.main-img > .photoInfo{
+    width: auto;
+    margin: 1px;
 }
+
+.main-img > .prevPhoto{
+    width: 5%;
+    margin: 1px;
+}
+
+.main-img > .nextPhoto{
+    width: 5%;
+    margin: 1px;
+}
+
 
 .nextPhoto{
     position: absolute;
     top: 8px;
-    right: 16px;
+    right: 8px;
+    color: white;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.photoInfo{
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .prevPhoto {
     position: absolute;
     top: 8px;
-    left: 16px;
+    left: 8px;
+    color: white;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, 0.3);
   }
 
 
@@ -92,11 +117,9 @@ body{
 }
 
 .next8, .prev8, .play, .stop{
-    font-size: 15px;
-    /* none link underline */
     text-decoration: none;
-    color: #926239;
-    border: #926239 1px solid;
+    color: white;
+    border: white 1px solid;
     padding: 5px 10px;
    /* border-radius: 10px; */
     margin: 20px 0px 20px 0px;
@@ -104,11 +127,18 @@ body{
 }
 
 .next8:hover, .prev8:hover, .play:hover, .stop:hover, .nextPhoto:hover, .prevPhoto:hover{
-    background: #926239;
-    color: #fff;
+    background: black;
+    color: white;
+    cursor: pointer;
 }
 
 
+.eightImgsAll{
+    height: 100px;
+    width: 100%;
+    background-size: cover;
+    borderWidth = "2px";
+}
 
 
 
@@ -127,3 +157,26 @@ body{
     opacity: 0;
     animation: fadeIn 0.5s ease-in 1 forwards;
 }
+
+
+@media (max-width: 700px) {
+   
+.eightImgsAll{
+    height: 50px;
+}
+
+.nextPhoto, .prevPhoto, .photoInfo{
+    font-size: 0.7rem;
+}
+
+.menu > div {
+    font-size: 0.7rem;
+}
+
+.header {
+    text-align: center;
+    font-size: 1rem;
+}
+
+  }
+  
