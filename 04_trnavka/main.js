@@ -1,12 +1,16 @@
 "use strict";
 
-//let photoUrlPath = '../../rekreace/fotogalerie/';
-let photoUrlPath = '../lipnonet/rekreace/fotogalerie/';
+// set img url for localhost / remote web
+const thisPageUrl  = window.location.href;
+const photoUrlPath = thisPageUrl.includes('localhost') ? '../lipnonet/rekreace/fotogalerie/' : '../../rekreace/fotogalerie/';
 
 // Class UI - all design 
 class UI {
 
-    static loadImgList(EightPhoto) {
+    static loadImgList(EightPhoto, event) {
+
+      if (event !=0) console.log(`event.target.classList: ${event.target.classList}`);
+      
 
         const eightImgsPlace =  document.querySelector('#imgsLocation');
         const eightImgsBlock =  document.querySelector('.imgs');
@@ -19,6 +23,20 @@ class UI {
         let bigImgUrl = "";
         
         // remove 8 small photo
+        
+        if (event !=0) {
+          if (
+              event.target.classList == 'fas fa-arrow-right' || 
+              event.target.classList == 'fas fa-arrow-left' ||
+              event.target.classList == 'nextPhoto' || 
+              event.target.classList == 'prevPhoto'              
+              ) {
+            showEightPhoto = 0;
+          } else {
+            showEightPhoto = 1;
+          }
+
+        } 
         if (eightImgsAll.length > 7)  eightImgsAll.forEach(img => img.remove());
         
         // create 8 small photo 
@@ -33,13 +51,17 @@ class UI {
                 if (showEightPhoto == 1) {eightImgsBlock.insertBefore(div, eightImgsPlace);}
               })
       
-
-        
-
         // create big photo
         const imgsBig = document.querySelectorAll('.currentnew');
         imgsBig.length > 0 ? imgsBig[0].remove() : console.log('<') ;
         const imgBig = document.createElement('img');
+        
+        // create big photo - via div
+
+        //bigImgBlock.style.backgroundImage = "url('" + bigImgUrl + "')";
+
+        // -- end
+
 
         imgBig.src = bigImgUrl;
         imgBig.classList.add('currentnew');
@@ -58,9 +80,11 @@ class UI {
         
         const objOneFoto = EightPhoto[0];
         bigImgInfo.innerHTML = `
+            <b>${objOneFoto.id}</b>
+            ${objOneFoto.insertDate}    
             <b>${objOneFoto.header}</b> 
-            ${objOneFoto.insertDate} 
-            ${objOneFoto.autor} 
+            Autor: ${objOneFoto.autor} 
+            <br>
             ${objOneFoto.text}
             `;
     }
@@ -121,55 +145,53 @@ class UI {
 
 
 let EightPhoto = [];
-let currentPhotoId = 1
+let AllPhoto = [];
+let currentPhotoId;
 let limit = 8;
 let offset = 0;
+let timer;
+let showEightPhoto = 1;
+//let event = 0;
 
-function loadPicturesfromMySqlUniversal (limit, offset) {
-  console.log(`offset: ${offset}`)
+const loadPicturesfromAllPhoto = (limit, offset, event) => {
+  if(typeof event.target.classList === 'undefined') console.log('muj vysledek = undefine = start page');
+    else console.log(event.target.classList);
+
+    EightPhoto = AllPhoto.slice(offset,offset + limit);
+    UI.loadImgList(EightPhoto, event);
+    UI.slideShow();
+    console.log(`offset = ${offset}, limit = ${limit}`);
+}
+
+const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
+  if(typeof event.target.classList === 'undefined') console.log('muj vysledek = undefine = start page');
+    else console.log(event.target.classList);
+
+  event = event;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `ajax_receive_data_universal.php?limit=${limit}&offset=${offset}`, true);
     xhr.onload = function(){
       if (this.readyState == 4 && this.status == 200) {
-        EightPhoto = JSON.parse(this.responseText);
-        UI.loadImgList(EightPhoto);
+        AllPhoto = JSON.parse(this.responseText);
+        EightPhoto = AllPhoto.slice(0,8);
+        console.log(EightPhoto);
+        UI.loadImgList(EightPhoto, event);
         UI.slideShow();
+        console.log(`offset = ${offset}, limit = ${limit}`);
       }
     }
     xhr.send();
 }
 
-loadPicturesfromMySqlUniversal(limit, offset);
-  
-function startPresentation() {
-  loadPicturesfromMySqlUniversal(1, Math.floor(Math.random() * 100) + 1  )
+const startPresentation = (event) => {
+  const Presentation = () => loadPicturesfromAllPhoto(1, (Math.floor(Math.random() * AllPhoto.length) + 1), event);
+  timer = setInterval(Presentation, 5000);
 }
 
-let timer;
-let showEightPhoto = 1;
-document.querySelector('.play')     .addEventListener('click', () => {
-  showEightPhoto = 0;
-  timer = setInterval(startPresentation, 5000)
-});
-
-document.querySelector('.stop')     .addEventListener('click', () => clearInterval(timer));
-
-document.querySelector('.next8')    .addEventListener('click', () => {
-  showEightPhoto = 1;
-  loadPicturesfromMySqlUniversal(limit, offset+=limit);
-});
-
-document.querySelector('.prev8')    .addEventListener('click', () => {
-  showEightPhoto = 1;
-  offset > 7 ? loadPicturesfromMySqlUniversal(limit, offset-=limit) : console.log(`offset: ${offset}`);
-});
-
-document.querySelector('.nextPhoto').addEventListener('click', () => {
-   showEightPhoto = 0;
-   loadPicturesfromMySqlUniversal(1, offset+=1);
- });
-
-document.querySelector('.prevPhoto').addEventListener('click', () => {
-  showEightPhoto = 0;
-  offset > 0 ? loadPicturesfromMySqlUniversal(1, offset-=1) : console.log(`offset: ${offset}`);
-});  
+document                            .addEventListener('DOMContentLoaded',  (event) => loadPicturesfromMySqlStartPage (0, 0, event));
+document.querySelector('.play')     .addEventListener('click', (event) => startPresentation(event));
+document.querySelector('.stop')     .addEventListener('click', ()      => clearInterval(timer));
+document.querySelector('.next8')    .addEventListener('click', (event) => loadPicturesfromAllPhoto(limit, offset+=limit, event));
+document.querySelector('.prev8')    .addEventListener('click', (event) => offset > 7 ? loadPicturesfromAllPhoto(limit, offset-=limit, event) : console.log(`offset: ${offset}`));
+document.querySelector('.nextPhoto').addEventListener('click', (event) => loadPicturesfromAllPhoto(1, offset+=1, event));
+document.querySelector('.prevPhoto').addEventListener('click', (event) => offset > 0 ? loadPicturesfromAllPhoto(1, offset-=1, event) : console.log(`offset: ${offset}`));  

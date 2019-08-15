@@ -9,7 +9,8 @@ mysqli_query($connPHP7, "SET NAMES utf8");
 $limit =  isset($_GET['limit'])  ? $_GET['limit']  : "";
 $offset = isset($_GET['offset']) ? $_GET['offset'] : "";
 
-$query = 'SELECT * FROM fotogalerie order by insertDate DESC LIMIT '.$limit.' OFFSET '.$offset;
+if ($limit == 0) $query = 'SELECT * FROM fotogalerie order by insertDate DESC';
+    else $query = 'SELECT * FROM fotogalerie order by insertDate DESC LIMIT '.$limit.' OFFSET '.$offset;
 
 // Get Result
 //$result = mysqli_query($conn, $query);

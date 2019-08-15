@@ -1,11 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 /* reset values for all elements */
-*{
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
+  }
 
 body{
-    margin: 20px;
+    margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 17px;
@@ -14,136 +17,124 @@ body{
     background-color: black;
 }
 
+/* <div class="container"> ===================================== */
+.container {
+    width: 100%;
+    height: auto;
+    margin: auto;
+    border: black solid 0px;
+    background: black;
+    overflow: hidden;
+}
+
+/* <div class="header">Fotogalerie - Ubytování u Kučerů</div> === */
 .header {
     text-align: center;
     font-size: 2rem;
 }
 
-.container {
-    width: 100%;
-    max-width: 1100px;
-    margin: auto;
-    border: black solid 3px;
-    background: black;
-}
-
-/* menu */
+/* <div class="menu"> =========================================== */
 .menu {
     display: flex;
     justify-content: center;
 }
 
-.menu > div {
-    width: 100%;
+.menu > button {
     margin: 1px;
     font-size: 1rem;
+    borderWidth = "2px";
 }
-
-/* 8 imgs */
-.imgs {
-    display: flex;
-    justify-content: center;
-}
-
-.imgs > div{
-    width: 100%;
-    margin: 1px;
-}
-
-/* main picture */
-.main-img {
-    display: flex;
-    position: relative;
-    text-align: center;
-
-}
-
-.main-img img{
-    width: 100%;
-
-}
-
-.main-img > .photoInfo{
-    width: auto;
-    margin: 1px;
-}
-
-.main-img > .prevPhoto{
-    width: 5%;
-    margin: 1px;
-}
-
-.main-img > .nextPhoto{
-    width: 5%;
-    margin: 1px;
-}
-
-
-.nextPhoto{
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    color: white;
-    font-size: 1rem;
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
-.photoInfo{
-    position: absolute;
-    top: 22px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 1rem;
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
-.prevPhoto {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    color: white;
-    font-size: 1rem;
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-
 
 .next8{
     text-align: right;
 }
 
-.play, .stop, .photoInfo{
+.play, .stop{
     text-align: center;
 }
 
 .next8, .prev8, .play, .stop{
     text-decoration: none;
     color: white;
+    background:transparent;
     border: white 1px solid;
     padding: 5px 10px;
-   /* border-radius: 10px; */
+    border-radius: 10%;
     margin: 20px 0px 20px 0px;
 
 }
 
-.next8:hover, .prev8:hover, .play:hover, .stop:hover, .nextPhoto:hover, .prevPhoto:hover{
-    background: black;
-    color: white;
+.next8:hover, .prev8:hover, .play:hover, .stop:hover{
+    background: white;
+    color: black;
     cursor: pointer;
 }
 
 
-.eightImgsAll{
-    height: 100px;
-    width: 100%;
-    background-size: cover;
-    borderWidth = "2px";
+/* <div class="imgs"> ============================================= */
+.imgs {
+    display: flex;
+    justify-content: center;
 }
 
+.imgs > div{
+    width: 12.5%;
+    margin: 1px;
+    height: 75px;
+    background-size: cover;
 
+}
 
+/* <div class="main-img"> ========================================= */
+.main-img {
+    position: relative;
+}
 
+.currentnew{
+    height: auto;
+    width: 100vw;
+    overflow: hidden;
+}
 
+.photoInfo{
+    width: auto;
+    height: auto;
+    position: absolute;
+    padding: 5px;
+    top: 60px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.prevPhoto, .nextPhoto{
+    top: 100px;
+    padding: 10px;
+    position: absolute;
+    border: 2px solid #fff;
+    background-color: transparent;
+    border-radius: 50%;
+    outline: none;
+    color: white;
+    font-size: 4rem;
+}
+
+.prevPhoto{
+    left: 8px;
+}
+
+.nextPhoto{
+    right: 8px;
+}
+
+.nextPhoto:hover, .prevPhoto:hover{
+    background: white;
+    color: black;
+    cursor: pointer;
+}
 
 /* Fade in animation */
 /* film mode property */
@@ -161,12 +152,17 @@ body{
 
 @media (max-width: 700px) {
    
-.eightImgsAll{
-    height: 50px;
+    .imgs > div{
+        height: 50px;
+    }
+
+.photoInfo{
+    font-size: 0.7rem;
+    top: 30px;
 }
 
-.nextPhoto, .prevPhoto, .photoInfo{
-    font-size: 0.7rem;
+.nextPhoto, .prevPhoto{
+    font-size: 1.5rem;
 }
 
 .menu > div {

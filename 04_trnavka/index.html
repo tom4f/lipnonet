@@ -5,24 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Foto  galerie - Kučerovi</title>
+    <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous"
+  />
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body  class="page">
     <div class="container">
         <div class="header">Fotogalerie - Ubytování u Kučerů</div>
         <div class="menu">
-            <div class="prev8"><<</div>
-            <div class="play">START </div>
-            <div class="stop">STOP</div>
-            <div class="next8">>></div>
+            <button class="prev8"><i class="fas fa-angle-double-left"></i></button>
+            <button class="play">START</button>
+            <button class="stop">STOP</button>
+            <button class="next8"><i class="fas fa-angle-double-right"></i></button>
         </div>
         <div class="imgs">
             <span id="imgsLocation"></span>
         </div>
         <div class="main-img">
-            <div class="prevPhoto"><<</div>
+            <button class="prevPhoto"><i class="fas fa-arrow-left"></i></button>
             <div class="photoInfo"></div>
-            <div class="nextPhoto">>></div>
+            <button class="nextPhoto"><i class="fas fa-arrow-right"></i></button>
             <span id="imgLocation"></span>
         </div>
     </div>
