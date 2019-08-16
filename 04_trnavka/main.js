@@ -29,7 +29,9 @@ class UI {
               event.target.classList == 'fas fa-arrow-right' || 
               event.target.classList == 'fas fa-arrow-left' ||
               event.target.classList == 'nextPhoto' || 
-              event.target.classList == 'prevPhoto'              
+              event.target.classList == 'prevPhoto' ||      
+              event.target.classList == 'fas fa-play-circle' || 
+              event.target.classList == 'play'
               ) {
             showEightPhoto = 0;
           } else {

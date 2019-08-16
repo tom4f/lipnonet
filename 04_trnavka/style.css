@@ -11,7 +11,6 @@ body{
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 17px;
     color: white;
     line-height: 1.6;
     background-color: black;
@@ -30,45 +29,20 @@ body{
 /* <div class="header">Fotogalerie - Ubytování u Kučerů</div> === */
 .header {
     text-align: center;
-    font-size: 2rem;
+    font-size: 3vw;
+    background-color: gray;
+}
+.header a{
+    color: white;
+}
+
+.header a:hover{
+    background: white;
+    color: black;
 }
 
 /* <div class="menu"> =========================================== */
-.menu {
-    display: flex;
-    justify-content: center;
-}
 
-.menu > button {
-    margin: 1px;
-    font-size: 1rem;
-    borderWidth = "2px";
-}
-
-.next8{
-    text-align: right;
-}
-
-.play, .stop{
-    text-align: center;
-}
-
-.next8, .prev8, .play, .stop{
-    text-decoration: none;
-    color: white;
-    background:transparent;
-    border: white 1px solid;
-    padding: 5px 10px;
-    border-radius: 10%;
-    margin: 20px 0px 20px 0px;
-
-}
-
-.next8:hover, .prev8:hover, .play:hover, .stop:hover{
-    background: white;
-    color: black;
-    cursor: pointer;
-}
 
 
 /* <div class="imgs"> ============================================= */
@@ -97,21 +71,21 @@ body{
 }
 
 .photoInfo{
+    white-space: nowrap;
     width: auto;
-    height: auto;
     position: absolute;
     padding: 5px;
-    top: 60px;
+    bottom: 0vw;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-size: 1.2rem;
+    font-size: 2vw;
     background-color: rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 
-.prevPhoto, .nextPhoto{
-    top: 100px;
+.prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop{
+    top: 1vw;
     padding: 10px;
     position: absolute;
     border: 2px solid #fff;
@@ -119,7 +93,7 @@ body{
     border-radius: 50%;
     outline: none;
     color: white;
-    font-size: 4rem;
+    font-size: 5vw;
 }
 
 .prevPhoto{
@@ -130,7 +104,23 @@ body{
     right: 8px;
 }
 
-.nextPhoto:hover, .prevPhoto:hover{
+.next8{
+    right: 15%;
+}
+
+.play{
+    left: 35%;
+}
+
+.stop{
+    right: 35%;
+}
+
+.prev8{
+    left: 15%;
+}
+
+.nextPhoto:hover, .prevPhoto:hover, .next8:hover, .prev8:hover, .play:hover, .stop:hover{
     background: white;
     color: black;
     cursor: pointer;
@@ -150,28 +140,22 @@ body{
 }
 
 
-@media (max-width: 700px) {
+@media (max-width: 400px) {
    
     .imgs > div{
         height: 50px;
     }
 
-.photoInfo{
-    font-size: 0.7rem;
-    top: 30px;
-}
-
-.nextPhoto, .prevPhoto{
-    font-size: 1.5rem;
-}
-
 .menu > div {
     font-size: 0.7rem;
 }
 
+.photoInfo{
+    font-size: 3vw;
+}
+
 .header {
-    text-align: center;
-    font-size: 1rem;
+    font-size: 3vw;
 }
 
   }
