@@ -65,9 +65,13 @@ body{
 }
 
 .currentnew{
-    height: auto;
-    width: 100vw;
+    height: 100vh;
+    width: auto;
     overflow: hidden;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
 }
 
 .photoInfo{
@@ -75,7 +79,7 @@ body{
     width: auto;
     position: absolute;
     padding: 5px;
-    bottom: 0vw;
+    bottom: 5vw;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
@@ -84,8 +88,23 @@ body{
     text-align: center;
 }
 
-.prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop{
-    top: 1vw;
+.homepage{
+    padding: 10px;
+    position: absolute;
+    border: 2px none #fff;
+    background-color: transparent;
+    border-radius: 2%;
+    outline: none;
+    color: white;
+    font-size: 1.5vw;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 2%;
+ 
+}
+
+.prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides{
+
     padding: 10px;
     position: absolute;
     border: 2px solid #fff;
@@ -97,30 +116,40 @@ body{
 }
 
 .prevPhoto{
+    top: 40%;
     left: 8px;
 }
 
 .nextPhoto{
+    top: 40%;
     right: 8px;
 }
 
 .next8{
-    right: 15%;
+    top: 1vw;
+    right: 8px;
 }
 
-.play{
-    left: 35%;
-}
-
-.stop{
-    right: 35%;
+.play, .stop{
+    top: 20%;
+    left: 8px;
 }
 
 .prev8{
-    left: 15%;
+    top: 1vw;
+    left: 8px
 }
 
-.nextPhoto:hover, .prevPhoto:hover, .next8:hover, .prev8:hover, .play:hover, .stop:hover{
+.slides{
+    top: 10vw;
+    right: 8px;
+}
+
+.homepage a{
+    color: white;
+}
+
+.nextPhoto:hover, .prevPhoto:hover, .next8:hover, .prev8:hover, .play:hover, .stop:hover, .slides:hover{
     background: white;
     color: black;
     cursor: pointer;

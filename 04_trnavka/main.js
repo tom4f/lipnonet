@@ -188,11 +188,21 @@ const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
 const startPresentation = (event) => {
   const Presentation = () => loadPicturesfromAllPhoto(1, (Math.floor(Math.random() * AllPhoto.length) + 1), event);
   timer = setInterval(Presentation, 5000);
+  document.querySelector('.play').style.display = "none";
+  document.querySelector('.stop').style.display = "block";
 }
+
+const stopPresentation = (event) => {
+  clearInterval(timer);
+  document.querySelector('.play').style.display = "block";
+  document.querySelector('.stop').style.display = "none";
+}
+
+document.querySelector('.stop').style.display = "none";
 
 document                            .addEventListener('DOMContentLoaded',  (event) => loadPicturesfromMySqlStartPage (0, 0, event));
 document.querySelector('.play')     .addEventListener('click', (event) => startPresentation(event));
-document.querySelector('.stop')     .addEventListener('click', ()      => clearInterval(timer));
+document.querySelector('.stop')     .addEventListener('click', (event) => stopPresentation(event));
 document.querySelector('.next8')    .addEventListener('click', (event) => loadPicturesfromAllPhoto(limit, offset+=limit, event));
 document.querySelector('.prev8')    .addEventListener('click', (event) => offset > 7 ? loadPicturesfromAllPhoto(limit, offset-=limit, event) : console.log(`offset: ${offset}`));
 document.querySelector('.nextPhoto').addEventListener('click', (event) => loadPicturesfromAllPhoto(1, offset+=1, event));
