@@ -61,6 +61,7 @@ body{
 
 /* <div class="main-img"> ========================================= */
 .main-img {
+    top: 0px;
     height: 100vh;
     width: auto;
     max-width: 100%;
@@ -70,27 +71,16 @@ body{
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    background-position: top;
     justify-content: center;
 }
-
-/*
-.currentnew{
-    height: 100vh;
-    width: auto;
-    overflow: hidden;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-*/
 
 .photoInfo{
     white-space: nowrap;
     width: auto;
     position: absolute;
     padding: 5px;
-    bottom: 5vw;
+    bottom: 3vh;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;

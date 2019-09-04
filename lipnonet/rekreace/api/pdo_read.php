@@ -32,7 +32,6 @@
       $post_item = array(
         'id'  => $id,
         'date' => $date,
-        'time' => $time,
         'text' => $text,
         'autor' => $autor,
         'email' => $email,
@@ -40,7 +39,6 @@
         'header' => $header,
         'votes' => $votes,
         'insertDate' => $insertDate,
-        'InsertTime' => $insertTime
       );
 
       // Push to "data"
