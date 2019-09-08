@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+	<link rel="stylesheet" href="css/foto_insert_style.css">
+	<title>Fotogalerie - vkládání fotek</title>
+</head>
+<body>
+
+<div class="container">
+
+	<div class="formularimg">
+		<form id="formularimg" name="formularimg" method="post" action="" enctype="multipart/form-data">
+			<br><b>Foto soubor :</b><input type="File" id="afile" name="userfile1" accept="image/*" >
+		</form>
+		<span id="selectedPicturePlace"></span>
+	</div>
+
+	<div class="formular">
+		<form id="formular" name="formular" method="post" action="" enctype="multipart/form-data">
+			<br><INPUT placeholder="zadej název" NAME=header size="34" required>
+			<br>
+				<SELECT NAME="typ">
+						<option value="999" selected>--- vyber kategorii</option>
+						<option value="0">Ubytování</option>
+						<option value="1">Lipenská přehrada</option>
+						<option value="2">Příroda</option>
+						<option value="3">Obce</option>
+						<option value="4">Historie</option>
+						<option value="5">Sport</option>
+						<option value="6">Ostatní</option>
+						<option value="7">Všechny</option>
+					</SELECT>
+
+			<br><INPUT id="date" NAME=date VALUE="" size="10"><b>Datum focení fotografie!!!</b>
+			<br><textarea name=text rows="10" cols="60" placeholder="popis fotky" wrap="Yes"></textarea>
+			<br><INPUT NAME=autor placeholder="autor" value="Bedřich" size="10" required><INPUT placeholder="email" NAME=email VALUE="" size="20">
+			<br>otoceni vlevo o +90`<input type="radio" name="rotate" value="90">
+			<br>otoceni vlevo o +180`<input type="radio" name="rotate" value="180">
+			<br>otoceni vlevo o +270`<input type="radio" name="rotate" value="270">
+			<br><INPUT TYPE=Submit name="odesli" VALUE="Přidej">
+		</form>
+	</div>	
+
+</div>
+
+<script src="js/main_foto_insert.js"></script>
+
+</body>

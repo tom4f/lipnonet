@@ -33,6 +33,17 @@
       return $stmt;
     }
 
+    // [0] Get last (max) id
+    public function readLastId() {
+      // Create query
+      //$query = 'SELECT MAX(id) AS id FROM ' . $this->table;
+      $query = "SHOW TABLE STATUS LIKE '" . $this->table . "'";
+      // Prepare statement
+      $stmt = $this->conn->prepare($query);
+      // Execute query
+      $stmt->execute();
+      return $stmt;
+    }
 
     // Create Post
     public function create() {
