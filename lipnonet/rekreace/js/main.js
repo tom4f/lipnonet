@@ -20,7 +20,7 @@ class UI {
 
       bigImgInfo.innerHTML = `
           <b>${objOneFoto.id}</b>
-          ${objOneFoto.insertDate}    
+          ${objOneFoto.insertDate.slice(0,10)}    
           <b>${objOneFoto.header}</b> 
           Autor: ${objOneFoto.autor} 
           <br>

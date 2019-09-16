@@ -4,7 +4,7 @@
 }
 
 .formular, .formularimg {
-    width: 70%;
+    width: 500px;
     margin: auto;
     border: black solid 2px;
     padding: 10px;
@@ -16,3 +16,7 @@
     width: 100%;
     
 }
+
+select:not(:valid) {
+    color: #999;
+  }

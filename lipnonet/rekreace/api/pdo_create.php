@@ -54,7 +54,7 @@
 	function img_resize($filePathOrig, $newwidth, $filePathDest, $rotate){
     $source = imagecreatefromjpeg($filePathOrig);
     // Rotate
-    if ($rotate != "") {
+    if ($rotate > 0) {
         $rotate = imagerotate($source, $rotate, 0);
         list($height, $width) = getimagesize($filePathOrig);
      } else {
