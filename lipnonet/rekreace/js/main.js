@@ -18,14 +18,17 @@ class UI {
 
       const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
 
-      bigImgInfo.innerHTML = `
-          <b>${objOneFoto.id}</b>
-          ${objOneFoto.insertDate.slice(0,10)}    
-          <b>${objOneFoto.header}</b> 
-          Autor: ${objOneFoto.autor} 
-          <br>
-          ${objOneFoto.text}
-          `;
+      if (fotoGalleryMainPage === 0) {
+        bigImgInfo.innerHTML = `
+        <b>${objOneFoto.id}</b>
+        ${objOneFoto.insertDate.slice(0,10)}    
+        <b>${objOneFoto.header}</b> 
+        Autor: ${objOneFoto.autor} 
+        <br>
+        ${objOneFoto.text}
+        `;
+      }
+
 
       // add fade in class
       bigImgBlock.classList.add('fade-in');
@@ -107,7 +110,11 @@ class UI {
 }
 // end of UI class
 
-
+console.log('fotoGalleryMainPage : ' + fotoGalleryMainPage);
+if (typeof fotoGalleryMainPage === 'undefined') {
+     var fotoGalleryMainPage = 0;
+}
+console.log('fotoGalleryMainPage : ' + fotoGalleryMainPage);
 
 let EightPhoto = [];
 let AllPhoto = [];
