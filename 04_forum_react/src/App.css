@@ -1,0 +1,60 @@
+body 	{
+	font-family : Verdana, Helvetica, sans-serif;
+  }
+
+.App {
+  text-align: center;
+}
+
+.left{
+	text-align: left;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.kniha_main{
+	width: 100%;
+	margin: 10px auto;
+	padding: 10px;
+	background: #FE9A2C;
+	border: 1px solid #EBEBEB;
+	font-size: 14px;
+}
+
+.kniha_one_entry{
+	margin: 10px;
+	padding: 10px;
+	border: 0px ;
+	background-color: #EBEBEB;
+
+}
+
+.kniha_one_entry .kniha_datum{
+	text-align: right;
+	font-size: 10px;
+}
+
+.kniha_one_entry .kniha_jmeno{
+	text-align: left;
+}
+
+.kniha_one_entry .kniha_text{
+	text-align: left;
+}
