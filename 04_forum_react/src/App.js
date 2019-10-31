@@ -46,7 +46,10 @@ render(){
 const { allEntries, filteredEntries, entries, begin, postsPerPage, paginateSize, next } = this.state;
 
 // Change page
-const paginate = (begin) => this.setState(begin);
+const paginate = (begin) => {
+  this.setState(begin);
+  console.log(this);
+}
 
   return (
     <div className="App">
@@ -67,7 +70,6 @@ const paginate = (begin) => this.setState(begin);
         allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
       />
       <div>Je vybráno {filteredEntries.length} záznamů.</div>
-      <Forum entries={entries} />
       <Paginations
         allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
         begin={begin}
@@ -79,7 +81,9 @@ const paginate = (begin) => this.setState(begin);
       />
       <SelectPaginate
         allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+        paginateSize={paginateSize}
       />
+      <Forum entries={entries} />
     </div>
   )
   }
