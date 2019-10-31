@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import SearchForum  from './components/SearchForum';
 import Forum        from './components/Forum';
 import SelectForum  from './components/SelectForum';
-import PostsPerPage  from './components/PostsPerPage';
+import PostsPerPage from './components/PostsPerPage';
 import Paginations  from './components/Paginations';
+import SelectPaginate  from './components/SelectPaginate';
 import './App.css';
 
 export default class App extends Component {
@@ -19,8 +20,6 @@ export default class App extends Component {
       next:0,
    };
 }
-// Change page
-paginate = (begin) => this.setState(begin);
 
 // method called after component is rendered
 componentDidMount(){
@@ -42,42 +41,44 @@ componentDidMount(){
 }
 
 render(){
+
+// descructing states
+const { allEntries, filteredEntries, entries, begin, postsPerPage, paginateSize, next } = this.state;
+
+// Change page
+const paginate = (begin) => this.setState(begin);
+
   return (
     <div className="App">
       <div  className="left">
-        allEntries.length: {this.state.allEntries.length},
-        <br/>filteredEntries.length: {this.state.filteredEntries.length},
-        <br/>entries.length: {this.state.entries.length},
-        <br/>begin: {this.state.begin},
-        <br/>postsPerPage: {this.state.postsPerPage},
-        <br/>paginateSize: {this.state.paginateSize},
-        <br/>next: {this.state.next},
+        allEntries.length: {allEntries.length},
+        <br/>filteredEntries.length: {filteredEntries.length},
+        <br/>entries.length: {entries.length},
+        <br/>begin: {begin},
+        <br/>postsPerPage: {postsPerPage},
+        <br/>paginateSize: {paginateSize},
+        <br/>next: {next},
       </div>
       <SearchForum
-        allEntries={this.state.allEntries}
-        paginate={this.paginate}
-        postsPerPage={this.state.postsPerPage}
-        begin={this.state.begin}
+        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+        begin={begin}
       />
       <SelectForum
-        allEntries={this.state.allEntries}
-        paginate={this.paginate}
-        postsPerPage={this.state.postsPerPage}
+        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
       />
-      <div>Je vybráno {this.state.filteredEntries.length} záznamů.</div>
-      <Forum entries={this.state.entries} />
+      <div>Je vybráno {filteredEntries.length} záznamů.</div>
+      <Forum entries={entries} />
       <Paginations
-        allEntries={this.state.filteredEntries}
-        paginate={this.paginate}
-        postsPerPage={this.state.postsPerPage}
-        begin={this.state.begin}
-        paginateSize={this.state.paginateSize}
-        next={this.state.next}
+        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+        begin={begin}
+        paginateSize={paginateSize}
+        next={next}
       />
       <PostsPerPage
-        allEntries={this.state.allEntries}
-        paginate={this.paginate}
-        postsPerPage={this.state.postsPerPage}
+        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+      />
+      <SelectPaginate
+        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
       />
     </div>
   )
