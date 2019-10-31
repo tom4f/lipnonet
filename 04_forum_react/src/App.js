@@ -46,7 +46,14 @@ render(){
 const { allEntries, filteredEntries, entries, begin, postsPerPage, paginateSize, next } = this.state;
 
 // Change page
+<<<<<<< HEAD
 const paginate = (begin) => this.setState(begin);
+=======
+const paginate = (begin) => {
+  this.setState(begin);
+  console.log(this);
+}
+>>>>>>> 32cdd092b659d5b2d033eaf9903535b5701cce28
 
   return (
     <div className="App">
@@ -67,7 +74,10 @@ const paginate = (begin) => this.setState(begin);
         allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
       />
       <div>Je vybráno {filteredEntries.length} záznamů.</div>
+<<<<<<< HEAD
       <Forum entries={entries} />
+=======
+>>>>>>> 32cdd092b659d5b2d033eaf9903535b5701cce28
       <Paginations
         allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
         begin={begin}
@@ -79,7 +89,13 @@ const paginate = (begin) => this.setState(begin);
       />
       <SelectPaginate
         allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+<<<<<<< HEAD
       />
+=======
+        paginateSize={paginateSize}
+      />
+      <Forum entries={entries} />
+>>>>>>> 32cdd092b659d5b2d033eaf9903535b5701cce28
     </div>
   )
   }
