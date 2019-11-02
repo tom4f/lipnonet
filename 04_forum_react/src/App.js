@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import SearchForum  from './components/SearchForum';
 import Forum        from './components/Forum';
 import SelectForum  from './components/SelectForum';
@@ -24,21 +25,39 @@ export default class App extends Component {
 // method called after component is rendered
 componentDidMount(){
     let allForum = [];
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', `http://localhost/lipnonet/rekreace/api/pdo_read_forum.php`, true);
-    xhr.onload = () => {
-        if (xhr.readyState === 4 && xhr.status === Number(200)) {
-          allForum = JSON.parse(xhr.responseText);
-          const end = this.state.begin + this.state.postsPerPage;
-          this.setState( {entries : allForum.slice(this.state.begin, end + 1)} );
-          this.setState( {
-            allEntries : allForum,
-            filteredEntries : allForum,
-          });
-        }
-    }
-    xhr.send();
+    axios
+    .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+      timeout: 5000
+    })
+    .then(res => {
+            /// allForum = JSON.parse(res.data); --> for native xhr.onload 
+            allForum = res.data;
+            const end = this.state.begin + this.state.postsPerPage;
+            this.setState( {entries : allForum.slice(this.state.begin, end + 1)} );
+            this.setState( {
+              allEntries : allForum,
+              filteredEntries : allForum,
+            });
+    })
+    .catch(err => console.error(err));
 }
+
+
+    // let xhr = new XMLHttpRequest();
+    // xhr.open('GET', `http://localhost/lipnonet/rekreace/api/pdo_read_forum.php`, true);
+    // xhr.onload = () => {
+    //     if (xhr.readyState === 4 && xhr.status === Number(200)) {
+    //       allForum = JSON.parse(xhr.responseText);
+    //       const end = this.state.begin + this.state.postsPerPage;
+    //       this.setState( {entries : allForum.slice(this.state.begin, end + 1)} );
+    //       this.setState( {
+    //         allEntries : allForum,
+    //         filteredEntries : allForum,
+    //       });
+    //     }
+    // }
+    // xhr.send();
+//  }
 
 render(){
 
@@ -52,7 +71,7 @@ const paginate = (begin) => {
 }
 
   return (
-    <div className="App">
+    <div className="container my-5 text-center">
       <div  className="left">
         allEntries.length: {allEntries.length},
         <br/>filteredEntries.length: {filteredEntries.length},
@@ -62,7 +81,7 @@ const paginate = (begin) => {
         <br/>paginateSize: {paginateSize},
         <br/>next: {next},
       </div>
-      <SearchForum
+      <SearchForum className="form-group"
         allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
         begin={begin}
       />
