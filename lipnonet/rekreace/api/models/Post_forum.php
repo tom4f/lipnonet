@@ -64,9 +64,12 @@
       $stmt->bindParam(':typ',        $this->typ);
       //$stmt->bindParam(':header',     $this->header);
 
-      // Execute query
-      if($stmt->execute()) {
-        return true;
+      // Execute query if 'text' is not empty to avoid 
+      // Cross-Origin Resource Sharing (CORS) second OPTION request
+      if (($this->text) != '') {
+        if($stmt->execute()) {
+          return true;
+        }
   }
 
   // Print error if something goes wrong

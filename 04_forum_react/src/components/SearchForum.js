@@ -27,7 +27,7 @@ const SearchForum = ( {allEntries, begin, postsPerPage, paginate} ) => {
       }
 
     return (
-        <input placeholder="hledej" type="text" onChange={ event => searchForumLocaly(event)} />
+        <input placeholder="hledej" type="text" size="5" onChange={ event => searchForumLocaly(event)} />
       )
 }
 

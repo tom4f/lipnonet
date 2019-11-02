@@ -2,32 +2,54 @@ body 	{
 	font-family : Verdana, Helvetica, sans-serif;
   }
 
-.App {
-  text-align: center;
-}
-
 .left{
 	text-align: left;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
   color: #09d3ac;
 }
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 2rem;
+    text-align: center;
+  }
+
+.fields {
+    display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	width: auto;
+    font-size: 0.8rem;
+    color: #fff;
+    grid-gap: 0.1rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .btn-group .button {
+	background-color: #4CAF50; /* Green */
+	border: 1px solid green;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+	float: center;
+  }
+  
+  .btn-group .button:not(:last-child) {
+	border-right: none; /* Prevent double borders */
+  }
+  
+  .btn-group .button:hover {
+	background-color: #3e8e41;
+  }
+
 
 .kniha_main{
 	width: 100%;

@@ -18,7 +18,7 @@ const SelectForum = ( {allEntries, postsPerPage, paginate} ) => {
 
     return (
         <select required name="typ" onChange={(e) => filteredForum(e)} >
-            <option value="999999">  --- Všechny kategorie ---</option>
+            <option value="999999">Všechny kategorie</option>
             <option value="0">Fórum</option>
             <option value="1">Inzerce</option>
             <option value="2">Seznamka</option>

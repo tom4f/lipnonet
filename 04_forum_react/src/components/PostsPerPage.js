@@ -18,7 +18,7 @@ const PostsPerPage = ( {allEntries, postsPerPage, paginate} ) => {
 
     return (
         <select required name="postsPerPage" onChange={(e) => filteredPostsPerPage(e)} >
-            <option value="9">  --- Počet příspěvků na stránku ---</option>
+            <option value="9">Počet příspěvků na stránku</option>
             <option value="4">  5</option>
             <option value="9"> 10</option>
             <option value="19">20</option>

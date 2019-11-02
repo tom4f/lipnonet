@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import axios from "axios";
-import SearchForum  from './components/SearchForum';
-import Forum        from './components/Forum';
-import SelectForum  from './components/SelectForum';
-import PostsPerPage from './components/PostsPerPage';
-import Paginations  from './components/Paginations';
-import SelectPaginate  from './components/SelectPaginate';
+import axios            from "axios";
+import SearchForum      from './components/SearchForum';
+import Forum            from './components/Forum';
+import SelectForum      from './components/SelectForum';
+import PostsPerPage     from './components/PostsPerPage';
+import Paginations      from './components/Paginations';
+import SelectPaginate   from './components/SelectPaginate';
+import AddEntry         from './components/AddEntry';
 import './App.css';
 
 export default class App extends Component {
@@ -72,36 +73,42 @@ const paginate = (begin) => {
 
   return (
     <div className="container my-5 text-center">
-      <div  className="left">
-        allEntries.length: {allEntries.length},
-        <br/>filteredEntries.length: {filteredEntries.length},
-        <br/>entries.length: {entries.length},
-        <br/>begin: {begin},
-        <br/>postsPerPage: {postsPerPage},
-        <br/>paginateSize: {paginateSize},
-        <br/>next: {next},
+          <div  className="left">
+            allEntries.length: {allEntries.length},
+            <br/>filteredEntries.length: {filteredEntries.length},
+            <br/>entries.length: {entries.length},
+            <br/>begin: {begin},
+            <br/>postsPerPage: {postsPerPage},
+            <br/>paginateSize: {paginateSize},
+            <br/>next: {next},
+          </div>
+      <div className="btn-group">
+          <AddEntry paginate={paginate} />
       </div>
-      <SearchForum className="form-group"
-        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
-        begin={begin}
-      />
-      <SelectForum
-        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
-      />
+      <p style={{clear : "both"}}></p>
+      <div className="fields">
+          <SearchForum
+            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+            begin={begin}
+          />
+          <SelectForum
+            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+          />
+          <PostsPerPage
+            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+          />
+          <SelectPaginate
+            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+            paginateSize={paginateSize}
+          />
+      </div>
       <div>Je vybráno {filteredEntries.length} záznamů.</div>
-      <Paginations
-        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
-        begin={begin}
-        paginateSize={paginateSize}
-        next={next}
-      />
-      <PostsPerPage
-        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
-      />
-      <SelectPaginate
-        allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
-        paginateSize={paginateSize}
-      />
+          <Paginations
+            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+            begin={begin}
+            paginateSize={paginateSize}
+            next={next}
+          />
       <Forum entries={entries} />
     </div>
   )
