@@ -27,7 +27,8 @@ export default class App extends Component {
 componentDidMount(){
     let allForum = [];
     axios
-    .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+//    .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+      .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
       timeout: 5000
     })
     .then(res => {
