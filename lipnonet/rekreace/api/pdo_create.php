@@ -55,17 +55,22 @@
     $source = imagecreatefromjpeg($filePathOrig);
     // Rotate
     if ($rotate > 0) {
-        $rotate = imagerotate($source, $rotate, 0);
+      $rotate1 = imagerotate($source, $rotate, 0);
+      if ($rotate == 180)
+        list($width, $height) = getimagesize($filePathOrig);  
+      else
         list($height, $width) = getimagesize($filePathOrig);
-     } else {
-        $rotate = $source; 
-        list($width, $height) = getimagesize($filePathOrig);
-      }
+    }
+    else {
+       $rotate1 = $source;
+       list($width, $height) = getimagesize($filePathOrig);  
+    }
 
-		$newheight = $height / ($width / $newwidth);
+     $newheight = $height / ($width / $newwidth);
 		$destination = imagecreatetruecolor($newwidth, $newheight);
-		imagecopyresampled($destination, $rotate, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-		imagejpeg($destination, $filePathDest, 100);
+		imagecopyresampled($destination, $rotate1, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+    imagejpeg($destination, $filePathDest, 100);
+    //echo "newwidth: ".$newwidth. "newheight: ".$newheight."width: ".$width."height: ".$height;
 	}
 
 	img_resize("$filePathOrig", 100,  "$remote_path",  $rotate);

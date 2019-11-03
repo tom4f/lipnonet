@@ -30,6 +30,31 @@ class AddEntry extends Component {
             .then(response => {
                 console.log(response);
                 this.setState({formVisible : false})
+
+
+
+                    let allForum = [];
+                    axios
+                    .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+                      timeout: 5000
+                    })
+                    .then(res => {
+                            /// allForum = JSON.parse(res.data); --> for native xhr.onload 
+                            allForum = res.data;
+                            const end = this.props.begin + this.props.postsPerPage;
+                            const { paginate } = this.props;
+                            paginate({
+                                entries : allForum.slice(this.props.begin, end + 1),
+                                allEntries : allForum,
+                                filteredEntries : allForum,
+                                begin : 0
+                            });
+                    })
+                    .catch(err => console.error(err));
+
+
+
+
             })
             .catch(error => {
                 console.log(error);

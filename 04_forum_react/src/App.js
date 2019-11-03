@@ -83,7 +83,11 @@ const paginate = (begin) => {
             <br/>next: {next},
           </div>
       <div className="btn-group">
-          <AddEntry paginate={paginate} />
+          <AddEntry
+                paginate={paginate}
+                postsPerPage={postsPerPage}
+                begin={begin}
+          />
       </div>
       <p style={{clear : "both"}}></p>
       <div className="fields">

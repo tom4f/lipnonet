@@ -68,7 +68,7 @@ const sendImgToMySql = (e) => {
   const objectWithImg = Object.assign(resp, object);
   xhr.onload = function(){
     if (this.readyState == 4 && this.status == 200) {
-          const textnode = document.createTextNode(`foto č. ${newImgNumber} bylo nahráno - ${this.responseText}`);
+          const textnode = document.createTextNode(`foto č. ${newImgNumber} bylo nahráno - ${this.responseText} - OBNOV TUTO STRÁNKU !!!`);
           node.appendChild(textnode);
           document.getElementById('showAlert').appendChild(node);
           // clear formular data for file select
