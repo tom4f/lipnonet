@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Paginations = ( {allEntries, begin, postsPerPage, paginate, paginateSize, next} ) => {
-    const lastPage = allEntries.length;
+const Paginations = ( {allEntries, begin, postsPerPage, paginate, paginateSize, next, filteredEntries} ) => {
+    const lastPage = filteredEntries.length;
     const pageButtonClick = (event, param) => {
         event.preventDefault();
         const buttonText = event.target.textContent || event.target.innerText;
@@ -10,7 +10,7 @@ const Paginations = ( {allEntries, begin, postsPerPage, paginate, paginateSize, 
             begin = (1 + postsPerPage) * Number(buttonText);
             end = begin + postsPerPage;
             paginate( {
-                entries : allEntries.slice(begin, end + 1),
+                entries : filteredEntries.slice(begin, end + 1),
                 begin : begin
             } );
         }
@@ -22,7 +22,7 @@ const Paginations = ( {allEntries, begin, postsPerPage, paginate, paginateSize, 
                 paginate({
                     next: next,
                     begin: begin,
-                    entries : allEntries.slice(begin, end + 1)
+                    entries : filteredEntries.slice(begin, end + 1)
                 });
             }
         }
@@ -34,7 +34,7 @@ const Paginations = ( {allEntries, begin, postsPerPage, paginate, paginateSize, 
                 paginate({
                     next: next,
                     begin: begin,
-                    entries : allEntries.slice(begin, end + 1)
+                    entries : filteredEntries.slice(begin, end + 1)
                 });
             }
         }

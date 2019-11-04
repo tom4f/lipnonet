@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
-import axios            from "axios";
-import SearchForum      from './components/SearchForum';
-import Forum            from './components/Forum';
-import SelectForum      from './components/SelectForum';
-import PostsPerPage     from './components/PostsPerPage';
-import Paginations      from './components/Paginations';
-import SelectPaginate   from './components/SelectPaginate';
-import AddEntry         from './components/AddEntry';
+import axios                from "axios";
+import SearchForum          from './components/SearchForum';
+import Forum                from './components/Forum';
+import SelectForum          from './components/SelectForum';
+import PostsPerPage         from './components/PostsPerPage';
+import Paginations          from './components/Paginations';
+import SelectPaginate       from './components/SelectPaginate';
+import AddEntry             from './components/AddEntry';
 import './App.css';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allEntries: [],
-      filteredEntries: [],
-      entries: [],
-      begin: 0,
-      postsPerPage: 4,
-      paginateSize: 10,
-      next:0,
+      allEntries:       [],
+      filteredEntries:  [],
+      filteredEntriesByCategory:  [],
+      entries:          [],
+      begin:            0,
+      postsPerPage:     4,
+      paginateSize:     10,
+      next:             0
    };
 }
 
@@ -39,6 +40,7 @@ componentDidMount(){
             this.setState( {
               allEntries : allForum,
               filteredEntries : allForum,
+              filteredEntriesByCategory: allForum
             });
     })
     .catch(err => console.error(err));
@@ -64,7 +66,7 @@ componentDidMount(){
 render(){
 
 // descructing states
-const { allEntries, filteredEntries, entries, begin, postsPerPage, paginateSize, next } = this.state;
+const { allEntries, filteredEntries, filteredEntriesByCategory, entries, begin, postsPerPage, paginateSize, next } = this.state;
 
 // Change page
 const paginate = (begin) => {
@@ -77,6 +79,7 @@ const paginate = (begin) => {
           <div  className="left">
             allEntries.length: {allEntries.length},
             <br/>filteredEntries.length: {filteredEntries.length},
+            <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
             <br/>entries.length: {entries.length},
             <br/>begin: {begin},
             <br/>postsPerPage: {postsPerPage},
@@ -95,6 +98,9 @@ const paginate = (begin) => {
           <SearchForum
             allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
             begin={begin}
+            filteredEntries={filteredEntries}
+            filteredEntriesByCategory={filteredEntriesByCategory}
+
           />
           <SelectForum
             allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
@@ -113,6 +119,7 @@ const paginate = (begin) => {
             begin={begin}
             paginateSize={paginateSize}
             next={next}
+            filteredEntries={filteredEntries}
           />
       <Forum entries={entries} />
     </div>

@@ -1,19 +1,19 @@
 import React from 'react';
 
-const SearchForum = ( {allEntries, begin, postsPerPage, paginate} ) => {
+const SearchForum = ( {allEntries, begin, postsPerPage, paginate, filteredEntries, filteredEntriesByCategory} ) => {
 
     const searchForumLocaly = event => {
         const end = begin + postsPerPage;
         const searchText = event.target.value;
-        let filteredForum = allEntries.filter( alarm => {
+        let filteredForum = filteredEntriesByCategory.filter( alarm => {
           const regex = new RegExp(`${searchText}`, 'gi');
           return alarm.text.match(regex) || alarm.jmeno.match(regex);
         });
         if( searchText.length === 0 ) {
             paginate({
-              filteredEntries : allEntries,
+              filteredEntries : filteredEntriesByCategory,
               begin : 0,
-              entries : allEntries.slice(begin, end + 1)
+              entries : filteredEntriesByCategory.slice(begin, end + 1)
             });
         } else if (filteredForum.length === 0 ) {
             paginate( {entries : []} );
