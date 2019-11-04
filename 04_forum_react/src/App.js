@@ -16,6 +16,7 @@ export default class App extends Component {
       allEntries:       [],
       filteredEntries:  [],
       filteredEntriesByCategory:  [],
+      filteredEntriesBySearch:    [],
       entries:          [],
       begin:            0,
       postsPerPage:     4,
@@ -40,7 +41,8 @@ componentDidMount(){
             this.setState( {
               allEntries : allForum,
               filteredEntries : allForum,
-              filteredEntriesByCategory: allForum
+              filteredEntriesByCategory: allForum,
+              filteredEntriesBySearch: allForum
             });
     })
     .catch(err => console.error(err));
@@ -66,7 +68,7 @@ componentDidMount(){
 render(){
 
 // descructing states
-const { allEntries, filteredEntries, filteredEntriesByCategory, entries, begin, postsPerPage, paginateSize, next } = this.state;
+const { allEntries, filteredEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next } = this.state;
 
 // Change page
 const paginate = (begin) => {
@@ -80,6 +82,7 @@ const paginate = (begin) => {
             allEntries.length: {allEntries.length},
             <br/>filteredEntries.length: {filteredEntries.length},
             <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
+            <br/>filteredEntriesBySearch.length: {filteredEntriesBySearch.length},
             <br/>entries.length: {entries.length},
             <br/>begin: {begin},
             <br/>postsPerPage: {postsPerPage},
@@ -100,10 +103,14 @@ const paginate = (begin) => {
             begin={begin}
             filteredEntries={filteredEntries}
             filteredEntriesByCategory={filteredEntriesByCategory}
+            filteredEntriesBySearch={filteredEntriesBySearch}
 
           />
           <SelectForum
             allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+            filteredEntries={filteredEntries}
+            filteredEntriesByCategory={filteredEntriesByCategory}
+            filteredEntriesBySearch={filteredEntriesBySearch}
           />
           <PostsPerPage
             allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}

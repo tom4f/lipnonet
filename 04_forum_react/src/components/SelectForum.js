@@ -1,11 +1,11 @@
 import React from 'react';
 
-const SelectForum = ( {allEntries, postsPerPage, paginate} ) => {
+const SelectForum = ( {allEntries, postsPerPage, paginate, filteredEntries, filteredEntriesBySearch} ) => {
 
     const filteredForumByCategory = event => {
         const filteredForumByCategory = event.target.value === "999999"
-            ? allEntries
-            : allEntries.filter( one => one.typ === event.target.value );
+            ? filteredEntriesBySearch
+            : filteredEntriesBySearch.filter( one => one.typ === event.target.value );
         const begin = 0;
         const end = begin + postsPerPage;
         paginate({

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchForum = ( {allEntries, begin, postsPerPage, paginate, filteredEntries, filteredEntriesByCategory} ) => {
+const SearchForum = ( {allEntries, begin, postsPerPage, paginate, filteredEntries, filteredEntriesBySearch, filteredEntriesByCategory} ) => {
 
     const searchForumLocaly = event => {
         const end = begin + postsPerPage;
@@ -11,15 +11,18 @@ const SearchForum = ( {allEntries, begin, postsPerPage, paginate, filteredEntrie
         });
         if( searchText.length === 0 ) {
             paginate({
-              filteredEntries : filteredEntriesByCategory,
+              filteredEntriesBySearch : filteredEntries,
               begin : 0,
-              entries : filteredEntriesByCategory.slice(begin, end + 1)
+              entries : filteredEntries.slice(begin, end + 1)
             });
         } else if (filteredForum.length === 0 ) {
-            paginate( {entries : []} );
+            paginate( {
+              entries : [],
+              filteredEntriesBySearch : []
+            } );
           } else { 
                 paginate({
-                  filteredEntries : filteredForum,
+                  filteredEntriesBySearch : filteredForum,
                   begin : 0,
                   entries : filteredForum.slice(begin, end + 1),
                 });
