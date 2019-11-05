@@ -21,7 +21,8 @@ export default class App extends Component {
       begin:            0,
       postsPerPage:     4,
       paginateSize:     10,
-      next:             0
+      next:             0,
+      searchText:       ''
    };
 }
 
@@ -68,12 +69,42 @@ componentDidMount(){
 render(){
 
 // descructing states
-const { allEntries, filteredEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next } = this.state;
+const { allEntries, filteredEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText } = this.state;
 
 // Change page
 const paginate = (begin) => {
   this.setState(begin);
   console.log(this);
+}
+
+// calculate filter result
+const filteredEntriesCalculate = (searchText) => {
+    const end = begin + postsPerPage;
+    let filteredForum = filteredEntries.filter( alarm => {
+      const regex = new RegExp(`${searchText}`, 'gi');
+      return alarm.text.match(regex) || alarm.jmeno.match(regex);
+    });
+    console.log(searchText);
+    if( searchText.length === 0 ) {
+        this.setState({
+          filteredEntriesBySearch : filteredEntries,
+          begin : 0,
+          entries : filteredEntries.slice(begin, end + 1),
+          searchText : ''
+        });
+    } else if (filteredForum.length === 0 ) {
+      this.setState( {
+          entries : [],
+          filteredEntriesBySearch : []
+        } );
+      } else { 
+        this.setState({
+              filteredEntriesBySearch : filteredForum,
+              begin : 0,
+              entries : filteredForum.slice(begin, end + 1),
+              searchText : searchText
+            });
+        };
 }
 
   return (
@@ -88,6 +119,7 @@ const paginate = (begin) => {
             <br/>postsPerPage: {postsPerPage},
             <br/>paginateSize: {paginateSize},
             <br/>next: {next},
+            <br/>searchText: {searchText}
           </div>
       <div className="btn-group">
           <AddEntry
@@ -99,12 +131,7 @@ const paginate = (begin) => {
       <p style={{clear : "both"}}></p>
       <div className="fields">
           <SearchForum
-            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
-            begin={begin}
-            filteredEntries={filteredEntries}
-            filteredEntriesByCategory={filteredEntriesByCategory}
-            filteredEntriesBySearch={filteredEntriesBySearch}
-
+            filteredEntriesCalculate={filteredEntriesCalculate}
           />
           <SelectForum
             allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
