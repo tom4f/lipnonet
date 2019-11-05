@@ -22,7 +22,8 @@ export default class App extends Component {
       postsPerPage:     4,
       paginateSize:     10,
       next:             0,
-      searchText:       ''
+      searchText:       '',
+      selectedCategory: 999999
    };
 }
 
@@ -69,7 +70,7 @@ componentDidMount(){
 render(){
 
 // descructing states
-const { allEntries, filteredEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText } = this.state;
+const { allEntries, filteredEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText, selectedCategory } = this.state;
 
 // Change page
 const paginate = (begin) => {
@@ -78,13 +79,30 @@ const paginate = (begin) => {
 }
 
 // calculate filter result
-const filteredEntriesCalculate = (searchText) => {
-    const end = begin + postsPerPage;
-    let filteredForum = filteredEntries.filter( alarm => {
+const filteredEntriesCalculate = (searchText, selectedCategory) => {
+    
+
+        const filteredForumByCategory = selectedCategory === "999999"
+            ? filteredEntries
+            : filteredEntries.filter( one => one.typ === selectedCategory );
+
+        console.log(searchText + ' - ' + selectedCategory);
+        const begin=0;
+        const end = begin + postsPerPage;
+        this.setState({
+          selectedCategory: selectedCategory,
+          filteredEntriesByCategory : filteredForumByCategory,
+          begin : 0,
+          next : 0,
+          entries : filteredForumByCategory.slice(begin, end + 1),
+        });
+  
+  
+    let filteredForum = filteredForumByCategory.filter( alarm => {
       const regex = new RegExp(`${searchText}`, 'gi');
       return alarm.text.match(regex) || alarm.jmeno.match(regex);
     });
-    console.log(searchText);
+    //console.log(searchText);
     if( searchText.length === 0 ) {
         this.setState({
           filteredEntriesBySearch : filteredEntries,
@@ -119,7 +137,8 @@ const filteredEntriesCalculate = (searchText) => {
             <br/>postsPerPage: {postsPerPage},
             <br/>paginateSize: {paginateSize},
             <br/>next: {next},
-            <br/>searchText: {searchText}
+            <br/><b>searchText</b>: {searchText}
+            <br/><b>selectedCategory</b> : {selectedCategory}
           </div>
       <div className="btn-group">
           <AddEntry
@@ -132,12 +151,11 @@ const filteredEntriesCalculate = (searchText) => {
       <div className="fields">
           <SearchForum
             filteredEntriesCalculate={filteredEntriesCalculate}
+            selectedCategory={selectedCategory}
           />
           <SelectForum
-            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
-            filteredEntries={filteredEntries}
-            filteredEntriesByCategory={filteredEntriesByCategory}
-            filteredEntriesBySearch={filteredEntriesBySearch}
+            filteredEntriesCalculate={filteredEntriesCalculate}
+            searchText={searchText}
           />
           <PostsPerPage
             allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
@@ -145,6 +163,7 @@ const filteredEntriesCalculate = (searchText) => {
           <SelectPaginate
             allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
             paginateSize={paginateSize}
+            selectedCategory = {selectedCategory}
           />
       </div>
       <div>Je vybráno {filteredEntries.length} záznamů.</div>

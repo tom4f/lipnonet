@@ -1,9 +1,9 @@
 import React from 'react';
 
-const SearchForum = ( { filteredEntriesCalculate } ) => {
+const SearchForum = ( { filteredEntriesCalculate, selectedCategory } ) => {
 
     return (
-        <input placeholder="hledej" type="text" size="5" onChange={ event => filteredEntriesCalculate( event.target.value  )} />
+        <input placeholder="hledej" type="text" size="5" onChange={ event => filteredEntriesCalculate( event.target.value, selectedCategory )} />
       )
 }
 
