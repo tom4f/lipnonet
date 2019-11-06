@@ -26,8 +26,8 @@ class AddEntry extends Component {
         event.preventDefault();
         const data = new FormData(event.target);
         console.log(data.get('name'));
-//      axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
-        axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
+      axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
+//        axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
             .then(response => {
                 console.log(response);
                 this.setState({formVisible : false})
@@ -36,17 +36,17 @@ class AddEntry extends Component {
 
                     let allForum = [];
                     axios
-//      .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-        .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
+      .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+//        .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
                       timeout: 5000
                     })
                     .then(res => {
                             /// allForum = JSON.parse(res.data); --> for native xhr.onload 
                             allForum = res.data;
-                            const end = this.props.begin + this.props.postsPerPage;
+                            const end = this.props.begin + this.props.postsPerPage - 1;
                             const { paginate } = this.props;
                             paginate({
-                                entries : allForum.slice(this.props.begin, end + 1),
+                                entries : allForum.slice(this.props.begin, end),
                                 allEntries : allForum,
                                 filteredEntries : allForum,
                                 begin : 0

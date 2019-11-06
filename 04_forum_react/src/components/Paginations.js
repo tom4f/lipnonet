@@ -7,18 +7,18 @@ const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filter
         const buttonText = event.target.textContent || event.target.innerText;
         let end;
         if (Number(buttonText) >= 0 )
-            begin = (1 + postsPerPage) * Number(buttonText);
+            begin = (0 + postsPerPage) * Number(buttonText);
         if (buttonText === 'next'){
-            if (next < (lastPage / (postsPerPage + 1)) - paginateSize ){
+            if (next < (lastPage / (postsPerPage + 0)) - paginateSize ){
                 next+=paginateSize;
-                begin = (1 + postsPerPage) * next;
+                begin = (0 + postsPerPage) * next;
             }}
         if (buttonText === 'prev'){
             if (next > paginateSize - 1){
                 next-=paginateSize;
-                begin = (1 + postsPerPage) * next;
+                begin = (0 + postsPerPage) * next;
             }}
-        end = begin + postsPerPage;
+        end = begin + postsPerPage -1;
         paginate({
             //entries : filteredEntriesBySearch.slice(begin, end + 1),
             begin : begin,

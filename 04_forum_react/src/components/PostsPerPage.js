@@ -1,27 +1,26 @@
 import React from 'react';
 
-const PostsPerPage = ( {filteredEntriesBySearch, postsPerPage, paginate} ) => {
+const PostsPerPage = ( {filteredEntriesBySearch, paginate} ) => {
 
     const filteredPostsPerPage = event => {
-        postsPerPage =  Number(event.target.value);
+        const postsPerPage =  Number(event.target.value);
         const begin = 0;
-        const end = begin + postsPerPage;
+        const end = begin + postsPerPage - 1;
         paginate({
             begin : 0,
             next : 0,
             postsPerPage: postsPerPage,
-            entries : filteredEntriesBySearch.slice(begin, end + 1)
+            entries : filteredEntriesBySearch.slice(begin, end)
         });
-        console.log(begin + ' - ' + end);
       }
 
     return (
         <select required name="postsPerPage" onChange={(e) => filteredPostsPerPage(e)} >
-            <option value="9">Počet příspěvků na stránku</option>
-            <option value="4">  5</option>
-            <option value="9"> 10</option>
-            <option value="19">20</option>
-            <option value="49">50</option>
+            <option value="10">Počet příspěvků na stránku</option>
+            <option value="5">  5</option>
+            <option value="10"> 10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
         </select>
       )
 }

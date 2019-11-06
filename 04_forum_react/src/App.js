@@ -13,16 +13,16 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allEntries:       [],
+      allEntries:                 [],
       filteredEntriesByCategory:  [],
       filteredEntriesBySearch:    [],
-      entries:          [],
-      begin:            0,
-      postsPerPage:     4,
-      paginateSize:     10,
-      next:             0,
-      searchText:       '',
-      selectedCategory: '999999'
+      entries:                    [],
+      begin:                      0,
+      postsPerPage:               5,
+      paginateSize:               10,
+      next:                       0,
+      searchText:                 '',
+      selectedCategory:           '999999'
    };
 }
 
@@ -30,15 +30,15 @@ export default class App extends Component {
 componentDidMount(){
     let allForum = [];
     axios
-//    .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-      .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
+    .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+//      .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
       timeout: 5000
     })
     .then(res => {
             /// allForum = JSON.parse(res.data); --> for native xhr.onload 
             allForum = res.data;
-            const end = this.state.begin + this.state.postsPerPage;
-            this.setState( {entries : allForum.slice(this.state.begin, end + 1)} );
+            const end = this.state.begin + this.state.postsPerPage -1;
+            this.setState( {entries : allForum.slice(this.state.begin, end)} );
             this.setState( {
               allEntries : allForum,
               filteredEntriesByCategory: allForum,
@@ -47,23 +47,6 @@ componentDidMount(){
     })
     .catch(err => console.error(err));
 }
-
-
-    // let xhr = new XMLHttpRequest();
-    // xhr.open('GET', `http://localhost/lipnonet/rekreace/api/pdo_read_forum.php`, true);
-    // xhr.onload = () => {
-    //     if (xhr.readyState === 4 && xhr.status === Number(200)) {
-    //       allForum = JSON.parse(xhr.responseText);
-    //       const end = this.state.begin + this.state.postsPerPage;
-    //       this.setState( {entries : allForum.slice(this.state.begin, end + 1)} );
-    //       this.setState( {
-    //         allEntries : allForum,
-    //         filteredEntries : allForum,
-    //       });
-    //     }
-    // }
-    // xhr.send();
-//  }
 
 render(){
 
@@ -109,8 +92,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
             <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
             <br/>filteredEntriesBySearch.length: {filteredEntriesBySearch.length},
             <br/>entries.length: {entries.length},
-            <br/>begin: {begin},
-            <br/>postsPerPage: {postsPerPage},
+            <br/>begin: {begin} + postsPerPage: {postsPerPage} = end : {begin + postsPerPage -1 }
             <br/>paginateSize: {paginateSize},
             <br/>next: {next},
             <br/><b>searchText</b>: {searchText}
@@ -135,7 +117,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
           />
           <PostsPerPage
             filteredEntriesBySearch={filteredEntriesBySearch}
-            paginate={paginate} postsPerPage={postsPerPage}
+            paginate={paginate}
           />
           <SelectPaginate paginate={paginate} />
       </div>
@@ -148,7 +130,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
             paginateSize={paginateSize}
             next={next}
           />
-      <Forum entries={filteredEntriesBySearch.slice(begin, begin + postsPerPage + 1)} />
+      <Forum entries={filteredEntriesBySearch.slice(begin, begin + postsPerPage)} />
     </div>
   )
   }
