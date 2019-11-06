@@ -1,17 +1,16 @@
 import React from 'react';
 
-const PostsPerPage = ( {allEntries, postsPerPage, paginate} ) => {
+const PostsPerPage = ( {filteredEntriesBySearch, postsPerPage, paginate} ) => {
 
     const filteredPostsPerPage = event => {
         postsPerPage =  Number(event.target.value);
         const begin = 0;
         const end = begin + postsPerPage;
         paginate({
-            filteredEntries : allEntries,
             begin : 0,
             next : 0,
             postsPerPage: postsPerPage,
-            entries : allEntries.slice(begin, end + 1)
+            entries : filteredEntriesBySearch.slice(begin, end + 1)
         });
         console.log(begin + ' - ' + end);
       }

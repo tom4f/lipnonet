@@ -2,21 +2,6 @@ import React from 'react';
 
 const SelectForum = ( {  searchText, filteredEntriesCalculate } ) => {
 
-    //const filteredForumByCategory = event => {
-    //    const filteredForumByCategory = event.target.value === "999999"
-    //        ? filteredEntriesBySearch
-    //        : filteredEntriesBySearch.filter( one => one.typ === event.target.value );
-        //const begin = 0;
-       // const end = begin + postsPerPage;
-       // paginate({
-           // filteredEntriesByCategory : filteredForumByCategory,
-           // begin : 0,
-           // next : 0,
-           // entries : filteredForumByCategory.slice(begin, end + 1),
-     //       selectedCategory : event.target.value
-      //  });
-     // }
-
     return (
         <select required name="typ" onChange={ event => filteredEntriesCalculate( searchText, event.target.value )} >
             <option value="999999">Všechny kategorie</option>

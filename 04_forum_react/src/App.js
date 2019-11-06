@@ -14,7 +14,6 @@ export default class App extends Component {
     super(props);
     this.state = {
       allEntries:       [],
-      filteredEntries:  [],
       filteredEntriesByCategory:  [],
       filteredEntriesBySearch:    [],
       entries:          [],
@@ -23,7 +22,7 @@ export default class App extends Component {
       paginateSize:     10,
       next:             0,
       searchText:       '',
-      selectedCategory: 999999
+      selectedCategory: '999999'
    };
 }
 
@@ -42,7 +41,6 @@ componentDidMount(){
             this.setState( {entries : allForum.slice(this.state.begin, end + 1)} );
             this.setState( {
               allEntries : allForum,
-              filteredEntries : allForum,
               filteredEntriesByCategory: allForum,
               filteredEntriesBySearch: allForum
             });
@@ -70,7 +68,7 @@ componentDidMount(){
 render(){
 
 // descructing states
-const { allEntries, filteredEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText, selectedCategory } = this.state;
+const { allEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText, selectedCategory } = this.state;
 
 // Change page
 const paginate = (begin) => {
@@ -80,56 +78,34 @@ const paginate = (begin) => {
 
 // calculate filter result
 const filteredEntriesCalculate = (searchText, selectedCategory) => {
-    
-
-        const filteredForumByCategory = selectedCategory === "999999"
-            ? filteredEntries
-            : filteredEntries.filter( one => one.typ === selectedCategory );
-
-        console.log(searchText + ' - ' + selectedCategory);
-        const begin=0;
-        const end = begin + postsPerPage;
-        this.setState({
-          selectedCategory: selectedCategory,
-          filteredEntriesByCategory : filteredForumByCategory,
-          begin : 0,
-          next : 0,
-          entries : filteredForumByCategory.slice(begin, end + 1),
-        });
-  
-  
-    let filteredForum = filteredForumByCategory.filter( alarm => {
-      const regex = new RegExp(`${searchText}`, 'gi');
-      return alarm.text.match(regex) || alarm.jmeno.match(regex);
+    // select category
+    const filteredEntriesByCategory = selectedCategory === '999999'
+        ? allEntries
+        : allEntries.filter( one => one.typ === selectedCategory );
+    this.setState({
+        selectedCategory: selectedCategory,
+        filteredEntriesByCategory : filteredEntriesByCategory,
+        searchText : searchText,
+        begin : 0,
+        next : 0,
     });
-    //console.log(searchText);
-    if( searchText.length === 0 ) {
-        this.setState({
-          filteredEntriesBySearch : filteredEntries,
-          begin : 0,
-          entries : filteredEntries.slice(begin, end + 1),
-          searchText : ''
-        });
-    } else if (filteredForum.length === 0 ) {
-      this.setState( {
-          entries : [],
-          filteredEntriesBySearch : []
-        } );
-      } else { 
-        this.setState({
-              filteredEntriesBySearch : filteredForum,
-              begin : 0,
-              entries : filteredForum.slice(begin, end + 1),
-              searchText : searchText
-            });
-        };
+    // search text
+    let filteredForum = filteredEntriesByCategory.filter( alarm => {
+        const regex = new RegExp(`${searchText}`, 'gi');
+        return alarm.text.match(regex) || alarm.jmeno.match(regex);
+    });
+    if(searchText.length === 0) 
+        this.setState({filteredEntriesBySearch : filteredEntriesByCategory});
+    else if (filteredForum.length === 0 )
+        this.setState({ filteredEntriesBySearch : [] });
+    else
+        this.setState({ filteredEntriesBySearch : filteredForum });
 }
 
   return (
     <div className="container my-5 text-center">
           <div  className="left">
             allEntries.length: {allEntries.length},
-            <br/>filteredEntries.length: {filteredEntries.length},
             <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
             <br/>filteredEntriesBySearch.length: {filteredEntriesBySearch.length},
             <br/>entries.length: {entries.length},
@@ -142,9 +118,9 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
           </div>
       <div className="btn-group">
           <AddEntry
-                paginate={paginate}
-                postsPerPage={postsPerPage}
-                begin={begin}
+            paginate={paginate}
+            postsPerPage={postsPerPage}
+            begin={begin}
           />
       </div>
       <p style={{clear : "both"}}></p>
@@ -158,23 +134,21 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
             searchText={searchText}
           />
           <PostsPerPage
-            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+            filteredEntriesBySearch={filteredEntriesBySearch}
+            paginate={paginate} postsPerPage={postsPerPage}
           />
-          <SelectPaginate
-            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
-            paginateSize={paginateSize}
-            selectedCategory = {selectedCategory}
-          />
+          <SelectPaginate paginate={paginate} />
       </div>
-      <div>Je vybráno {filteredEntries.length} záznamů.</div>
+      <div>Je vybráno {filteredEntriesBySearch.length} záznamů.</div>
           <Paginations
-            allEntries={allEntries} paginate={paginate} postsPerPage={postsPerPage}
+            paginate={paginate}
+            postsPerPage={postsPerPage}
+            filteredEntriesBySearch={filteredEntriesBySearch}
             begin={begin}
             paginateSize={paginateSize}
             next={next}
-            filteredEntries={filteredEntries}
           />
-      <Forum entries={entries} />
+      <Forum entries={filteredEntriesBySearch.slice(begin, begin + postsPerPage + 1)} />
     </div>
   )
   }

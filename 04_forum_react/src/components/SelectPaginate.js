@@ -8,7 +8,6 @@ class SelectPaginate extends Component {
         paginate({
             paginateSize : paginateSize
         });
-        console.log(this);
     }
 
     render() {
