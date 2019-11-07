@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import axios            from "axios";
+import axios                from "axios";
 // test
 class AddEntry extends Component {
     constructor(props){
         super(props)
         this.state = { 
-            formVisible : false,
-            jmeno : '',
-            email : '',
-            typ : '',
-            text : '',
-            antispam : ''
+            formVisible :   false,
+            alert:          false,
+            jmeno :         '',
+            email :         '',
+            typ :           '',
+            text :          '',
+            antispam :      ''
          }
     }
 
@@ -25,38 +26,39 @@ class AddEntry extends Component {
     mySubmitHandler = (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
-        console.log(data.get('name'));
-      axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
-//        axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
+        console.log(data.get('jmeno'));
+        axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
+        // axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
             .then(response => {
                 console.log(response);
-                this.setState({formVisible : false})
+                this.setState({
+                    formVisible : false,
+                    alert: true
+                });
 
+                setTimeout( 
+                    () => this.setState({alert:false}),
+                    5000            
+                );
 
-
-                    let allForum = [];
-                    axios
-      .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-//        .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
-                      timeout: 5000
-                    })
-                    .then(res => {
-                            /// allForum = JSON.parse(res.data); --> for native xhr.onload 
-                            allForum = res.data;
-                            const end = this.props.begin + this.props.postsPerPage - 1;
-                            const { paginate } = this.props;
-                            paginate({
-                                entries : allForum.slice(this.props.begin, end),
-                                allEntries : allForum,
-                                filteredEntries : allForum,
-                                begin : 0
-                            });
-                    })
-                    .catch(err => console.error(err));
-
-
-
-
+                axios
+                    .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+                    // .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
+                    timeout: 5000
+                })
+                .then(res => {
+                        /// allForum = JSON.parse(res.data); --> for native xhr.onload 
+                        const allForum = res.data;
+                        const end = this.props.begin + this.props.postsPerPage - 1;
+                        const { paginate } = this.props;
+                        paginate({
+                            entries : allForum.slice(this.props.begin, end),
+                            allEntries : allForum,
+                            filteredEntriesBySearch: allForum,
+                            begin : 0
+                        });
+                })
+                .catch(err => console.error(err));
             })
             .catch(error => {
                 console.log(error);
@@ -66,6 +68,7 @@ class AddEntry extends Component {
     render() {
         let button = '';
         let formSummmary ='';
+        const alert = this.state.alert ? <h1>Záznam byl přidán !!!</h1> : null;
         if (this.state.formVisible) {
             button = 
             <form onSubmit={this.mySubmitHandler} name="formular" encType="multipart/form-data">
@@ -102,12 +105,13 @@ class AddEntry extends Component {
                 ;
 
         } else {
-             button = <button className="button" onClick={ this.showForum }>Přidej záznam</button>
+             button = <button className="button" onClick={ this.showForum }>Přidej záznam</button>;
         }
         return (
             <div>
                 {formSummmary}
                 {button}
+                {alert}
             </div>
         );
     }
