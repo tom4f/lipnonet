@@ -6,8 +6,14 @@ const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filter
         event.preventDefault();
         const buttonText = event.target.textContent || event.target.innerText;
         let end;
-        if (Number(buttonText) >= 0 )
+        if (Number(buttonText) >= 0 ){
             begin = (0 + postsPerPage) * Number(buttonText);
+            if  (event.target.style.color === 'white')  event.target.style.colorwhite = 'green';
+            else event.target.style.color = 'white';
+            
+            if  (event.target.style.backgroundColor === 'green') event.target.style.backgroundColor = 'white';
+            else event.target.style.backgroundColor = 'green';
+        }
         if (buttonText === 'next'){
             if (next < (lastPage / (postsPerPage + 0)) - paginateSize ){
                 next+=paginateSize;

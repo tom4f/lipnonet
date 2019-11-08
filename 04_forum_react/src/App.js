@@ -132,6 +132,6 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
           />
       <Forum entries={filteredEntriesBySearch.slice(begin, begin + postsPerPage)} />
     </div>
-  )
-  }
+  ) // return end
+  } // render end
 }
