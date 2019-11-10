@@ -1,56 +1,71 @@
 import React from 'react';
 
-const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filteredEntriesBySearch} ) => {
+const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filteredEntriesBySearch, buttonText} ) => {
     const lastPage = filteredEntriesBySearch.length;
     const pageButtonClick = (event) => {
         event.preventDefault();
-        const buttonText = event.target.textContent || event.target.innerText;
-        let end;
-        if (Number(buttonText) >= 0 ){
-            begin = (0 + postsPerPage) * Number(buttonText);
-            if  (event.target.style.color === 'white')  event.target.style.colorwhite = 'green';
-            else event.target.style.color = 'white';
-            
-            if  (event.target.style.backgroundColor === 'green') event.target.style.backgroundColor = 'white';
-            else event.target.style.backgroundColor = 'green';
+        const buttonTextClicked = event.target.textContent || event.target.innerText;
+        let myButtonText;
+        // if pagina button clicked
+        if ( Number(buttonTextClicked ) >= 0 ){
+            begin =  Number(buttonTextClicked) * postsPerPage;
+            // get list of all buttons
+            const buttonsDom = event.target.parentElement.children;
+            // remove backgroud from previous button
+            buttonsDom[Number(buttonText)].classList.remove('button_on');
+            // add background to clicked button
+            event.target.classList.add('button_on');
+            myButtonText = buttonTextClicked - next;
         }
-        if (buttonText === 'next'){
-            if (next < (lastPage / (postsPerPage + 0)) - paginateSize ){
-                next+=paginateSize;
-                begin = (0 + postsPerPage) * next;
-            }}
-        if (buttonText === 'prev'){
-            if (next > paginateSize - 1){
-                next-=paginateSize;
-                begin = (0 + postsPerPage) * next;
-            }}
-        end = begin + postsPerPage -1;
-        paginate({
-            //entries : filteredEntriesBySearch.slice(begin, end + 1),
-            begin : begin,
-            next: next
-        });
-
-        console.log(`next=${next} < ${(lastPage / end) - paginateSize}`);
-        console.log(`Pagination: buttonText=${buttonText}, begin=${begin}, end=${end}`);
-      }
-
-    const showPagination = () => {
-        let buttonPageList = [];
-        buttonPageList.push(<button key={999999} className="prev" onClick={ e => pageButtonClick(e, 'prev') }>prev</button>);
-        for( let i = next; i < lastPage / postsPerPage; i++ ){
-            if( i < next + paginateSize ){
-                //returning an array of JSX elements
-                //https://www.freecodecamp.org/forum/t/react-rendering-raw-html-code-instead-of-interpreting-it/208624/2
-                buttonPageList.push(<button key={i} className="pagina" onClick={ e => pageButtonClick(e, i) }>{i}</button>);
+        // if 'next' button clicked
+        if (buttonTextClicked === 'next'){
+            myButtonText = 0;
+            if (next < (lastPage / postsPerPage) - paginateSize ){
+                next += paginateSize;
+                begin = postsPerPage * next;
             }
         }
-        buttonPageList.push(<button key={999998} className="next" onClick={ e => pageButtonClick(e, 'next') }>next</button>);
+        // if 'prev' button clicked
+        if (buttonTextClicked === 'prev'){
+            myButtonText = 0;
+            if (next > paginateSize - 1){
+                next -= paginateSize;
+                begin = postsPerPage * next;
+            }
+        }
+        paginate({
+            begin : begin,
+            next: next,
+            buttonText : myButtonText
+        });
+    }
+
+    // [UI] generate pagination button list 
+    const showPagination = () => {
+        let buttonPageList = [];
+        for( let i = next; i < lastPage / postsPerPage; i++ ){
+            if( i < next + paginateSize ){
+                buttonPageList.push(
+                    <button 
+                        // set background-color for 1st button
+                        className = {i === next ? 'button_on' : null}
+                        key = {i}
+                        onClick = {e => pageButtonClick(e)}>
+                        {i}
+                    </button>
+                );
+            }
+        }
         return buttonPageList;
     }
+
     return ( 
-        <div className="kniha_pagination">
-            { showPagination() }
+        <div>
+            <button onClick={ e => pageButtonClick(e) }>prev</button>
+            <span>
+                { showPagination() }
+            </span>
+            <button onClick={ e => pageButtonClick(e) }>next</button>
         </div>
     );
 }

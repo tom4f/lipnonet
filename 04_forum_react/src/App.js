@@ -8,6 +8,8 @@ import Paginations          from './components/Paginations';
 import SelectPaginate       from './components/SelectPaginate';
 import AddEntry             from './components/AddEntry';
 import './App.css';
+import Top                  from './components/Top';
+import Bottom               from './components/Bottom';
 
 export default class App extends Component {
   constructor(props) {
@@ -22,7 +24,8 @@ export default class App extends Component {
       paginateSize:               10,
       next:                       0,
       searchText:                 '',
-      selectedCategory:           '999999'
+      selectedCategory:           '999999',
+      buttonText:                 '0'
    };
 }
 
@@ -51,12 +54,11 @@ componentDidMount(){
 render(){
 
 // descructing states
-const { allEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText, selectedCategory } = this.state;
+const { allEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText, selectedCategory, buttonText } = this.state;
 
 // Change page
 const paginate = (begin) => {
   this.setState(begin);
-  console.log(this);
 }
 
 // calculate filter result
@@ -85,9 +87,11 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
         this.setState({ filteredEntriesBySearch : filteredForum });
 }
 
+
   return (
-    <div className="container my-5 text-center">
-          <div  className="left">
+      <div className="container my-5 text-center">
+      <Top/>
+          {/* <div  className="left">
             allEntries.length: {allEntries.length},
             <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
             <br/>filteredEntriesBySearch.length: {filteredEntriesBySearch.length},
@@ -95,9 +99,10 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
             <br/>begin: {begin} + postsPerPage: {postsPerPage} = end : {begin + postsPerPage -1 }
             <br/>paginateSize: {paginateSize},
             <br/>next: {next},
+            <br/>buttonText: {buttonText},
             <br/><b>searchText</b>: {searchText}
             <br/><b>selectedCategory</b> : {selectedCategory}
-          </div>
+          </div> */}
       <div className="btn-group">
           <AddEntry
             paginate={paginate}
@@ -129,8 +134,11 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
             begin={begin}
             paginateSize={paginateSize}
             next={next}
+            buttonText={buttonText}
           />
       <Forum entries={filteredEntriesBySearch.slice(begin, begin + postsPerPage)} />
+
+      <Bottom/>
     </div>
   ) // return end
   } // render end
