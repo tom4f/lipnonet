@@ -10,6 +10,7 @@ import AddEntry             from './components/AddEntry';
 import './App.css';
 import Top                  from './components/Top';
 import Bottom               from './components/Bottom';
+import headerLipnoForum     from './images/nadpis_lipenske_forum.gif';
 
 export default class App extends Component {
   constructor(props) {
@@ -53,7 +54,7 @@ componentDidMount(){
 
 render(){
 
-// descructing states
+// descructing states, e.g. this.state.allEntrie -> allEntries
 const { allEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText, selectedCategory, buttonText } = this.state;
 
 // Change page
@@ -89,56 +90,61 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
 
 
   return (
-      <div className="container my-5 text-center">
-      {/* <Top/> */}
-          {/* <div  className="left">
-            allEntries.length: {allEntries.length},
-            <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
-            <br/>filteredEntriesBySearch.length: {filteredEntriesBySearch.length},
-            <br/>entries.length: {entries.length},
-            <br/>begin: {begin} + postsPerPage: {postsPerPage} = end : {begin + postsPerPage -1 }
-            <br/>paginateSize: {paginateSize},
-            <br/>next: {next},
-            <br/>buttonText: {buttonText},
-            <br/><b>searchText</b>: {searchText}
-            <br/><b>selectedCategory</b> : {selectedCategory}
-          </div> */}
-      <div className="btn-group">
-          <AddEntry
-            paginate={paginate}
-            postsPerPage={postsPerPage}
-            begin={begin}
-          />
+    <div className="container">
+      <Top/>
+      <div className="center">
+            {/* <div  className="left">
+              allEntries.length: {allEntries.length},
+              <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
+              <br/>filteredEntriesBySearch.length: {filteredEntriesBySearch.length},
+              <br/>entries.length: {entries.length},
+              <br/>begin: {begin} + postsPerPage: {postsPerPage} = end : {begin + postsPerPage -1 }
+              <br/>paginateSize: {paginateSize},
+              <br/>next: {next},
+              <br/>buttonText: {buttonText},
+              <br/><b>searchText</b>: {searchText}
+              <br/><b>selectedCategory</b> : {selectedCategory}
+            </div> */}
+        <br/><img src={headerLipnoForum} width="548" height="39"/>
+        <div className="btn-group">
+            <AddEntry
+              paginate={paginate}
+              postsPerPage={postsPerPage}
+              begin={begin}
+            />
+        </div>
+        <p style={{clear : "both"}}></p>
+        <div className="fields">
+            <SearchForum
+              filteredEntriesCalculate={filteredEntriesCalculate}
+              selectedCategory={selectedCategory}
+            />
+            <SelectForum
+              filteredEntriesCalculate={filteredEntriesCalculate}
+              searchText={searchText}
+            />
+            <PostsPerPage
+              filteredEntriesBySearch={filteredEntriesBySearch}
+              paginate={paginate}
+            />
+        </div>
+        <div>Je vybráno {filteredEntriesBySearch.length} záznamů.</div>
+        <Forum entries={filteredEntriesBySearch.slice(begin, begin + postsPerPage)} />
+        <br/>
+        <Paginations
+              paginate={paginate}
+              postsPerPage={postsPerPage}
+              filteredEntriesBySearch={filteredEntriesBySearch}
+              begin={begin}
+              paginateSize={paginateSize}
+              next={next}
+              buttonText={buttonText}
+            />
+        <br/>
+        <SelectPaginate paginate={paginate} />
+        <br/>
       </div>
-      <p style={{clear : "both"}}></p>
-      <div className="fields">
-          <SearchForum
-            filteredEntriesCalculate={filteredEntriesCalculate}
-            selectedCategory={selectedCategory}
-          />
-          <SelectForum
-            filteredEntriesCalculate={filteredEntriesCalculate}
-            searchText={searchText}
-          />
-          <PostsPerPage
-            filteredEntriesBySearch={filteredEntriesBySearch}
-            paginate={paginate}
-          />
-          <SelectPaginate paginate={paginate} />
-      </div>
-      <div>Je vybráno {filteredEntriesBySearch.length} záznamů.</div>
-          <Paginations
-            paginate={paginate}
-            postsPerPage={postsPerPage}
-            filteredEntriesBySearch={filteredEntriesBySearch}
-            begin={begin}
-            paginateSize={paginateSize}
-            next={next}
-            buttonText={buttonText}
-          />
-      <Forum entries={filteredEntriesBySearch.slice(begin, begin + postsPerPage)} />
-
-      {/* <Bottom/> */}
+      <Bottom/>
     </div>
   ) // return end
   } // render end

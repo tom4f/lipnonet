@@ -1,6 +1,94 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
 body 	{
 	font-family : Verdana, Helvetica, sans-serif;
   }
+
+  .container {
+	margin: auto;
+	width: 724px;
+}
+
+  .bottom{
+	text-align : center;
+}
+
+  .header{
+	background : #555555;
+	text-align : center;
+	padding: 2px;
+	color: white;
+}
+
+.header a { 
+	color : White;
+	text-decoration : none;
+	font-size: 10pt;
+	font-weight : bold;
+}
+.header a:hover {
+	color : Lime;
+	font-size: 10pt;
+	text-decoration : underline;
+	font-weight : bold;
+}
+
+.mainpictures{
+	white-space: nowrap;
+	text-align : center;
+	width: 724px;
+}
+
+.mainpictures img{
+    display: inline;
+    vertical-align: top;
+    clear: both;
+}
+
+.center{
+	text-align : center;
+    margin: 0 auto;
+	background : #FF9933;
+	color: black;
+}
+
+
+input[type=text], textarea[type=text], select, input[type=submit] {
+	padding: 2px 5px;
+	margin: 2px 5px;
+	box-sizing: border-box;
+	border: 3px solid #ccc;
+	-webkit-transition: 0.5s;
+	transition: 0.5s;
+	outline: none;
+  }
+  
+  input[type=text]:focus, textarea[type=text]:focus, select:focus, input[type=submit]:focus {
+	border: 3px solid #555;
+  }
+  
+  .kniha_pagination{
+	width: 80%;
+	margin: 0 auto;
+	padding-bottom: 10px;
+}
+
+.pagina, .paginaPrev, .paginaNext{
+	background-color: white;
+	font-size: 12px;
+	padding: 0;
+	margin: 0 ;
+	white-space: nowrap;
+	width: 30px;
+	height: 30px;
+	border-style: none;
+	cursor: pointer;
+	display: inline-block;
+}
 
 .left{
 	text-align: left;
@@ -10,17 +98,11 @@ body 	{
   color: #09d3ac;
 }
 
-.container {
-    max-width: 1100px;
-    margin: auto;
-    overflow: hidden;
-    padding: 0 2rem;
-    text-align: center;
-  }
+
 
 .fields {
     display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	width: auto;
     font-size: 0.8rem;
     color: #fff;
@@ -33,7 +115,7 @@ body 	{
 	background-color: #4CAF50; /* Green */
 	border: 1px solid green;
 	color: white;
-	padding: 15px 32px;
+	padding: 5px 10px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;

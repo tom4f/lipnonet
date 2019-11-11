@@ -45,10 +45,12 @@ const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filter
         let buttonPageList = [];
         for( let i = next; i < lastPage / postsPerPage; i++ ){
             if( i < next + paginateSize ){
+                const buttonClass = `pagina ${i === next ? 'button_on' : null}`;
                 buttonPageList.push(
                     <button 
                         // set background-color for 1st button
-                        className = {i === next ? 'button_on' : null}
+                        className = { buttonClass }
+                        //className = {i === next ? 'button_on' : null}
                         key = {i}
                         onClick = {e => pageButtonClick(e)}>
                         {i}
@@ -60,12 +62,12 @@ const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filter
     }
 
     return ( 
-        <div>
-            <button onClick={ e => pageButtonClick(e) }>prev</button>
+        <div className="kniha_pagination">
+            <button className="paginaPrev" onClick={ e => pageButtonClick(e) }>prev</button>
             <span>
                 { showPagination() }
             </span>
-            <button onClick={ e => pageButtonClick(e) }>next</button>
+            <button className="paginaNext" onClick={ e => pageButtonClick(e) }>next</button>
         </div>
     );
 }
