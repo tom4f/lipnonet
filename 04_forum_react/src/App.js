@@ -38,7 +38,7 @@ componentDidMount(){
       timeout: 5000
     })
     .then(res => {
-            /// allForum = JSON.parse(res.data); --> for native xhr.onload 
+            // allForum = JSON.parse(res.data); --> for native xhr.onload 
             allForum = res.data;
             const end = this.state.begin + this.state.postsPerPage -1;
             this.setState( {entries : allForum.slice(this.state.begin, end)} );
@@ -90,7 +90,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
 
   return (
       <div className="container my-5 text-center">
-      <Top/>
+      {/* <Top/> */}
           {/* <div  className="left">
             allEntries.length: {allEntries.length},
             <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
@@ -138,7 +138,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
           />
       <Forum entries={filteredEntriesBySearch.slice(begin, begin + postsPerPage)} />
 
-      <Bottom/>
+      {/* <Bottom/> */}
     </div>
   ) // return end
   } // render end
