@@ -143,6 +143,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
         <br/>
         <SelectPaginate paginate={paginate} />
         <br/>
+        <br/>
       </div>
       <Bottom/>
     </div>
