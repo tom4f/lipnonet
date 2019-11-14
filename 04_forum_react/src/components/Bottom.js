@@ -6,12 +6,12 @@ const Bottom = () => {
         <span>
             <div className="header">
                 (C)1998-2019
-                <a href="mailto:ubytovani@lipnonet.cz">ubytovani@lipnonet.cz</a>
+                <a href="mailto:ubytovani@lipnonet.cz"> ubytovani@lipnonet.cz</a>
                 <br/>
                 <a href="http://www.lipnonet.cz/">www.LIPNOnet.cz</a>
-                <a href="http://www.lipno.net/">www.LIPNO.net</a>
-                <a href="http://www.frymburk.com/">www.FRYMBURK.com</a>
-                <a href="http://www.frymburk.eu/">www.FRYMBURK.eu</a>
+                <a href="http://www.lipno.net/"> www.LIPNO.net</a>
+                <a href="http://www.frymburk.com/"> www.FRYMBURK.com</a>
+                <a href="http://www.frymburk.eu/"> www.FRYMBURK.eu</a>
             </div>
 
             <div className="bottom">

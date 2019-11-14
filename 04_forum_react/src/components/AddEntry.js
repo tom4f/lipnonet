@@ -6,12 +6,13 @@ class AddEntry extends Component {
         super(props)
         this.state = { 
             formVisible :   false,
-            alert:          false,
+            alert:          'off',
             jmeno :         '',
             email :         '',
             typ :           '',
             text :          '',
-            antispam :      ''
+            antispam :      new Date().getMilliseconds(),
+            antispamForm :  ''
          }
     }
 
@@ -26,49 +27,64 @@ class AddEntry extends Component {
     mySubmitHandler = (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
-        console.log(data.get('jmeno'));
-        axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
-        // axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    formVisible : false,
-                    alert: true
+        console.log(this.state.antispam + ' = ' + Number(data.get('antispamForm')));
+        if (this.state.antispam === Number(data.get('antispamForm'))){
+            axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
+            // axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
+                .then(response => {
+                    console.log(response);
+                    this.setState({
+                        formVisible : false,
+                        alert: 'ok'
+                    });
+    
+                    setTimeout( 
+                        () => this.setState({alert: 'off'}),
+                        5000            
+                    );
+    
+                    axios
+                        .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+                        // .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
+                        timeout: 5000
+                    })
+                    .then(res => {
+                            /// allForum = JSON.parse(res.data); --> for native xhr.onload 
+                            const allForum = res.data;
+                            const end = this.props.begin + this.props.postsPerPage - 1;
+                            const { paginate } = this.props;
+                            paginate({
+                                entries : allForum.slice(this.props.begin, end),
+                                allEntries : allForum,
+                                filteredEntriesBySearch: allForum,
+                                begin : 0
+                            });
+                    })
+                    .catch(err => console.error(err));
+                })
+                .catch(error => {
+                    console.log(error);
                 });
-
-                setTimeout( 
-                    () => this.setState({alert:false}),
-                    5000            
-                );
-
-                axios
-                    .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-                    // .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
-                    timeout: 5000
-                })
-                .then(res => {
-                        /// allForum = JSON.parse(res.data); --> for native xhr.onload 
-                        const allForum = res.data;
-                        const end = this.props.begin + this.props.postsPerPage - 1;
-                        const { paginate } = this.props;
-                        paginate({
-                            entries : allForum.slice(this.props.begin, end),
-                            allEntries : allForum,
-                            filteredEntriesBySearch: allForum,
-                            begin : 0
-                        });
-                })
-                .catch(err => console.error(err));
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        } else {
+            this.setState ({
+                alert : 'antispamNotOk' 
+            }) 
+            setTimeout( 
+                () => this.setState({alert:'off'}),
+                5000            
+            );
+        }               
     }
 
     render() {
         let button = '';
         let formSummmary ='';
-        const alert = this.state.alert ? <h1>Záznam byl přidán !!!</h1> : null;
+        let alert = null;
+        alert = this.state.alert === 'ok'
+                    ? <h1>Záznam byl přidán !!!</h1>
+                    : this.state.alert === 'antispamNotOk'
+                        ? <h1>Záznam se nepodařilo odeslat !!!</h1>
+                        : null;
         if (this.state.formVisible) {
             button = 
             <form onSubmit={this.mySubmitHandler} name="formular" encType="multipart/form-data">
@@ -85,10 +101,10 @@ class AddEntry extends Component {
                         </select>
                     </div>
                     <div>
-                        <textarea onChange={this.myChangeHandler} type="text" className="text-area" name="text" placeholder="text" required></textarea>
+                        <textarea onChange={this.myChangeHandler} rows="5" cols="60" type="text" className="text-area" name="text" placeholder="text" required></textarea>
                     </div>
                     <div>
-                        opiš kód : <input onChange={this.myChangeHandler} type="text" name="antispam" placeholder="" size="5" required />
+                        opiš kód : <input onChange={this.myChangeHandler} type="text" name="antispamForm" placeholder={this.state.antispam} size="5" required />
                         
                     </div>
                 </div>
@@ -100,7 +116,7 @@ class AddEntry extends Component {
                     Email :     {this.state.email} <br/>
                     Typ :       {this.state.typ} <br/>
                     Text :      {this.state.text} <br/>
-                    Antispam :  {this.state.antispam} <br/>
+                    AntispamForm :  {this.state.antispamForm} <br/>
                 </h1>
                 ;
 
@@ -109,7 +125,7 @@ class AddEntry extends Component {
         }
         return (
             <div>
-                {formSummmary}
+                {/* {formSummmary} */}
                 {button}
                 {alert}
             </div>
