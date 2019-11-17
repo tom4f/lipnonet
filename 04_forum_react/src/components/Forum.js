@@ -14,7 +14,7 @@ const Forum = ( {entries} ) => {
       Object.keys(entries).map(key => (
         <div key={key} className="kniha_one_entry">
           <div className="kniha_datum">{typText[entries[key].typ]} - { entries[key].datum.slice(0,10)}</div> 
-          <div className="kniha_jmeno"><b>{entries[key].id} - {entries[key].email ? <a href={entries[key].email}>{entries[key].jmeno}</a> : entries[key].jmeno }</b></div> 
+          <div className="kniha_jmeno"><b>{entries[key].email ? <a href={'mailto:' + entries[key].email}>{entries[key].jmeno}</a> : entries[key].jmeno }</b></div> 
           <div className="kniha_text">{entries[key].text}</div>
         </div>
       ))

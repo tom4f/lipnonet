@@ -5,13 +5,20 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
 	<link rel="stylesheet" href="css/foto_insert_style.css">
 	<title>Fotogalerie - vkládání fotek</title>
+	<link
+	rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+	crossorigin="anonymous"
+/>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="container">
+<body  class="page">
 
 	<div class="formularimg">
-		<b>Foto soubor :</b><input form="formular" required type="File" id="afile" name="userfile1" accept="image/*" >
+		<b>Foto soubor :</b><input form="formular" type="File" id="afile" name="userfile1" accept="image/*" >
 		<span id="selectedPicturePlace"></span>
 	</div>
 
@@ -19,6 +26,7 @@
 		<ul id="showAlert"></ul>
 		<span id="imgNumber"></span>
 		<form id="formular" name="formular" method="post" action="" enctype="multipart/form-data">
+			<input NAME=id size="3">
 			<br><INPUT placeholder="zadej název" NAME=header size="34" required>
 			<br>
 				<SELECT required NAME="typ">
@@ -35,16 +43,44 @@
 
 			<br><INPUT id="date" NAME=date VALUE="" size="10" required><b>Datum focení fotografie!!!</b>
 			<br><textarea name=text rows="5" cols="60" placeholder="popis fotky" wrap="Yes"></textarea>
-			<br><INPUT NAME=autor placeholder="autor" value="Bedřich" size="10" required><INPUT placeholder="email" NAME=email VALUE="" size="20">
+			<br><INPUT NAME=autor placeholder="autor" value="Bedřich" size="10" required>
+				<INPUT placeholder="email" NAME=email VALUE="" size="20">
 			<br>otoceni vlevo o 
 			<input type="number" name="rotate" min="0" max="270" step="90" value="0"> stupňů
 
-			<br><INPUT TYPE=Submit name="odesli" VALUE="Přidej">
+			<br><INPUT TYPE=Submit name="add" VALUE="Přidej">
+				<INPUT TYPE=Submit name="edit" VALUE="Uprav">
+				<INPUT TYPE=Submit name="delete" VALUE="Smaž">
 		</form>
 	</div>	
 
-</div>  <!-- end <div class="container">  -->
-
 <script src="js/main_foto_insert.js"></script>
 
+<!-- // new fotogallery -->
+<div class="container">
+  <div class="imgs">
+	  <span id="imgsLocation"></span>
+  </div>
+  <div class="main-img">
+	  <div class="photoInfo"></div>
+	  <div class="homepage"><a href="http://www.lipno.net/rekreace/">www.lipno.net - Ubytování u Kučerů</a></div>
+	  <button class="prevPhoto">  <i class="fas fa-arrow-left"></i></button>
+	  <button class="nextPhoto">  <i class="fas fa-arrow-right"></i></button>
+	  <button class="prev8">      <i class="fas fa-angle-double-left"></i></button>
+	  <button class="play">       <i class="fas fa-play-circle"></i></button>
+	  <button class="stop">       <i class="fas fa-stop-circle"></i></button>
+	  <button class="next8">      <i class="fas fa-angle-double-right"></i></button>
+	  <a href="index.php">
+		  <button class="slides"> <i class="fas fa-home"></i></button>
+	  </a>
+
+	  <span id="imgLocation"></span>
+  </div>
+  <script>
+	var fotoGalleryMainPage = 0;
+  </script>
+  <script src="js/main.js"></script>
+</div>  <!-- end <div class="container">  -->
+
+</div>
 </body>

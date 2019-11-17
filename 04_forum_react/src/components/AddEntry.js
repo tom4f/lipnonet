@@ -29,8 +29,8 @@ class AddEntry extends Component {
         const data = new FormData(event.target);
         console.log(this.state.antispam + ' = ' + Number(data.get('antispamForm')));
         if (this.state.antispam === Number(data.get('antispamForm'))){
-            axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
-            // axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
+            //axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
+             axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
                 .then(response => {
                     console.log(response);
                     this.setState({
@@ -44,8 +44,8 @@ class AddEntry extends Component {
                     );
     
                     axios
-                        .get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-                        // .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
+                        //.get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
+                         .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
                         timeout: 5000
                     })
                     .then(res => {

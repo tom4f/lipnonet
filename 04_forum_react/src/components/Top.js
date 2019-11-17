@@ -33,7 +33,7 @@ const Top = () => {
                 <b>--> </b>
                 <a className="menu" href="webcam_ip_archive.php" target="_top">Webkamera_archív</a>
                 <a className="menu" href="aktuality.php" target="_top"> Meteostanice</a>
-                <a className="menu" href="kniha.php" target="_top"> Fórum</a>
+                <a className="menu" href="kniha.html" target="_top"> Fórum</a>
                 <a className="menu" href="fotogalerie.html" target="_top"> Fotogalerie</a>
                 <a className="menu" href="profisolar.php" target="_top"> Online_solární_ohřev</a>
                 <a className="menu" href="../4f/" target="_top"> Windsurfing</a>

@@ -27,6 +27,15 @@ class UI {
         <br>
         ${objOneFoto.text}
         `;
+        formNames('id', objOneFoto.id);
+        formNames('header', objOneFoto.header);
+        formNames('typ', objOneFoto.typ);
+        formNames('date', objOneFoto.date);
+        formNames('text', objOneFoto.text);
+        formNames('autor', objOneFoto.autor);
+        formNames('header', objOneFoto.header);
+        formNames('email', objOneFoto.email);
+        imgNumberPlace.innerHTML = `Upravujete foto č. ${objOneFoto.id}`;
       }
 
 
@@ -35,6 +44,7 @@ class UI {
 
       // remove fade in class after 0.5s
       setTimeout(() => bigImgBlock.classList.remove('fade-in'), 500);
+
     }
 
 

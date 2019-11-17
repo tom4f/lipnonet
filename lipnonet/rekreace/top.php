@@ -94,8 +94,8 @@
       else echo " <a class=\"menu\" href=\"webcam_ip_archive.php\" target=\"_top\"><font color=\"yellow\">Webkamera_archív</font></a>";
     if ($script_name!="/rekreace/aktuality.php") echo " <a class=\"menu\" href=\"aktuality.php\" target=\"_top\">Meteostanice</a>";
       else echo " <a class=\"menu\" href=\"aktuality.php\" target=\"_top\"><font color=\"yellow\">Meteostanice</font></a>";
-    if ($script_name!="/rekreace/kniha.php") echo " <a class=\"menu\" href=\"kniha.php\" target=\"_top\">Fórum</a>";
-      else echo " <a class=\"menu\" href=\"kniha.php\" target=\"_top\"><font color=\"yellow\">Fórum</font></a>";
+    if ($script_name!="/rekreace/kniha.html") echo " <a class=\"menu\" href=\"kniha.html\" target=\"_top\">Fórum</a>";
+      else echo " <a class=\"menu\" href=\"kniha.html\" target=\"_top\"><font color=\"yellow\">Fórum</font></a>";
     if ($script_name!="/rekreace/fotogalerie.html") echo " <a class=\"menu\" href=\"fotogalerie.html\" target=\"_top\">Fotogalerie</a>";
       else echo " <a class=\"menu\" href=\"fotogalerie.html\" target=\"_top\"><font color=\"yellow\">Fotogalerie</font></a>";
     if ($script_name!="/rekreace/profisolar.php") echo " <a class=\"menu\" href=\"profisolar.php\" target=\"_top\">Online_solární_ohřev</a>";
