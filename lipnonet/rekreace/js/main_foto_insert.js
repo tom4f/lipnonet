@@ -64,46 +64,15 @@ const sendImgToMySql = (event) => {
   const node = document.createElement("LI");
   event.preventDefault();
   console.log(document.activeElement.name);
-  if (document.activeElement.name === 'add') {
-    let FD = new FormData(form); 
-    // all form data to object
-    let object = {};
-    FD.forEach( (value, key) => object[key] = value );
-      
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'api/pdo_create.php', true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    const objectWithImg = Object.assign(resp, object);
-    xhr.onload = function(){
-      if (this.readyState == 4 && this.status == 200) {
-            const textnode = document.createTextNode(`foto č. ${newImgNumber} bylo nahráno - ${this.responseText} - OBNOV TUTO STRÁNKU !!!`);
-            node.appendChild(textnode);
-            document.getElementById('showAlert').appendChild(node);
-            // clear formular data for file select
-            const file = document.getElementById("afile");
-            file.value = file.defaultValue;
-            // remove picture
-            const selectedPicturePlace = document.getElementById('selectedPicturePlace');
-            selectedPicturePlace.removeChild(selectedPicturePlace.childNodes[0]);
-            loadPicturesfromMySqlStartPage (limit, offset, event);
-            loadNewImgNumber();
-      } else if(this.status = 404){
-        const textnode = document.createTextNode(`chyba`);
-        node.appendChild(textnode);
-        document.getElementById('showAlert').appendChild(node);
-      }
-    }
-    xhr.send(JSON.stringify(objectWithImg));
-  }
 
-  if (document.activeElement.name === 'edit') {
+  const ajax = (action, path) => {
     let FD = new FormData(form); 
     // all form data to object
     let object = {};
     FD.forEach( (value, key) => object[key] = value );
       
     let xhr = new XMLHttpRequest();
-    xhr.open('UPDATE', 'api/pdo_update.php', true);
+    xhr.open(action, `api/pdo_${path}.php`, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     // if img file updated
     let objectWithImg;
@@ -131,47 +100,20 @@ const sendImgToMySql = (event) => {
     }
     xhr.send(JSON.stringify(objectWithImg));
   }
-
-  if (document.activeElement.name === 'delete') {
-    let FD = new FormData(form); 
-    // all form data to object
-    let object = {};
-    FD.forEach( (value, key) => object[key] = value );
-      
-    let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', 'api/pdo_delete.php', true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    const objectWithImg = object;
-    //const objectWithImg = Object.assign(resp, object);
-    xhr.onload = function(){
-      if (this.readyState == 4 && this.status == 200) {
-            const textnode = document.createTextNode(`foto č. ${newImgNumber} bylo smazáno - ${this.responseText} - OBNOV TUTO STRÁNKU !!!`);
-            node.appendChild(textnode);
-            document.getElementById('showAlert').appendChild(node);
-            // clear formular data for file select
-            const file = document.getElementById("afile");
-            file.value = file.defaultValue;
-            // remove picture
-            // const selectedPicturePlace = document.getElementById('selectedPicturePlace');
-            // selectedPicturePlace.removeChild(selectedPicturePlace.childNodes[0]);
-            loadPicturesfromMySqlStartPage (limit, offset, event);
-            loadNewImgNumber();
-      } else if(this.status = 404){
-        const textnode = document.createTextNode(`chyba`);
-        node.appendChild(textnode);
-        document.getElementById('showAlert').appendChild(node);
-      }
+  
+    if (document.activeElement.name === 'add') {
+      ajax('POST', 'create');
     }
-    xhr.send(JSON.stringify(objectWithImg));
-  }
 
+    if (document.activeElement.name === 'edit') {
+      ajax('UPDATE', 'update');
+    }
 
+    if (document.activeElement.name === 'delete') {
+      ajax('DELETE', 'delete');
+    }
 
 }
-
-
-
-
 
 // START
 loadNewImgNumber();
