@@ -20,12 +20,12 @@
       $this->conn = $db;
     }
 
-
-
     // [0] Get Posts
     public function read() {
+      // use global variable inside class - owner Pavlik, Lucka, ''
+      global $fotoGalleryOwner;
       // Create query
-      $query = 'SELECT * FROM ' . $this->table . ' order by insertDate DESC';
+      $query = 'SELECT * FROM ' . $this->table . $fotoGalleryOwner . ' order by insertDate DESC';
       // Prepare statement
       $stmt = $this->conn->prepare($query);
       // Execute query
@@ -35,9 +35,11 @@
 
     // [0] Get last (max) id
     public function readLastId() {
+      // use global variable inside class - owner Pavlik, Lucka, ''
+      global $fotoGalleryOwner;
       // Create query
       //$query = 'SELECT MAX(id) AS id FROM ' . $this->table;
-      $query = "SHOW TABLE STATUS LIKE '" . $this->table . "'";
+      $query = "SHOW TABLE STATUS LIKE '" . $this->table . $fotoGalleryOwner . "'";
       // Prepare statement
       $stmt = $this->conn->prepare($query);
       // Execute query
@@ -47,8 +49,10 @@
 
     // Create Post
     public function create() {
+      // use global variable inside class - owner Pavlik, Lucka, ''
+      global $fotoGalleryOwner;
       // Create query
-      $query = 'INSERT INTO ' . $this->table . '
+      $query = 'INSERT INTO ' . $this->table . $fotoGalleryOwner . '
                   SET date = :date, text = :text, autor = :autor, email = :email, typ = :typ, header = :header';
 
       // Prepare statement
@@ -82,8 +86,10 @@
 
  // Delete Post
  public function delete() {
+  // use global variable inside class - owner Pavlik, Lucka, ''
+  global $fotoGalleryOwner;
   // Create query
-  $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+  $query = 'DELETE FROM ' . $this->table . $fotoGalleryOwner . ' WHERE id = :id';
   // Prepare statement
   $stmt = $this->conn->prepare($query);
   // Clean data
@@ -101,8 +107,10 @@
 
 // Update Post
 public function update() {
+  // use global variable inside class - owner Pavlik, Lucka, ''
+  global $fotoGalleryOwner;
   // Create query
-  $query = 'UPDATE ' . $this->table . '
+  $query = 'UPDATE ' . $this->table . $fotoGalleryOwner . '
               SET date = :date, text = :text, autor = :autor, email = :email, typ = :typ, header = :header
               WHERE id = :id';
 

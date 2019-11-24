@@ -9,7 +9,6 @@
 
   include_once '../config/Database.php';
   include_once 'models/Post.php';
-  //include_once 'models/Post'.$fotoGalleryOwner.'.php';
 
   // Instantiate DB & connect
   $database = new Database();
@@ -19,7 +18,7 @@
   $post = new Post($db);
 
   // Fotogalery post query
-  $result = $post->read();
+  $result = $post->readLastId();
   // Get row count
   $num = $result->rowCount();
 
@@ -35,15 +34,15 @@
       extract($row);
 
       $post_item = array(
-        'id'  => $id,
-        'date' => $date,
-        'text' => $text,
-        'autor' => $autor,
-        'email' => $email,
-        'typ' => $typ,
-        'header' => $header,
-        'votes' => $votes,
-        'insertDate' => $insertDate,
+        'Auto_increment'  => $Auto_increment,
+        // 'date' => $date,
+        // 'text' => $text,
+        // 'autor' => $autor,
+        // 'email' => $email,
+        // 'typ' => $typ,
+        // 'header' => $header,
+        // 'votes' => $votes,
+        // 'insertDate' => $insertDate,
       );
 
       // Push to "data"

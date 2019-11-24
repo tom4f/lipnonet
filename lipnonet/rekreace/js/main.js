@@ -5,20 +5,39 @@ class UI {
 
     static loadImgBig(bigImgUrl) {
 
+      console.log(bigImgUrl);
+
       const bigImgInfo =    document.querySelector('.photoInfo');
       const bigImgBlock =   document.querySelector('.main-img');
       
       // create big background photo
       bigImgBlock.style.backgroundImage = "url('" + bigImgUrl + "')";
 
+
+      // var imageSrc = bigImgBlock
+      //  .style
+      //   .backgroundImage
+      //    .replace(/url\((['"])?(.*?)\1\)/gi, '$2')
+      //     .split(',')[0];
+
+      // var image = new Image();
+      // image.src = 'fotogalerie/566b.jpg';
+  
+      // var width = image.width,
+      //     height = image.height;
+
+      // console.log(width);
+
+      
+
       // + add photo description
       const currentPhotoId = bigImgUrl
-        .split('fotogalerie/')[1]
+        .split(`fotogalerie${fotoGalleryOwner}/`)[1]
           .replace(/b.jpg/g,'');
 
       const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
 
-      if (fotoGalleryMainPage === 0) {
+      if (fotoGalleryMainPage === 0 || fotoGalleryMainPage === 2) {
         bigImgInfo.innerHTML = `
         <b>${objOneFoto.id}</b>
         ${objOneFoto.insertDate.slice(0,10)}    
@@ -27,6 +46,11 @@ class UI {
         <br>
         ${objOneFoto.text}
         `;
+      }
+      if (fotoGalleryMainPage === 2) {
+      const formNames = (formName, value) => {
+        document.getElementById('formular').elements.namedItem(formName).value = value;
+      }
         formNames('id', objOneFoto.id);
         formNames('header', objOneFoto.header);
         formNames('typ', objOneFoto.typ);
@@ -55,7 +79,7 @@ class UI {
 
       if (event !=0) console.log(`event.target.classList: ${event.target.classList}`);
 
-        const photoUrlPath   = 'fotogalerie/';
+        const photoUrlPath   = `fotogalerie${fotoGalleryOwner}/`;
         const eightImgsPlace =  document.querySelector('#imgsLocation');
         const eightImgsBlock =  document.querySelector('.imgs');
         const eightImgsAll   =  document.querySelectorAll('.eightImgsAll');
@@ -141,14 +165,15 @@ const loadPicturesfromAllPhoto = (limit, offset, event) => {
 const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
     var xhr = new XMLHttpRequest();
   //xhr.open('GET', `api/ajax_receive_data_universal.php`, true);
-    xhr.open('GET', `api/pdo_read.php`, true);
+    xhr.open('POST', `api/pdo_read.php`, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = function(){
       if (this.readyState == 4 && this.status == 200) {
         AllPhoto = JSON.parse(this.responseText);
         loadPicturesfromAllPhoto(limit, offset, event);
       }
     }
-    xhr.send();
+    xhr.send(JSON.stringify({ 'fotoGalleryOwner' : fotoGalleryOwner}));
 }
 
 const startPresentation = (event) => {

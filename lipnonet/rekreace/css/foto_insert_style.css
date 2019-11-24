@@ -1,18 +1,27 @@
-.container {
-    background: white;
 
-}
-
-.formular, .formularimg {
+.formularimg {
+    position: absolute;
     width: 500px;
-    margin: auto;
-    border: black solid 2px;
     padding: 10px;
     margin-top: 10px;
     background: grey;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.formular img, .formularimg img {
+.formular {
+    position: absolute;
+    width: 500px;
+    padding: 10px;
+    margin-top: 10px;
+    background: grey;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.formular img {
     width: 100%;
     
 }

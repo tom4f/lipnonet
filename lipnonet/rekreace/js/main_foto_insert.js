@@ -6,14 +6,12 @@ let newImgNumber;
 let imgNumberPlace = document.getElementById('imgNumber');
 console.log(imgNumberPlace);
 
-const formNames = (formName, value) => {
-  document.getElementById('formular').elements.namedItem(formName).value = value;
-}
-
 // load last db ID - MySQL Auto_increment
 const loadNewImgNumber = () => {
   let xhr = new XMLHttpRequest();
-  xhr.open('GET', `api/pdo_read_auto_increment.php`, true);
+  //xhr.open('GET', `api/pdo_read_auto_increment${fotoGalleryOwner}.php`, true);
+  xhr.open('POST', `api/pdo_read_auto_increment.php`, true);
+  xhr.setRequestHeader('Content-type', 'application/json');
   xhr.onload = function(){
     if (this.readyState == 4 && this.status == 200) {
       const id = JSON.parse(this.responseText);
@@ -24,7 +22,7 @@ const loadNewImgNumber = () => {
       imgNumberPlace.innerHTML = `Vkládáte foto č. ${newImgNumber}`;
     }
   }
-  xhr.send();
+  xhr.send(JSON.stringify({ 'fotoGalleryOwner' : fotoGalleryOwner}));
 }
 
 // send IMG via formData to server and in reponse get IMG in JSON
@@ -36,7 +34,7 @@ const jsonImg = (event) => {
   const fd = new FormData();
   fd.append("afile", file, newImgNumber);
   let xhr = new XMLHttpRequest();
-  xhr.open('POST', 'api/handle_file_upload.php', true);
+  xhr.open('POST', `api/handle_file_upload.php`, true);
   
   const xhrTasks = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
@@ -59,18 +57,42 @@ const jsonImg = (event) => {
   xhr.send(fd);
 }
 
+
+const loginToken = (event) => {
+  event.preventDefault();
+  let FD = new FormData(login); 
+  let object = {};
+  console.log(object); 
+  FD.forEach( (value, key) => object[key] = value );
+  let xhr = new XMLHttpRequest();
+  xhr.open('POST', `api/foto_login.php`, true);
+  xhr.setRequestHeader('Content-type', 'application/json');
+  xhr.onload = function(){
+    if (this.readyState == 4 && this.status == 200) {
+      const id = JSON.parse(this.responseText);
+      // or Number() instead parseInt
+      console.log(id[0].webToken);
+      //newImgNumber = parseInt(id[0].webToken);
+      //console.log(newImgNumber);
+      //imgNumberPlace.innerHTML = `Vkládáte foto č. ${newImgNumber}`;
+    }
+  }
+  xhr.send(JSON.stringify(object));
+}
+
+
 // Send all formular data together with img as JSON
 const sendImgToMySql = (event) => {
-  const node = document.createElement("LI");
   event.preventDefault();
   console.log(document.activeElement.name);
 
   const ajax = (action, path) => {
     let FD = new FormData(form); 
+
     // all form data to object
     let object = {};
     FD.forEach( (value, key) => object[key] = value );
-      
+    console.log(object); 
     let xhr = new XMLHttpRequest();
     xhr.open(action, `api/pdo_${path}.php`, true);
     xhr.setRequestHeader('Content-type', 'application/json');
@@ -78,11 +100,20 @@ const sendImgToMySql = (event) => {
     let objectWithImg;
     if (resp) objectWithImg = Object.assign(resp, object);
       else objectWithImg = object; 
-    xhr.onload = function(){
+      
+      objectWithImg['fotoGalleryOwner'] = fotoGalleryOwner;
+      
+      xhr.onload = function(){
       if (this.readyState == 4 && this.status == 200) {
-            const textnode = document.createTextNode(`foto č. ${newImgNumber} bylo aktualizováno - ${this.responseText} - OBNOV TUTO STRÁNKU !!!`);
+            //const result = (JSON.parse(this.responseText)).message;
+            const textnode = document.createTextNode(`Operace ${action} byla provedena`);
+            const node = document.createElement("LI");
             node.appendChild(textnode);
             document.getElementById('showAlert').appendChild(node);
+            setTimeout( 
+              () => document.getElementById('showAlert').removeChild(node) ,
+              10000            
+              );
             // clear formular data for file select
             const file = document.getElementById("afile");
             file.value = file.defaultValue;
@@ -110,7 +141,7 @@ const sendImgToMySql = (event) => {
     }
 
     if (document.activeElement.name === 'delete') {
-      ajax('DELETE', 'delete');
+    //  ajax('DELETE', 'delete');
     }
 
 }
@@ -119,10 +150,14 @@ const sendImgToMySql = (event) => {
 loadNewImgNumber();
 
 const afileId = document.querySelector('#afile');
-afileId.addEventListener('change', (event) => jsonImg(event), false);
+afileId.addEventListener('change', event => jsonImg(event));
 
-let form = document.getElementById('formular');
+const form = document.getElementById('formular');
 form.addEventListener('submit', event => sendImgToMySql(event));
+
+
+const login = document.getElementById('login');
+login.addEventListener('submit', event => loginToken(event));
 
 const today = new Date().toISOString().slice(0,10);
 let currentDate = document.getElementById('date');

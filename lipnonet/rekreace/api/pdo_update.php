@@ -2,7 +2,7 @@
   // Headers
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: POST');
+  header('Access-Control-Allow-Methods: PUT');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
   // Get raw posted data - Array from JSON
@@ -19,6 +19,9 @@
   // Instantiate blog post object
   $post = new Post($db);
 
+  // Set ID to update
+  $post->id = $data->id;
+
   $post->date =       $data->date;
   $post->text =       $data->text;
   $post->autor =      $data->autor;
@@ -26,19 +29,21 @@
   $post->typ =        $data->typ;
   $post->header =     $data->header;
 
-  // Create post
-  if($post->create()) {
+  // Update post
+  if($post->update()) {
     echo json_encode(
-      array('message' => 'Post Created')
+      array('message' => 'Post Updated')
     );
   } else {
     echo json_encode(
-      array('message' => 'Post Not Created')
+      array('message' => 'Post Not Updated')
     );
   }
 
-  
-  $fileNumber =   $data->name;
+  // for update
+  $fileNumber =   $data->id;  
+  // for new entry
+  // $fileNumber =   $data->name;
   $fileType =   $data->type;
   $dataUrl =    $data->dataUrl;
 
