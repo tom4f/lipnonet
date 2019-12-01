@@ -13,23 +13,6 @@ class UI {
       // create big background photo
       bigImgBlock.style.backgroundImage = "url('" + bigImgUrl + "')";
 
-
-      // var imageSrc = bigImgBlock
-      //  .style
-      //   .backgroundImage
-      //    .replace(/url\((['"])?(.*?)\1\)/gi, '$2')
-      //     .split(',')[0];
-
-      // var image = new Image();
-      // image.src = 'fotogalerie/566b.jpg';
-  
-      // var width = image.width,
-      //     height = image.height;
-
-      // console.log(width);
-
-      
-
       // + add photo description
       const currentPhotoId = bigImgUrl
         .split(`fotogalerie${fotoGalleryOwner}/`)[1]
@@ -51,15 +34,15 @@ class UI {
       const formNames = (formName, value) => {
         document.getElementById('formular').elements.namedItem(formName).value = value;
       }
-        formNames('id', objOneFoto.id);
+        formNames('id',     objOneFoto.id);
         formNames('header', objOneFoto.header);
-        formNames('typ', objOneFoto.typ);
-        formNames('date', objOneFoto.date);
-        formNames('text', objOneFoto.text);
-        formNames('autor', objOneFoto.autor);
+        formNames('typ',    objOneFoto.typ);
+        formNames('date',   objOneFoto.date);
+        formNames('text',   objOneFoto.text);
+        formNames('autor',  objOneFoto.autor);
         formNames('header', objOneFoto.header);
-        formNames('email', objOneFoto.email);
-        imgNumberPlace.innerHTML = `Upravujete foto č. ${objOneFoto.id}`;
+        formNames('email',  objOneFoto.email);
+        imgNumberPlace.innerHTML = `Upravujete foto č. ${objOneFoto.id}, nebo vkládáte nové foto`;
       }
 
 

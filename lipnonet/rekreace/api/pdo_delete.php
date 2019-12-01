@@ -23,13 +23,27 @@
   $post->id = $data->id;
 
   // Delete post
-  if($post->delete()) {
-    echo json_encode(
-      array('message' => 'Post Deleted')
-    );
+
+
+  $date = md5("" . Date('d') . Date('m') . Date('Y'));
+  $webTokenCalculated = "".md5($date);
+  $webToken = "".($data->webToken);
+
+  if($webToken == $webTokenCalculated) {
+    // if update OK
+    if($post->delete()) {
+      echo json_encode(
+        array('message' => 'Photo Deleted :-)')
+      );
+    // if update failed
+    } else {
+      echo json_encode(
+        array('message' => 'Photo Not Deleted :-(')
+      );
+    }
+    // if login failed
   } else {
     echo json_encode(
-      array('message' => 'Post Not Deleted')
+      array('message' => 'Login error :-(')
     );
   }
-

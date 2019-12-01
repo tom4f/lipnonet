@@ -1,10 +1,14 @@
 "use strict";
 
+let webToken = 'error';
 let imgJson;
 let resp;
 let newImgNumber;
 let imgNumberPlace = document.getElementById('imgNumber');
 console.log(imgNumberPlace);
+
+const showForm = document.getElementById('divformular');
+showForm.style.display='none';
 
 // load last db ID - MySQL Auto_increment
 const loadNewImgNumber = () => {
@@ -18,8 +22,6 @@ const loadNewImgNumber = () => {
       // or Number() instead parseInt
       newImgNumber = parseInt(id[0].Auto_increment);
       console.log(newImgNumber);
-
-      imgNumberPlace.innerHTML = `Vkládáte foto č. ${newImgNumber}`;
     }
   }
   xhr.send(JSON.stringify({ 'fotoGalleryOwner' : fotoGalleryOwner}));
@@ -44,12 +46,15 @@ const jsonImg = (event) => {
       let image = document.createElement('img');
       image.src = resp.dataUrl;
       image.className = 'tomas';
-      const selectedPicturePlace = document.getElementById('selectedPicturePlace');
-      const selectedPicture = document.querySelector('.tomas');
-      if (selectedPicture) {
-            selectedPicturePlace.removeChild(selectedPicturePlace.childNodes[0]);
-      } else 
-            selectedPicturePlace.appendChild(image);
+      //const selectedPicturePlace = document.getElementById('selectedPicturePlace');
+      //const selectedPicture = document.querySelector('.tomas');
+      //if (selectedPicture) {
+            //selectedPicturePlace.removeChild(selectedPicturePlace.childNodes[0]);
+      //} else {
+            //selectedPicturePlace.appendChild(image);
+      const bigImgBlock =   document.querySelector('.main-img');
+      bigImgBlock.style.backgroundImage = "url('" + image.src + "')";
+        //    }
     }
   }
 
@@ -62,8 +67,11 @@ const loginToken = (event) => {
   event.preventDefault();
   let FD = new FormData(login); 
   let object = {};
-  console.log(object); 
+  //let formPassword = FD.get('password');
+  //FD.set('password' , formPassword + '' + formPassword );
   FD.forEach( (value, key) => object[key] = value );
+  object['fotoGalleryOwner'] = fotoGalleryOwner;
+  console.log([...FD]); 
   let xhr = new XMLHttpRequest();
   xhr.open('POST', `api/foto_login.php`, true);
   xhr.setRequestHeader('Content-type', 'application/json');
@@ -71,10 +79,11 @@ const loginToken = (event) => {
     if (this.readyState == 4 && this.status == 200) {
       const id = JSON.parse(this.responseText);
       // or Number() instead parseInt
-      console.log(id[0].webToken);
-      //newImgNumber = parseInt(id[0].webToken);
-      //console.log(newImgNumber);
-      //imgNumberPlace.innerHTML = `Vkládáte foto č. ${newImgNumber}`;
+      webToken = id[0].webToken;
+      console.log(webToken);
+      showForm.style.display = webToken!='error' ? 'block' : 'none';
+      const showLogin = document.getElementById('logindiv');
+      showLogin.style.display='none';
     }
   }
   xhr.send(JSON.stringify(object));
@@ -102,11 +111,12 @@ const sendImgToMySql = (event) => {
       else objectWithImg = object; 
       
       objectWithImg['fotoGalleryOwner'] = fotoGalleryOwner;
+      objectWithImg['webToken'] = webToken;
       
       xhr.onload = function(){
       if (this.readyState == 4 && this.status == 200) {
-            //const result = (JSON.parse(this.responseText)).message;
-            const textnode = document.createTextNode(`Operace ${action} byla provedena`);
+            const result = (JSON.parse(this.responseText)).message;
+            const textnode = document.createTextNode(`${action} : ${result}`);
             const node = document.createElement("LI");
             node.appendChild(textnode);
             document.getElementById('showAlert').appendChild(node);
@@ -141,7 +151,7 @@ const sendImgToMySql = (event) => {
     }
 
     if (document.activeElement.name === 'delete') {
-    //  ajax('DELETE', 'delete');
+      ajax('DELETE', 'delete');
     }
 
 }

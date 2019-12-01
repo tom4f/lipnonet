@@ -26,53 +26,71 @@
   $post->typ =        $data->typ;
   $post->header =     $data->header;
 
-  // Create post
-  if($post->create()) {
-    echo json_encode(
-      array('message' => 'Post Created')
-    );
+
+  $date = md5("" . Date('d') . Date('m') . Date('Y'));
+  $webTokenCalculated = "".md5($date);
+  $webToken = "".($data->webToken);
+
+  if($webToken == $webTokenCalculated) {
+    // if update OK
+    if($post->create()) {
+      echo json_encode(
+        array('message' => 'Photo Added :-)')
+      );
+    // if update failed
+    } else {
+      echo json_encode(
+        array('message' => 'Photo Not Added :-(')
+      );
+    }
+    // if login failed
   } else {
     echo json_encode(
-      array('message' => 'Post Not Created')
+      array('message' => 'Login error :-(')
     );
   }
 
+
+// if image in update request ($dataUrl present) => upload file
+if (isset($data->dataUrl)) {
   
-  $fileNumber =   $data->name;
-  $fileType =   $data->type;
-  $dataUrl =    $data->dataUrl;
+    $fileNumber =   $data->name;
+    $fileType =   $data->type;
+    $dataUrl =    $data->dataUrl;
 
-  $rotate =    $data->rotate;
+    $rotate =    $data->rotate;
 
-  $remote_folder="../fotogalerie". $fotoGalleryOwner ."/";
+    $remote_folder="../fotogalerie". $fotoGalleryOwner ."/";
 
-  $filePathOrig = $remote_folder . $fileNumber . "o.jpg";;
-  file_put_contents($filePathOrig, base64_decode(explode(',',$dataUrl)[1]));
+    $filePathOrig = $remote_folder . $fileNumber . "o.jpg";;
+    file_put_contents($filePathOrig, base64_decode(explode(',',$dataUrl)[1]));
 
-	$remote_path = $remote_folder . $fileNumber . ".jpg";
-	$remote_path1 =$remote_folder . $fileNumber . "b.jpg";
+    $remote_path = $remote_folder . $fileNumber . ".jpg";
+    $remote_path1 =$remote_folder . $fileNumber . "b.jpg";
 
-	function img_resize($filePathOrig, $newwidth, $filePathDest, $rotate){
-    $source = imagecreatefromjpeg($filePathOrig);
-    // Rotate
-    if ($rotate > 0) {
-      $rotate1 = imagerotate($source, $rotate, 0);
-      if ($rotate == 180)
+    function img_resize($filePathOrig, $newwidth, $filePathDest, $rotate){
+      $source = imagecreatefromjpeg($filePathOrig);
+      // Rotate
+      if ($rotate > 0) {
+        $rotate1 = imagerotate($source, $rotate, 0);
+        if ($rotate == 180)
+          list($width, $height) = getimagesize($filePathOrig);  
+        else
+          list($height, $width) = getimagesize($filePathOrig);
+      }
+      else {
+        $rotate1 = $source;
         list($width, $height) = getimagesize($filePathOrig);  
-      else
-        list($height, $width) = getimagesize($filePathOrig);
-    }
-    else {
-       $rotate1 = $source;
-       list($width, $height) = getimagesize($filePathOrig);  
+      }
+
+      $newheight = $height / ($width / $newwidth);
+      $destination = imagecreatetruecolor($newwidth, $newheight);
+      imagecopyresampled($destination, $rotate1, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+      imagejpeg($destination, $filePathDest, 100);
+      //echo "newwidth: ".$newwidth. "newheight: ".$newheight."width: ".$width."height: ".$height;
     }
 
-     $newheight = $height / ($width / $newwidth);
-		$destination = imagecreatetruecolor($newwidth, $newheight);
-		imagecopyresampled($destination, $rotate1, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-    imagejpeg($destination, $filePathDest, 100);
-    //echo "newwidth: ".$newwidth. "newheight: ".$newheight."width: ".$width."height: ".$height;
-	}
-
-	img_resize("$filePathOrig", 100,  "$remote_path",  $rotate);
-	img_resize("$filePathOrig", 1000, "$remote_path1", $rotate);
+    img_resize("$filePathOrig", 100,  "$remote_path",  $rotate);
+    img_resize("$filePathOrig", 1000, "$remote_path1", $rotate);
+  
+}

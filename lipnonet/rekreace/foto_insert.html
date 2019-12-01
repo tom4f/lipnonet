@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
 	<meta charset="utf-8" />
@@ -39,16 +39,16 @@
 		<span id="imgLocation"></span>
 		<!-- slideshow end -->
 
-		<div class="login">
+		<div id="logindiv" class="login">
 			<form id="login" name="login" method="POST" enctype="multipart/form-data">
-				<input name="user" type="text" placeholder="uživatel">
-				<input name="password" type="text" placeholder="heslo">
+				<input name="user" type="text" placeholder="uživatel" size="10">
+				<input name="password" type="password" placeholder="heslo" size="10" >
 				<input type="submit">
 			</form>
 		</div>
 
 		<!-- foto edit start -->
-		<div class="formular">
+		<div id="divformular" class="formular">
 			<ul id="showAlert"></ul>
 			<span id="imgNumber"></span>
 			<form id="formular" name="formular" method="post" enctype="multipart/form-data">
@@ -66,14 +66,13 @@
 							<option value="6">Ostatní</option>
 							<option value="7">Všechny</option>
 						</SELECT>
-
-				<br><INPUT id="date" NAME=date VALUE="" size="10" required><b>Datum focení fotografie!!!</b>
-				<br><textarea name=text rows="5" cols="60" placeholder="popis fotky" wrap="Yes"></textarea>
-				<br><INPUT NAME=autor placeholder="autor" value="Bedřich" size="10" required>
+				<br><b>Datum focení fotografie!!!</b>
+				<br><INPUT id="date" NAME=date VALUE="" size="10" required>
+				<br><textarea name=text rows="2" cols="60" placeholder="popis fotky" wrap="Yes"></textarea>
+				<br><INPUT NAME=autor placeholder="autor" value="Pavel" size="10" required>
 					<INPUT placeholder="email" NAME=email VALUE="" size="20">
-				<br>otoceni vlevo o 
-				<input type="number" name="rotate" min="0" max="270" step="90" value="0"> stupňů
-
+				<br>otoceni vlevo o kolik stupňů
+				<br><input type="number" name="rotate" min="0" max="270" step="90" value="0">
 				<br><INPUT TYPE=Submit name="add" VALUE="Přidej">
 					<INPUT TYPE=Submit name="edit" VALUE="Uprav">
 					<INPUT TYPE=Submit name="delete" VALUE="Smaž">
