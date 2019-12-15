@@ -83,7 +83,8 @@ class UI {
         } 
 
         // remove 8 small photo
-        if (eightImgsAll.length > 7)  eightImgsAll.forEach(img => img.remove());
+        // if (eightImgsAll.length > 7)  eightImgsAll.forEach(img => img.remove());
+        eightImgsAll.forEach(img => img.remove());
         
         // create 8 small photo 
         EightPhoto
