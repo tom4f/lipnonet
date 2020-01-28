@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+/* @import url('https://fonts.googleapis.com/css?family=Roboto'); */
 
 /* reset values for all elements */
 * {
@@ -8,21 +8,18 @@
   }
 
 body{
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
+	font-family : Verdana, Helvetica, sans-serif;
     line-height: 1.6;
     background-color: black;
+    color: white;
 }
 
 /* <div class="container"> ===================================== */
 .container {
+    background: black;
+    margin: auto;
     width: 100%;
     height: auto;
-    margin: auto;
-    border: black solid 0px;
-    background: black;
     overflow: hidden;
 }
 
@@ -57,6 +54,7 @@ body{
     background-repeat: no-repeat;
     background-position: top;
     justify-content: center;
+    position: relative;
 }
 
 .photoInfo{
@@ -64,7 +62,7 @@ body{
     width: auto;
     position: absolute;
     padding: 5px;
-    bottom: 3vh;
+    bottom: 5vh;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
@@ -89,7 +87,6 @@ body{
 }
 
 .prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides{
-
     padding: 10px;
     position: absolute;
     border: none;
@@ -101,6 +98,26 @@ body{
     font-size: 5vw;
 }
 
+.next8{
+    top: 10%;
+    right: 8px;
+}
+
+.prev8{
+    top: 10%;
+    left: 8px
+}
+
+.play, .stop{
+    top: 25%;
+    left: 8px;
+}
+
+.slides{
+    top: 25%;
+    right: 8px;
+}
+
 .prevPhoto{
     top: 40%;
     left: 8px;
@@ -108,26 +125,6 @@ body{
 
 .nextPhoto{
     top: 40%;
-    right: 8px;
-}
-
-.next8{
-    top: 1vw;
-    right: 8px;
-}
-
-.play, .stop{
-    top: 20%;
-    left: 8px;
-}
-
-.prev8{
-    top: 1vw;
-    left: 8px
-}
-
-.slides{
-    top: 20%;
     right: 8px;
 }
 
@@ -161,27 +158,27 @@ body{
         height: 50px;
     }
 
-.menu > div {
-    font-size: 0.7rem;
+    .menu > div {
+        font-size: 0.7rem;
+    }
+
+    .photoInfo{
+        font-size: 3vw;
+    }
+
+    .header {
+        font-size: 3vw;
+    }
+
 }
 
-.photoInfo{
-    font-size: 3vw;
+@media (min-width: 1000px){
+
+    .prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides{
+        font-size: 40px;
+    }
+
 }
 
-.header {
-    font-size: 3vw;
-}
 
-  }
   
-
-input {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}

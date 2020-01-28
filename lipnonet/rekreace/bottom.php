@@ -1,14 +1,17 @@
-  <!-- Google search -->
-  <script async src='https://cse.google.com/cse.js?cx=partner-pub-6892058759603615:gkqat6j57vf'></script>
-  <div class="gcse-searchbox-only"></div>
+
+<!-- Google search -->
+<script async src='https://cse.google.com/cse.js?cx=partner-pub-6892058759603615:gkqat6j57vf'></script>
+<div class="gcse-searchbox-only"></div>
+
+
 <div class="header">
-    (C)1998-2019
+    (C)1998-2020
     <a href="mailto:ubytovani@lipnonet.cz">ubytovani@lipnonet.cz</a>
     <br>
-    <a href="http://www.lipnonet.cz/">www.LIPNOnet.cz</a>
-    <a href="http://www.lipno.net/">www.LIPNO.net</a>
-    <a href="http://www.frymburk.com/">www.FRYMBURK.com</a>
-    <a href="http://www.frymburk.eu/">www.FRYMBURK.eu</a>
+    <a href="http://www.lipnonet.cz/">LIPNOnet.cz</a> | 
+    <a href="http://www.lipno.net/">LIPNO.net</a> | 
+    <a href="http://www.frymburk.com/">FRYMBURK.com</a> | 
+    <a href="http://www.frymburk.eu/">FRYMBURK.eu</a>
     <script>
       document.write("<img src=\"visit.php?pageid=<?php echo $_SERVER["SCRIPT_NAME"];?>&referer=" + escape(top.document.referrer) + "&screenres=" + screen.width + "x" + screen.height + "&colordepth=" + screen.colorDepth + "\" width=\"1\" height=\"1\" alt=\"\">");
     </script> 

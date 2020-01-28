@@ -55,7 +55,7 @@ componentDidMount(){
 render(){
 
 // descructing states, e.g. this.state.allEntrie -> allEntries
-const { allEntries, filteredEntriesByCategory, filteredEntriesBySearch, entries, begin, postsPerPage, paginateSize, next, searchText, selectedCategory, buttonText } = this.state;
+const { allEntries, filteredEntriesBySearch, begin, postsPerPage, paginateSize, next, searchText, selectedCategory, buttonText } = this.state;
 
 // Change page
 const paginate = (begin) => {
@@ -93,18 +93,6 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
     <div className="container">
       <Top/>
       <div className="center">
-            {/* <div  className="left">
-              allEntries.length: {allEntries.length},
-              <br/>filteredEntriesByCategory.length: {filteredEntriesByCategory.length},
-              <br/>filteredEntriesBySearch.length: {filteredEntriesBySearch.length},
-              <br/>entries.length: {entries.length},
-              <br/>begin: {begin} + postsPerPage: {postsPerPage} = end : {begin + postsPerPage -1 }
-              <br/>paginateSize: {paginateSize},
-              <br/>next: {next},
-              <br/>buttonText: {buttonText},
-              <br/><b>searchText</b>: {searchText}
-              <br/><b>selectedCategory</b> : {selectedCategory}
-            </div> */}
         <br/><img src={headerLipnoForum} width="548" height="39"/>
         <div className="btn-group">
             <AddEntry

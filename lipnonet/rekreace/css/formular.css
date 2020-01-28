@@ -1,0 +1,213 @@
+/* formular.php */
+::-webkit-input-placeholder { /* Edge */
+	color: white;
+}
+:-ms-input-placeholder { /* Internet Explorer */
+	color: white;
+}
+::placeholder {
+	color: white;
+}
+/* <div class="form_booking"> */
+.form_booking{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	background: url("../fotogalerie_ubytovani/604b.jpg");
+	width: 100%;
+    padding: 0px;
+    color: white;
+	text-align: left;
+	margin: auto;
+	border-radius: 5px;
+	border: 1px solid #555;
+	margin-top: 0rem;
+	margin-bottom: 0rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	position: relative;
+}
+
+.form_result_alert{
+	position: absolute;
+	width: 80%;
+	height: 80%;
+	top: 50px;
+	color: black;
+	border: 1px solid white;
+	border-radius: 5px;
+	text-align: center;
+	visibility: hidden;
+	text-decoration: none;
+}
+
+.form_result_alert ul {
+	list-style: none;
+}
+
+.form_booking input,
+.form_booking select,
+.form_booking textarea {
+    font-size: 1.0rem;;
+	width: 100%;
+	background-color: transparent;
+	border: none;
+	margin: 2px 5px;
+	transition: none;
+	color: white;
+	letter-spacing: 0.1rem;
+}
+
+.form_booking input[type=text]:focus,
+.form_booking input[type=email]:focus,
+.form_booking input[type=tel]:focus,
+.form_booking input[type=date]:focus,
+.form_booking input[type=hi]:focus,
+.form_booking textarea:focus,
+.form_booking select:focus {
+	border: none;
+	outline: none;
+  }
+
+/* <div class="input_booking"> */
+.input_booking{
+	background-color:rgba(0, 0, 0, 0.4);
+	width: 45%;
+	border-radius: 5px;
+	border: 1px solid white;
+	padding: 2px;
+	margin: 5px;
+}
+
+.input_booking:hover{
+	border: 1px solid black;
+}
+
+.input_booking label{
+	font-size: 0.7rem;
+	color: white;
+	font-weight: bold;
+	text-align: left;
+	margin: 2px 5px;
+}
+
+.input_booking option{
+	background-color:rgba(0, 0, 0, 0.5);
+}
+
+
+/* Original Solution found on Stackoverflow here:
+http://stackoverflow.com/questions/26573346/ios-safari-messes-up-input-type-date
+*/
+
+.input_booking input[type="date"]
+{
+    display:block;
+  
+    /* Solution 1 */
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    min-height: 1.2em; 
+  
+    /* Solution 2 */
+	/* min-width: 96%; */
+}
+
+/* <div class="submit_booking"> */
+.submit_booking{
+	border-radius: 5px;
+	border: 1px solid white;
+	padding: 0;
+	margin: 5px;
+	text-align: left;
+	background-color:rgba(0, 256, 0, 0.4);
+	width: 20%;
+}
+
+.submit_booking:hover{
+	border: 1px solid black;
+}
+
+.submit_booking input{
+	width: 100%;
+	margin: 0;
+	padding: 20px;
+	border: none;
+	font-size: 1rem;
+	border-radius: 5px;
+}
+
+.submit_booking input:focus{
+	background-color:rgba(0, 256, 0, 0.5);
+}
+
+.antispam_booking {
+	width: 20%;
+}
+
+/* <div class="booking_status"> */
+.booking_status{
+	margin: auto;
+	justify-content: center;
+	text-align: center;
+	margin: 0;
+	width: auto;
+	background: url("../images/booking_form_low_quality.jpg");
+	background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-position: top;
+	padding: 1rem;
+	border: 1px solid black;
+}
+
+/*<table class="booking_table">*/
+.booking_table{
+	width: 100%;
+	border-radius: 5px;
+	border-collapse: collapse;
+	padding: 0px;
+	margin: auto;
+	/* all <td> same width */
+	table-layout:fixed;
+	background-color:rgba(85, 85, 85, 0.5);
+	border: 1px solid black;
+}
+
+.booking_table td{
+	background-color:rgba(85, 85, 85, 0.1);
+	color: black;
+	border: 1px solid black;
+}
+
+.booking_table td:nth-child(1) {
+	background-color:rgba(85, 85, 85, 0.7);
+}
+
+.booking_table th{
+	font-size: 13px;
+	background-color:rgba(85, 85, 85, 0.9);
+	border: 1px solid black;
+}
+
+.booking_table tr{
+	font-size: 11px;
+}
+.booking_table tr:hover{
+	background-color:rgba(85, 85, 85, 0.7);
+	/*font-weight: bold;*/
+}
+
+.booking_info{
+	background-color:rgba(255, 208,   0, 0.9);
+	margin-top: 2rem;
+	width: 100%;
+	border-radius: 5px;
+	border: 1px solid black;
+	color: black;
+	font-size: 13px;
+}
+
+/*
+.booking_table tr:nth-child(even){background-color: rgba(0, 0, 0, 0.4);}
+*/

@@ -5,11 +5,23 @@ class UI {
 
     static loadImgBig(bigImgUrl) {
 
-      console.log(bigImgUrl);
-
-      const bigImgInfo =    document.querySelector('.photoInfo');
+      const bigImgInfo  =   document.querySelector('.photoInfo');
       const bigImgBlock =   document.querySelector('.main-img');
       
+      // if index.php page than change css height from '100vh' to smaler
+      const image = new Image();
+      image.src = bigImgUrl;
+      // add event handler 'onload' - execute function after img loaded
+      image.onload = () => {
+        const height  =  image.height * bigImgBlock.clientWidth /  image.width + 'px';
+        if(fotoGalleryMainPage === 1 ) {
+          bigImgBlock.style.height = height;
+          } else {
+            //bigImgInfo.style.top = `${height}px`;
+            console.log(height);
+          }
+      }
+
       // create big background photo
       bigImgBlock.style.backgroundImage = "url('" + bigImgUrl + "')";
 
@@ -20,7 +32,7 @@ class UI {
 
       const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
 
-      if (fotoGalleryMainPage === 0 || fotoGalleryMainPage === 2) {
+//    if (fotoGalleryMainPage === 0 || fotoGalleryMainPage === 2) {
         bigImgInfo.innerHTML = `
         <b>${objOneFoto.id}</b>
         ${objOneFoto.insertDate.slice(0,10)}    
@@ -29,6 +41,10 @@ class UI {
         <br>
         ${objOneFoto.text}
         `;
+//      }
+      // fix font size for index.php
+      if (fotoGalleryMainPage === 1) {  
+        bigImgInfo.style.fontSize = "1rem";
       }
       if (fotoGalleryMainPage === 2) {
       const formNames = (formName, value) => {

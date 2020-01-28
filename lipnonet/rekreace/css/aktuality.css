@@ -1,0 +1,127 @@
+.aktuality_lipno_graphs{
+    margin: 10px;
+    text-align: center;
+    background: gray;
+    font-size: 12px;
+    padding: 20px;
+}
+
+.aktuality_lipno_graphs_graphs {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    background: black;
+    padding: 10px;
+}
+
+.aktuality_lipno_graphs_graphs span {
+    display: inline-block;
+    background: darkgray;
+    width: 100%;
+
+}
+
+.aktuality_lipno_graphs img {
+    margin: 10px;
+}
+
+.aktuality_lipno_graphs a {
+    color: white;
+}
+
+.aktuality_lipno_graphs a:hover {
+    color: yellow;
+}
+
+
+.aktuality_frymburk_graphs{
+    text-align: center;
+    background: black;
+    max-width: 100%;
+    word-wrap: normal;
+    font-size: 12px;
+    color: white;
+    margin: 10px;
+}
+
+.aktuality_frymburk_graphs a{
+    color: white;
+}
+
+.aktuality_frymburk_graphs img {
+    width:100%;
+    height:100%;
+}
+
+
+.aktuality_records{
+    margin: 10px;
+}
+
+.aktuality_records table {
+    background: gray;
+    color: black;
+    font-size: 9px;
+
+    margin: auto;
+    width: 100%
+}
+
+.aktuality_records th {
+    background: darkgray;
+    color: black;
+}
+
+.aktuality_records td {
+padding:0;
+margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------davis wind table start */
+.wind_table{
+	padding: 0;
+	border-spacing: 0;
+	width: 724px;
+}
+
+.wind_table td{
+	padding: 1px;
+	font-size: 8pt;
+}
+
+.wind_table th{
+	padding: 1px;
+	font-size: 9pt;
+}
+/* ------------------------- davis wind table end */
+
+TR.wind_header {
+    color : white;
+    background: #555555;
+    font-size: 8pt;
+    font-family : Helvetica, Verdana;
+}
+
+.wind_month{
+	font-size: 12pt;
+	text-align: right;
+	background: #EBEBEB;
+}
+
+
+.wind_td{
+	font-size: 8pt;
+}
