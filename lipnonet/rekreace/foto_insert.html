@@ -2,42 +2,43 @@
 <html>
 	<head>
 	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
-	<link rel="stylesheet" href="css/foto_insert_style.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 	<title>Fotogalerie - vkládání fotek</title>
 	<link
 	rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
 	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
 	crossorigin="anonymous"
-/>
-<link rel="stylesheet" href="css/style.css">
+	/>
+	<link rel="stylesheet" href="css/photogallery.css">
+	<link rel="stylesheet" href="css/foto_insert_style.css">
 </head>
-<body>
-
 <body  class="page">
-
-<!-- // new fotogallery -->
-<div class="container">
-	<!-- slideshow start -->
-	<div class="imgs">
-		<span id="imgsLocation"></span>
-	</div>
-	<div class="main-img">
-		<div class="photoInfo"></div>
-		<div class="homepage"><a href="http://www.lipno.net/rekreace/">www.lipno.net - Ubytování u Kučerů</a></div>
-		<button class="prevPhoto">  <i class="fas fa-arrow-left"></i></button>
-		<button class="nextPhoto">  <i class="fas fa-arrow-right"></i></button>
-		<button class="prev8">      <i class="fas fa-angle-double-left"></i></button>
-		<button class="play">       <i class="fas fa-play-circle"></i></button>
-		<button class="stop">       <i class="fas fa-stop-circle"></i></button>
-		<button class="next8">      <i class="fas fa-angle-double-right"></i></button>
-		<a href="index.php">
-			<button class="slides"> <i class="fas fa-home"></i></button>
-		</a>
-
-		<span id="imgLocation"></span>
-		<!-- slideshow end -->
+    <div class="container">
+        <!--<div class="header">Fotogalerie - <a href="http://lipno.net/rekreace">Ubytování u Kučerů</a></a></div> -->
+        <div class="menu"></div>
+        <div class="imgs">
+            <span id="imgsLocation"></span>
+        </div>
+        <div class="main-img">
+            <div class="photoInfo"></div>
+            <div class="homepage"><a href="index.php">Ubytování u Kučerů</a></div>
+            <button class="textOn">  <i class="fas fa-comment-medical"></i></button>
+            <button class="textOff">  <i class="fas fa-comment-slash"></i></button>
+            <button class="prevPhoto">  <i class="fas fa-arrow-left"></i></button>
+            <button class="nextPhoto">  <i class="fas fa-arrow-right"></i></button>
+            <button class="prevPhotoBig">  <i class="fas fa-arrow-left"></i></button>
+            <button class="nextPhotoBig">  <i class="fas fa-arrow-right"></i></button>
+            <button class="prev8">      <i class="fas fa-angle-double-left"></i></button>
+            <button class="play" id="autoEventButton">       <i class="fas fa-play-circle"></i></button>
+            <button class="stop">       <i class="fas fa-stop-circle"></i></button>
+            <button class="next8">      <i class="fas fa-angle-double-right"></i></button>
+            <!--<a href="index.php">
+                <button class="slides"> <i class="fas fa-home"></i></button>
+            </a>-->
+            <span id="imgLocation"></span>		<!-- slideshow end -->
 
 		<div id="logindiv" class="login">
 			<form id="login" name="login" method="POST" enctype="multipart/form-data">
@@ -86,8 +87,8 @@
 		var fotoGalleryMainPage = 2;
 		var fotoGalleryOwner = '_ubytovani';
 	</script>
-	<script src="js/main.js"></script>
-	<script src="js/main_foto_insert.js"></script>
+<script src="js/photogallery.js"></script>
+<script src="js/main_foto_insert.js"></script>
 </div>  <!-- end <div class="container">  -->
 
 </body>

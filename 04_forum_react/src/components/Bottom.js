@@ -5,6 +5,7 @@ const Bottom = () => {
     return ( 
         <span>
             {/* Google search */}
+            <script async src='https://cse.google.com/cse.js?cx=partner-pub-6892058759603615:gkqat6j57vf'></script>
             <div className="gcse-searchbox-only"></div>
             <div className="header">
                 (C)1998-2020

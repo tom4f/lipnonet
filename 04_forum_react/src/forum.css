@@ -1,61 +1,3 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-body 	{
-	font-family : Verdana, Helvetica, sans-serif;
-  }
-
-  .container {
-	margin: auto;
-	width: 724px;
-}
-
-  .bottom{
-	text-align : center;
-}
-
-  .header{
-	background : #555555;
-	text-align : center;
-	padding: 2px;
-	color: white;
-}
-
-.header a { 
-	color : White;
-	text-decoration : none;
-	font-size: 10pt;
-	font-weight : bold;
-}
-.header a:hover {
-	color : Lime;
-	font-size: 10pt;
-	text-decoration : underline;
-	font-weight : bold;
-}
-
-.mainpictures{
-	white-space: nowrap;
-	text-align : center;
-	width: 724px;
-}
-
-.mainpictures img{
-    display: inline;
-    vertical-align: top;
-    clear: both;
-}
-
-.center{
-	text-align : center;
-    margin: 0 auto;
-	background : #FF9933;
-	color: black;
-}
-
 
 input[type=text], textarea[type=text], select, input[type=submit] {
 	padding: 2px 5px;
@@ -102,13 +44,15 @@ input[type=text], textarea[type=text], select, input[type=submit] {
 
 .fields {
     display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	width: auto;
+	max-width: 710px;
     font-size: 0.8rem;
     color: #fff;
     grid-gap: 0.1rem;
     margin-top: 1rem;
-    text-align: center;
+	text-align: center;
+	margin: auto;
   }
 
   .btn-group .button {
@@ -164,4 +108,4 @@ input[type=text], textarea[type=text], select, input[type=submit] {
 
 .kniha_one_entry .kniha_text{
 	text-align: left;
-}
+} 

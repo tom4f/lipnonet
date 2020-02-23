@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- main css for top.php and bottom.php -->
     <link rel="stylesheet" href="css/main.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
     <title>LIPNO FRYMBURK rekreace ubytování U Kučerů On-line kamera</title> 
     <!-- fotogalery links start -->
@@ -14,7 +14,8 @@
       />
     <!-- fotogalery links end -->
     
-    <!-- main css for top.php and bottom.php -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="Robots" content="index, follow"> 
     <meta http-equiv="cache-control" content="no-cache">
     <meta name="Author" content="Ing. Tomáš Kučera, Tom4F@seznam.cz">
@@ -42,13 +43,10 @@
     <a class="menu" href="ceny.php" target="_top">Ceny</a> | 
     <a class="menu" href="kontakt.php" target="_top">Kontakt</a> | 
     <a class="menu" href="frymburk.php" target="_top">O Frymburku</a>
-
   </div>
 
   <div class="mainpictures">
-         <a href="rekreace.php"><img class="img" src="images/main_zima.jpg" HEIGHT="100" alt="Ubytování u Kučerů ve Frymburku - zima"
-    ></a><a href="rekreace.php"><img class="img" src="images/main.jpg" height="100" alt="Ubytování u Kučerů ve Frymburku"
-    ></a><a href="rekreace.php"><img class="img" src="images/main_leto.jpg" WEIGHT=100 alt="Ubytování u Kučerů ve Frymburku - léto"></a>
+         <a href="rekreace.php"><img class="img" src="images/main.jpg" alt="Ubytování u Kučerů ve Frymburku - zima"></a>
   </div>
 
   <div class="header">

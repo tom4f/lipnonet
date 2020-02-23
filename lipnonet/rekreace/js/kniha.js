@@ -147,7 +147,8 @@ let miliSeconds = new Date().getMilliseconds();;
 const loadForumfromMySqlStartPage = () => {
   var xhr = new XMLHttpRequest();
   //xhr.open('GET', `api/ajax_receive_data_universal.php`, true);
-  xhr.open('GET', `api/pdo_read_forum.php`, true);
+  xhr.open('POST', `api/pdo_read_forum.php`, true);
+  //xhr.open('POST', `https://www.frymburk.com/rekreace/api/pdo_read_forum.php`, true);
   xhr.onload = function() {
       if (this.readyState == 4 && this.status == 200) {
         allForum = JSON.parse(this.responseText);

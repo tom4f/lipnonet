@@ -5,7 +5,7 @@ class UI {
 
     static loadImgBig(bigImgUrl) {
 
-      const bigImgInfo  =   document.querySelector('.photoInfo');
+
       const bigImgBlock =   document.querySelector('.main-img');
       
       // if index.php page than change css height from '100vh' to smaler
@@ -14,6 +14,7 @@ class UI {
       // add event handler 'onload' - execute function after img loaded
       image.onload = () => {
         const height  =  image.height * bigImgBlock.clientWidth /  image.width + 'px';
+        //bigImgInfo.style.bottom = '0px';  
         if(fotoGalleryMainPage === 1 ) {
           bigImgBlock.style.height = height;
           } else {
@@ -32,8 +33,7 @@ class UI {
 
       const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
 
-//    if (fotoGalleryMainPage === 0 || fotoGalleryMainPage === 2) {
-        bigImgInfo.innerHTML = `
+       bigImgInfo.innerHTML = `
         <b>${objOneFoto.id}</b>
         ${objOneFoto.insertDate.slice(0,10)}    
         <b>${objOneFoto.header}</b> 
@@ -41,7 +41,7 @@ class UI {
         <br>
         ${objOneFoto.text}
         `;
-//      }
+  
       // fix font size for index.php
       if (fotoGalleryMainPage === 1) {  
         bigImgInfo.style.fontSize = "1rem";
@@ -89,7 +89,8 @@ class UI {
         if (event !=0) {
           if (
               event.target.classList == 'fas fa-arrow-right'  || event.target.classList == 'fas fa-arrow-left' ||
-              event.target.classList == 'nextPhoto'           || event.target.classList == 'prevPhoto' ||      
+              event.target.classList == 'nextPhoto'           || event.target.classList == 'prevPhoto' ||
+              event.target.classList == 'nextPhotoBig'        || event.target.classList == 'prevPhotoBig' ||           
               event.target.classList == 'fas fa-play-circle'  || event.target.classList == 'play'
               ) {
             showEightPhoto = 0;
@@ -144,9 +145,12 @@ class UI {
 }
 // end of UI class
 
+
+
 console.log('fotoGalleryMainPage : ' + fotoGalleryMainPage);
 if (typeof fotoGalleryMainPage === 'undefined') {
-     var fotoGalleryMainPage = 0;
+    // why var instead let ???   
+  var fotoGalleryMainPage = 0;
 }
 console.log('fotoGalleryMainPage : ' + fotoGalleryMainPage);
 
@@ -156,9 +160,16 @@ let limit = 8;
 let offset = 0;
 let timer;
 let showEightPhoto = 1;
+let infoText = 1;
+const bigImgInfo  =   document.querySelector('.photoInfo');
+document.querySelector('.textOn').style.display = "none";
+
+
 
 const loadPicturesfromAllPhoto = (limit, offset, event) => {
+    // show 8 small imgs
     UI.loadImgList(limit, offset, event);
+    // add eventListeners for new 8 imgs
     UI.slideShow();
 }
 
@@ -177,6 +188,7 @@ const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
 }
 
 const startPresentation = (event) => {
+  console.log('autoEvent')
   const Presentation = () => loadPicturesfromAllPhoto(1, (Math.floor(Math.random() * AllPhoto.length) + 1), event);
   timer = setInterval(Presentation, 5000);
   document.querySelector('.play').style.display = "none";
@@ -187,6 +199,23 @@ const stopPresentation = (event) => {
   clearInterval(timer);
   document.querySelector('.play').style.display = "block";
   document.querySelector('.stop').style.display = "none";
+  console.log(infoText);
+}
+
+const textOn = (event) => {
+  infoText = 1;
+  document.querySelector('.textOn').style.display = "none";
+  document.querySelector('.textOff').style.display = "block";
+  console.log(infoText);
+  bigImgInfo.style.display = "block";
+}
+
+const textOff = (event) => {
+  infoText = -1;
+  document.querySelector('.textOn').style.display = "block";
+  document.querySelector('.textOff').style.display = "none";
+  console.log(infoText);
+  bigImgInfo.style.display = "none";
 }
 
 // main JS script started when DOM loaded
@@ -199,4 +228,16 @@ document.querySelector('.next8')    .addEventListener('click', (event) => loadPi
 document.querySelector('.prev8')    .addEventListener('click', (event) => offset > 7 ? loadPicturesfromAllPhoto(limit, offset-=limit, event) : console.log(`offset: ${offset}`));
 document.querySelector('.nextPhoto').addEventListener('click', (event) => loadPicturesfromAllPhoto(1, offset+=1, event));
 document.querySelector('.prevPhoto').addEventListener('click', (event) => offset > 0 ? loadPicturesfromAllPhoto(1, offset-=1, event) : console.log(`offset: ${offset}`));  
+//
+document.querySelector('.nextPhotoBig').addEventListener('click', (event) => loadPicturesfromAllPhoto(1, offset+=1, event));
+document.querySelector('.prevPhotoBig').addEventListener('click', (event) => offset > 0 ? loadPicturesfromAllPhoto(1, offset-=1, event) : console.log(`offset: ${offset}`));  
 
+//
+document.querySelector('.textOn')   .addEventListener('click', (event) => textOn(event));
+document.querySelector('.textOff')  .addEventListener('click', (event) => textOff(event));
+
+
+
+// button PLAY dummy click from JavaScript - start slideShow at start
+//let autoEvent = new CustomEvent('click');
+//autoEventButton.dispatchEvent(autoEvent);

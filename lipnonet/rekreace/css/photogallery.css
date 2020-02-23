@@ -58,17 +58,21 @@ body{
 }
 
 .photoInfo{
-    white-space: nowrap;
-    width: auto;
+    width: fit-content;
     position: absolute;
-    padding: 5px;
-    bottom: 5vh;
+    padding: 0;
+    bottom: 0px;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
     font-size: 2vw;
     background-color: rgba(0, 0, 0, 0.3);
     text-align: center;
+}
+
+.photoInfo:hover{
+    background-color: transparent;
+    color: transparent;
 }
 
 .homepage{
@@ -86,53 +90,86 @@ body{
  
 }
 
-.prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides{
+.prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides, .textOn, .textOff{
     padding: 10px;
     position: absolute;
     border: none;
     /* border: 2px solid #fff; */
-    background-color: transparent;
-    border-radius: 50%;
+	background-color:rgba(0, 0, 0, 0.2);
+
     outline: none;
-    color: white;
-    font-size: 5vw;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 3vw;
+    top: 1%;
+}
+
+.prevPhotoBig, .nextPhotoBig{
+    padding: 10px;
+    position: absolute;
+    border: none;
+    /* border: 2px solid #fff; */
+	background-color:transparent;
+
+    outline: none;
+    color: transparent;
+    font-size: 3vw;
+    top: 20%;
+    width: 30%;
+    height: 40%;
+}
+
+.prevPhotoBig{
+    left: 1%;
+}
+
+.nextPhotoBig{
+    right: 1%;
+}
+
+.nextPhotoBig:hover, .prevPhotoBig:hover
+{
+	background-color:transparent;
+    color: transparent;
+    cursor: pointer;
+}
+
+.textOn, .textOff{
+    right: 25%;
 }
 
 .next8{
-    top: 10%;
-    right: 8px;
+    right: 13%;
 }
 
 .prev8{
-    top: 10%;
-    left: 8px
+    left: 13%
 }
 
 .play, .stop{
-    top: 25%;
-    left: 8px;
+    left: 25%;
 }
 
 .slides{
-    top: 25%;
-    right: 8px;
+    right: 25%;
 }
 
 .prevPhoto{
-    top: 40%;
-    left: 8px;
+    left: 1%;
 }
 
 .nextPhoto{
-    top: 40%;
-    right: 8px;
+    right: 1%;
 }
 
 .homepage a{
     color: white;
 }
 
-.nextPhoto:hover, .prevPhoto:hover, .next8:hover, .prev8:hover, .play:hover, .stop:hover, .slides:hover{
+.nextPhoto:hover, .prevPhoto:hover,
+.next8:hover, .prev8:hover,
+.play:hover, .stop:hover,
+.slides:hover,
+.textOn:hover, .textOff:hover{
     background: white;
     color: black;
     cursor: pointer;
@@ -153,29 +190,20 @@ body{
 
 
 @media (max-width: 400px) {
-   
     .imgs > div{
         height: 50px;
     }
-
-    .menu > div {
-        font-size: 0.7rem;
-    }
-
     .photoInfo{
-        font-size: 3vw;
+        font-size: 1.5vh;
     }
-
-    .header {
-        font-size: 3vw;
-    }
-
 }
 
 @media (min-width: 1000px){
-
-    .prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides{
-        font-size: 40px;
+    .prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides, .textOn, .textOff{
+        font-size: 30px;
+    }
+    .photoInfo{
+        font-size: 20px;
     }
 
 }

@@ -12,7 +12,7 @@
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
         crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/photogallery.css">
 </head>
 <body  class="page">
     <div class="container">
@@ -23,22 +23,26 @@
         </div>
         <div class="main-img">
             <div class="photoInfo"></div>
-            <div class="homepage"><a href="http://www.lipno.net/rekreace/">www.lipno.net - Ubytování u Kučerů</a></div>
+            <div class="homepage"><a href="index.php">Ubytování u Kučerů</a></div>
+            <button class="textOn">  <i class="fas fa-comment-medical"></i></button>
+            <button class="textOff">  <i class="fas fa-comment-slash"></i></button>
             <button class="prevPhoto">  <i class="fas fa-arrow-left"></i></button>
             <button class="nextPhoto">  <i class="fas fa-arrow-right"></i></button>
+            <button class="prevPhotoBig">  <i class="fas fa-arrow-left"></i></button>
+            <button class="nextPhotoBig">  <i class="fas fa-arrow-right"></i></button>
             <button class="prev8">      <i class="fas fa-angle-double-left"></i></button>
-            <button class="play">       <i class="fas fa-play-circle"></i></button>
+            <button class="play" id="autoEventButton">       <i class="fas fa-play-circle"></i></button>
             <button class="stop">       <i class="fas fa-stop-circle"></i></button>
             <button class="next8">      <i class="fas fa-angle-double-right"></i></button>
-            <a href="https://frymburk.com/lucka">
+            <!--<a href="index.php">
                 <button class="slides"> <i class="fas fa-home"></i></button>
-            </a>
+            </a>-->
             <span id="imgLocation"></span>
         </div>
     </div>
     <script>
 		var fotoGalleryOwner = '_lucka';
 	</script>
-    <script src="js/main.js"></script>
+    <script src="js/photogallery.js"></script>
 </body>
 </html>

@@ -1,7 +1,5 @@
 import React from 'react';
-import mainZimaImg          from '../images/main_zima.jpg';
 import mainImg              from '../images/main.jpg';
-import mainLetoImg          from '../images/main_leto.jpg';
 import GoogleAd             from './GoogleAd';
 
 const Top = () => {
@@ -19,15 +17,7 @@ const Top = () => {
             </div>
 
             <div className="mainpictures">
-                <a href="rekreace.php">
-                    <img className="img" src={mainZimaImg} height="100" alt="Ubytování u Kučerů ve Frymburku - zima"/>
-                </a>
-                <a href="rekreace.php">
-                    <img className="img" src={mainImg} height="100" alt="Ubytování u Kučerů ve Frymburku"/>
-                </a>
-                <a href="rekreace.php">
-                    <img className="img" src={mainLetoImg} height="100" alt="Ubytování u Kučerů ve Frymburku - léto"/>
-                </a>
+                <a href="rekreace.php"><img className="img" src={mainImg} alt="Ubytování u Kučerů ve Frymburku - zima" /></a>
             </div>
 
             <div className="header">

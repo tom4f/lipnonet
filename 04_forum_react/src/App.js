@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import './main.css';
+import './forum.css';
+import Top                  from './components/Top';
+import Bottom               from './components/Bottom';
 import axios                from "axios";
 import SearchForum          from './components/SearchForum';
 import Forum                from './components/Forum';
@@ -7,10 +11,6 @@ import PostsPerPage         from './components/PostsPerPage';
 import Paginations          from './components/Paginations';
 import SelectPaginate       from './components/SelectPaginate';
 import AddEntry             from './components/AddEntry';
-import './App.css';
-import Top                  from './components/Top';
-import Bottom               from './components/Bottom';
-import headerLipnoForum     from './images/nadpis_lipenske_forum.gif';
 
 export default class App extends Component {
   constructor(props) {
@@ -90,10 +90,11 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
 
 
   return (
-    <div className="container">
+    <div className="top_container">
       <Top/>
       <div className="center">
-        <br/><img src={headerLipnoForum} width="548" height="39"/>
+        <div className="header"><b>Lipenské fórum</b></div>
+        <br/>
         <div className="btn-group">
             <AddEntry
               paginate={paginate}
@@ -102,6 +103,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
             />
         </div>
         <p style={{clear : "both"}}></p>
+        <br/>
         <div className="fields">
             <SearchForum
               filteredEntriesCalculate={filteredEntriesCalculate}
@@ -110,10 +112,6 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
             <SelectForum
               filteredEntriesCalculate={filteredEntriesCalculate}
               searchText={searchText}
-            />
-            <PostsPerPage
-              filteredEntriesBySearch={filteredEntriesBySearch}
-              paginate={paginate}
             />
         </div>
         <div>Je vybráno {filteredEntriesBySearch.length} záznamů.</div>
@@ -129,7 +127,13 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
               buttonText={buttonText}
             />
         <br/>
-        <SelectPaginate paginate={paginate} />
+        <div className="fields">
+            <SelectPaginate paginate={paginate} />
+            <PostsPerPage
+                  filteredEntriesBySearch={filteredEntriesBySearch}
+                  paginate={paginate}
+                />
+        </div>
         <br/>
             <small>Build with React</small>
         <br/>
