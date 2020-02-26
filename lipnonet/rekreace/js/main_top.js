@@ -1,26 +1,26 @@
   
   // [1] set specific <title> text
   const fileToTitle = {
-    indexphp : ['Úvodní strana', 'css/photogallery.css', 'css/aktuality.css'],
-    fotogaleriehtml : ['Foto galerie', 'css/photogallery.css'],
-    foto_inserthtml : ['Foto galerie', 'css/photogallery.css', 'css/foto_insert_style.css'],
-    fotogalerie_luckahtml : ['Foto galerie', 'css/photogallery.css'],
-    fotogalerie_lucka_html : ['Foto galerie', 'css/photogallery.css', 'css/foto_insert_style.css'],
-    fotogalerie_pavlikhtml : ['Foto galerie', 'css/photogallery.css'],
-    fotogalerie_pavlik_html : ['Foto galerie', 'css/photogallery.css', 'css/foto_insert_style.css'],
-    aktualityphp : ['Meteostanice, počasí', 'css/aktuality.css'],
-    formularphp : ['Formulář, objednávka', 'css/formular.css'],
-    knihaphp : ['Diskusní fórum', 'css/kniha_vanila.css'],
-    rekreacephp : ['Dovolená'],
-    frymburkphp : ['Obec, Městys'],
-    kontaktphp : ['Cesta k nám','css/kontakt.css'],
-    garsonkaphp : ['Garsonka, apartmán, pokoj, ceník'],
-    lipnophp : ['Jezero, voda, přehrada'],
-    vybaveniphp : ['Vybavení'],
-    profisolarphp : ['Solární, ohřev, panel, voda, profislolar'],
-    cenyphp : ['Ceny','css/ceny.css'],
-    webcam_ip_archivephp : ['Výhled na vodu'],
-    bedrichphp : ['Administrace']
+    'index.php' : ['Úvodní strana', 'css/photogallery.css', 'css/aktuality.css'],
+    'fotogalerie.html' : ['Foto galerie', 'css/photogallery.css'],
+    'foto_insert.html' : ['Foto galerie', 'css/photogallery.css', 'css/foto_insert_style.css'],
+    'fotogalerie_lucka.html' : ['Foto galerie', 'css/photogallery.css'],
+    'fotogalerie_lucka_.html' : ['Foto galerie', 'css/photogallery.css', 'css/foto_insert_style.css'],
+    'fotogalerie_pavlik.html' : ['Foto galerie', 'css/photogallery.css'],
+    'fotogalerie_pavlik_.html' : ['Foto galerie', 'css/photogallery.css', 'css/foto_insert_style.css'],
+    'aktuality.php' : ['Meteostanice, počasí', 'css/aktuality.css'],
+    'formular.php' : ['Formulář, objednávka', 'css/formular.css'],
+    'kniha.php' : ['Diskusní fórum', 'css/kniha_vanila.css'],
+    'rekreace.php' : ['Dovolená'],
+    'frymburk.php' : ['Obec, Městys'],
+    'kontakt.php' : ['Cesta k nám','css/kontakt.css'],
+    'garsonka.php' : ['Garsonka, apartmán, pokoj, ceník'],
+    'lipno.php' : ['Jezero, voda, přehrada'],
+    'vybaveni.php' : ['Vybavení'],
+    'profisolar.php' : ['Solární, ohřev, panel, voda, profislolar'],
+    'ceny.php' : ['Ceny','css/ceny.css'],
+    'webcam_ip_archive.php' : ['Výhled na vodu'],
+    'bedrich.php' : ['Administrace']
   }
   // actual title DOM
   const headTitle = document.getElementsByTagName('TITLE')[0];
@@ -29,16 +29,17 @@
 
   // get file name array 
   const pageFileNameArray = pagePathName.split('/');
+
   // get last block = file => with reverse() => more resources with big array
   // const pageFileName = pageFileNameArray.reverse()[0]
-  const pageFileName = pageFileNameArray[ pageFileNameArray.length - 1 ];
+  let pageFileName = pageFileNameArray[ pageFileNameArray.length - 1 ];
+
   // default value if page name did not find
-  let pageFileNameModified = 'indexphp';
   // if pageName is not 'lipnonet/rekreace/'
-  if ( pageFileName != '' )
-      pageFileNameModified = pageFileName.replace('.','');
+  if(pageFileName === '') pageFileName = 'index.php';
+  console.log('pageFileName: ' + pageFileName);
   // get title text and css from page name
-  const [ title , ...css ] = fileToTitle[pageFileNameModified];
+  const [ title , ...css ] = fileToTitle[pageFileName];
   // add new <title> text to actual text
   headTitle.text = `${headTitle.text} - ${title}`;
 
