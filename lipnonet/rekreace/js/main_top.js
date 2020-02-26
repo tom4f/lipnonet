@@ -29,7 +29,6 @@
 
   // get file name array 
   const pageFileNameArray = pagePathName.split('/');
-  console.log(pageFileNameArray);
   // get last block = file => with reverse() => more resources with big array
   // const pageFileName = pageFileNameArray.reverse()[0]
   const pageFileName = pageFileNameArray[ pageFileNameArray.length - 1 ];
@@ -38,9 +37,8 @@
   // if pageName is not 'lipnonet/rekreace/'
   if ( pageFileName != '' )
       pageFileNameModified = pageFileName.replace('.','');
-
-  // get title text from page name
-  const [ title , ] = fileToTitle[pageFileNameModified];
+  // get title text and css from page name
+  const [ title , ...css ] = fileToTitle[pageFileNameModified];
   // add new <title> text to actual text
   headTitle.text = `${headTitle.text} - ${title}`;
 
@@ -57,11 +55,7 @@
       // link.setAttribute("type", "text/css");
       // link.setAttribute("href", "styles.css");
       document.getElementsByTagName('HEAD')[0].appendChild(link); 
-      console.log(cssHref);
   }
 
-  // destructuring object, skip first parameter, all ...rest param used
-  const [ , ...css ] = fileToTitle[pageFileNameModified];
-  console.log(css);
   // append link element to it only if is needed
   css.forEach( cssHref => appendStyle(cssHref));
