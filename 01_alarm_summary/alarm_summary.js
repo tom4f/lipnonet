@@ -4,19 +4,53 @@
 
 let alarmSummaryForAllFiles=[];
 let sortOrder = 1;
+// show details after on-mouse-over place
+let alarmDetailTd;
 
-function startAlarmSummary() {
+const startAlarmSummary = (demo) => {
   // Prevent actual submit
-  event.preventDefault();
+  //e.preventDefault();
   alarmSummaryForAllFiles = [];
   UI.showEmptyAlarmSummary();
+  
+  const demoFiles = [
+      'MGW_GR_C_2020-03-16_09-46-03_Config.log',
+      'MGW_GR_C_2020-03-16_09-47-57_Config.log',
+      'MGW_GR_D_2020-03-16_09-46-11_Config.log',
+      'MGW_GR_D_2020-03-16_09-48-03_Config.log',
+      'MGW_WR_C_2020-03-16_09-45-51_Config.log',
+      'MGW_WR_C_2020-03-16_09-47-44_Config.log',
+      'MGW_WR_D_2020-03-16_09-45-57_Config.log',
+      'MGW_WR_D_2020-03-16_09-47-50_Config.log',
+      'MGW_WR_Test_2020-03-16_09-46-18_Config.log',
+      'MGW_WR_Test_2020-03-16_09-48-08_Config.log',
+      'MSS_GR_B_2020-03-16_09-34-43.txt',
+      'MSS_GR_B_2020-03-16_09-39-45.txt',
+      'MSS_GR_C_2020-03-16_09-36-24.txt',
+      'MSS_GR_C_2020-03-16_09-39-50.txt',
+      'MSS_WR_B_2020-03-16_09-31-24.txt',
+      'MSS_WR_B_2020-03-16_09-39-32.txt',
+      'MSS_WR_C_2020-03-16_09-33-06.txt',
+      'MSS_WR_C_2020-03-16_09-39-38.txt',
+      'MSS_WR_D_Ref_2020-03-16_09-30-44.txt',
+      'MSS_WR_D_Ref_2020-03-16_09-39-26.txt',
+      'MSS_WR_D_Ref_2020-03-16_09-39-26.txt'
+  ];
+
+  let file = '';
   let fileName = document.getElementById("selectedAlarmFile");
-  for (let i=0; i < fileName.files.length; i++) {
-    getTextFromOneFile(fileName.files[i].name);
+  const fileLength = demo === 'demo' ? demoFiles.length : fileName.files.length;
+  for (let i=0; i < fileLength ; i++) {
+    file = demo === 'demo' ? demoFiles[i] : fileName.files[i].name;
+    getTextFromOneFile(file);
   }
+  
+  
+  // work around - how to wait if table is rendered
+  UI.updEventListener();
 }
 
-function getTextFromOneFile(fileName){
+const getTextFromOneFile = (fileName) => {
   fetch(`test/${fileName}`)
   .then( (res)  => res.text())
   .then( (alarmText) => {
@@ -27,82 +61,101 @@ function getTextFromOneFile(fileName){
       .forEach( dummyArrayEntry => { 
         UI.addHtmlAlarmToSummary(dummyArrayEntry);
     });
+
   })
   // to handle errors :
-  .catch( (error) => console.log(error) )
+  .catch( (error) => console.log(error) );
 }
 
+
 // alarm summary for one fileName
-  function createAlarmSummaryForOneFile (alarmText, fileName)
-  {
-    // whole file divided separate Alarms = array
-    const alarmParseRule = [
-        [/     ....-..-.. ..:..:..[.]../g,/     ....-..-.. ..:..:..[.]../g,  4, 71, 2, 1, 0, 11, 'IPA MGW'],
-        [/....-..-..  ..:..:..[.]../g,/ ..:..:..[.]../g,11, 78, 2, 1, 0, 11, 'DX200 MSS'],
-        [/Specific problem         : /g,/Specific problem         : /g,     0, 67, 0, 3, 0, 11, 'ATCA MGW'],
-        [/NO ALARMS WITH GIVEN PARAMETERS/g, '', 0, 67, 0, 3, 0, 11, 'n/a' ],
-        [/No events matched the given criteria/g, /00]/g,      0, 37, 1, 1, 0, 11, 'empty ATCA MGW']
+const createAlarmSummaryForOneFile = (alarmText, fileName) => {
+    
+    // whole text file divided separate Alarms = array
+    const parseRule = [
+        [/     ....-..-.. ..:..:..[.]../g,        /(?=     ....-..-.. ..:..:..[.]..)/g, 4, 71, 2, 1, 0, 11, 'IPA MGW',        0],
+        [/....-..-..  ..:..:..[.]../g,            /(?=....-..-..  ..:..:..[.]..)/g,    11, 82, 2, 1, 0, 11, 'DX200 MSS',      2],
+        [/Specific problem         : /g,          /Specific problem         : /g,       0, 67, 0, 3, 0, 11, 'ATCA MGW',       5],
+        [/NO ALARMS WITH GIVEN PARAMETERS/g,      '',                                   0, 67, 0, 3, 0, 11, 'n/a',            0],
+        [/No events matched the given criteria/g, /00]/g,                               0, 37, 1, 1, 0, 11, 'empty ATCA MGW', 0]
     ];
 
     // let alarmText = fs.readFileSync(path.join(__dirname, '/test', fileName), 'utf8');
-    let AlarmBlock, alarmStart, alarmStop, alarmPosition, prioPosition, prioStart, prioStop, elementType;
-    alarmParseRule.forEach(dummyAlarmParseRule => {
-      if (alarmText.search(dummyAlarmParseRule[0]) > 0) {
-        AlarmBlock =      alarmText.split(dummyAlarmParseRule[1]);      
-        alarmStart =      dummyAlarmParseRule[2];
-        alarmStop =       dummyAlarmParseRule[3];
-        alarmPosition =   dummyAlarmParseRule[4];
-        prioPosition =    dummyAlarmParseRule[5];
-        prioStart =       dummyAlarmParseRule[6];
-        prioStop =        dummyAlarmParseRule[7];
-        elementType =     dummyAlarmParseRule[8];  
+    
+    let alarms = '';
+
+    let alarmStart;
+    let alarmStop;
+    let alarmPosition;
+    let prioPosition;
+    let prioStart;
+    let prioStop;
+    let elementType;
+    let cutLastLine;
+
+    parseRule.forEach(rule => {
+      const [ alarmDetect, alarmBlock ] = rule;
+      if (alarmText.search(alarmDetect) > 0) {
+        // all alarms in array
+        alarms = alarmText.split(alarmBlock);
+        [ ,,
+          alarmStart,
+          alarmStop,
+          alarmPosition,
+          prioPosition,
+          prioStart,
+          prioStop,
+          elementType,
+          cutLastLine
+        ] = rule;      
       }
     });
 
     // remove first element - this is not alarm
-    AlarmBlock.shift();
+    alarms.shift();
 
-    let alarmWithCount = [];
-    let alarmSummary = [];
-    let oneAlarm, onePriority, actualIndex;
+    let alarmWithCount  = [];
+    let alarmSummary    = [];
 
-    // all alarms to array
-    AlarmBlock.forEach(dummyAlarm => {
-
-      // from one alarm block separate single alarm text
-        oneAlarm = dummyAlarm.
-          split('\r\n')[alarmPosition].
-          substring(alarmStart, alarmStop).
-          trim();
+    // single alarm from all alarms array
+    alarms.forEach(alarm => {
+        let onePriority;      
+        // one alarm lines into array
+        let fullAlarmArray = alarm.split('\r\n');
+        // remove last not needed lines form each alarm
+        fullAlarmArray.splice(fullAlarmArray.length - cutLastLine, cutLastLine);
+        // generate one shorter alarm text
+        const fullAlarmText = fullAlarmArray.join('\r\n');
+        // get alarm name text
+        const oneAlarm = fullAlarmArray[alarmPosition]
+          .substring(alarmStart, alarmStop)
+          .trim();
 
         if (elementType === 'ATCA MGW') {
-            onePriority = dummyAlarm.
-            split('Severity                 : ')[1].
-            substring(prioStart, prioStop).
-            trim();
+            onePriority = alarm
+            .split('Severity                 : ')[1]
+            .substring(prioStart, prioStop)
+            .trim();
         } else {
-            onePriority = dummyAlarm.
-            split('\r\n')[prioPosition].
-            substring(prioStart, prioStop).
-            trim();
+            onePriority = fullAlarmArray[prioPosition]
+            .substring(prioStart, prioStop)
+            .trim();
         }
 
-
-      
-        const isAlarmStored = (dummyAlarm, dummyIndex) => {
-          actualIndex = dummyIndex;
-          return dummyAlarm == oneAlarm;
-        }
-
-        if(alarmSummary.some(isAlarmStored)) {
+        if( alarmSummary.some( dummyAlarm => dummyAlarm === oneAlarm ) ) {
+          // if alarm name already stored
+          const actualIndex = alarmSummary.indexOf(oneAlarm);
           ++alarmWithCount[actualIndex][1];
+          alarmWithCount  [actualIndex][5] = fullAlarmText;
           if (elementType === 'ATCA MGW') alarmWithCount[actualIndex][2] = onePriority;
-        }
+          }
           else {
-            alarmSummary.push(oneAlarm);
-            alarmWithCount.push([oneAlarm,1,onePriority,fileName]);
-        }
+            // if alarm name not stored
+            alarmSummary  .push(oneAlarm);
+            alarmWithCount.push( [ oneAlarm, 1, onePriority, fileName, fullAlarmText, '' ] );
+          }
       })
+
     return alarmWithCount.sort( (a, b) => (a[1] < b[1] ? 1 : -1)  );
     }
 
@@ -113,135 +166,88 @@ function getTextFromOneFile(fileName){
     
     const searchAlarmsLocaly = searchText => {
         UI.clearAlarmSummary();
-            let matches = alarmSummaryForAllFiles.filter( alarm => {
+        let matches = alarmSummaryForAllFiles.filter( alarm => {
             const regex = new RegExp(`${searchText}`, 'gi');
             // const regex = new RegExp(`^${searchText}`, 'gi');
-            return alarm[0].match(regex) || alarm[3].match(regex);
+            const [ name, , , source, first, latest ] = alarm;
+            return name.match(regex) || source.match(regex) || first.match(regex) || latest.match(regex);;
         });
         // clear search table if no searchText entered or searchText does not match 
         if( searchText.length === 0 || matches.length === 0 ) {
             matches = [];
             matchList.innerHTML = '';
-            //startAlarmSummary();
         }
-        //clearAlarmSummary();
-        console.log(searchText);
+
         UI.outputHtmlSearch(matches);
+        // work around - how to wait if table is rendered
+        UI.updEventListener();
     }
 
-    const searchAlarmsFromDb = searchText1 => {
-      loadAlarmsfromMySql_search(searchText1);
-      searchAlarmsLocaly(searchText1);
-  }
-
-
     
-    const sortAlarmSummary = (sortW) => {
-        UI.clearAlarmSummary();
-        let matches;
-        if (sortOrder === 1) 
-          matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortW] < b[sortW] ? 1 : -1)  );
-        else 
-          matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortW] > b[sortW] ? 1 : -1)  );
-        UI.outputHtmlSearch(matches);
+    const searchAlarmsFromDb = textInDB => {
+        loadAlarmsfromMySql('search', textInDB);
+        searchAlarmsLocaly(textInDB);
+    }
+
+
+    const sortAlarmSummary = (sortField) => {
         sortOrder *= -1;
-      }
+        const matches = alarmSummaryForAllFiles.sort( (a, b) => (a[sortField] < b[sortField] ? sortOrder : -sortOrder)  );
+        
+        UI.clearAlarmSummary();
+        UI.outputHtmlSearch(matches);
+        UI.updEventListener();
+    }
 
-      // const sortAlarmSummary = (sortW) => {
-      //   UI.clearAlarmSummary();
-      //   const lessGreater = sortOrder => sortOrder == 1 ? '<' : '>';
-      //   const condition = `a[sortW] ${lessGreater(sortOrder)} b[sortW] ? 1 : -1`;
-      //   const matches = alarmSummaryForAllFiles.sort( (a, b) => (eval(condition)) );  
-      //   UI.outputHtmlSearch(matches);
-      //   sortOrder *= -1;
-      // }
 
-      const loadAlarmsfromMySql = (searchParams) => {
+    const loadAlarmsfromMySql = (selected, searchParams) => {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'ajax_receive_data.php', true);
+        xhr.open('GET', `ajax_receive_data_universal.php?request=${selected}&search=${searchParams}`, true);
         xhr.onload = function(){
-          if (this.readyState == 4 && this.status == 200) {
-            UI.showAlert(xhr);
-            console.log(this.responseText);
-            alarmSummaryForAllFiles = JSON.parse(this.responseText);
-            UI.outputHtmlSearch(alarmSummaryForAllFiles);
-          }
+            if (this.readyState == 4 && this.status == 200) {
+                UI.showAlert(xhr);
+                alarmSummaryForAllFiles = JSON.parse(this.responseText);
+                UI.outputHtmlSearch(alarmSummaryForAllFiles);
+                UI.updEventListener();
+            }
+            else console.log('AJAX ERROR!');
         }
         xhr.send();
-      }
-
-      const loadAlarmsfromMySqlUniversal = (selected) => {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', `ajax_receive_data_universal.php?request=${selected}`, true);
-        xhr.onload = function(){
-          if (this.readyState == 4 && this.status == 200) {
-            UI.showAlert(xhr);
-            //console.log(this.responseText);
-            alarmSummaryForAllFiles = JSON.parse(this.responseText);
-            UI.outputHtmlSearch(alarmSummaryForAllFiles);
-          }
-        }
-        xhr.send();
-      }
-
-
-
-      const loadAlarmsfromMySql_search = (searchParams) => {
-        var xhr = new XMLHttpRequest();
-        const requestedUrl = `ajax_receive_data_search.php?search=${searchParams}`;
-        xhr.open('GET', requestedUrl, true);
-        xhr.onload = function(){
-          if (this.readyState == 4 && this.status == 200) {
-            UI.showAlert(xhr);
-            alarmSummaryForAllFiles = JSON.parse(this.responseText);
-            UI.outputHtmlSearch(alarmSummaryForAllFiles);
-          }
-          else console.log('AJAX ERROR!');
-        }
-        xhr.send();
-      }
-
+    }
 
       
-      const sendAlarmsToMySql = (dataForSend) => {
+    const sendAlarmsToMySql = (dataForSend) => {
         UI.clearAlarmSummary();
-        var myJSON = JSON.stringify(dataForSend); 
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         xhr.open('POST', 'ajax_send_data.php', true);
-        // OPTIONAL - used for loaders, if waiting for something
         xhr.onprogress = function(){
-          UI.showAlert(xhr);
+            UI.showAlert(xhr);
           }
         xhr.setRequestHeader('Content-type', 'application/json');
     
-        xhr.onload = function(){
-          UI.showAlert(xhr);
-          if (this.readyState == 4 && this.status == 200) {
+        xhr.onload = function() {
             UI.showAlert(xhr);
-          } else if(this.status = 404){
-            document.querySelector('#json').innerHTML = 'Not Found';
-          }
+            if (this.readyState == 4 && this.status == 200) {
+                UI.showAlert(xhr);
+            } else if(this.status = 404){
+                document.querySelector('#json').innerHTML = 'Not Found';
+            }
         }
-        xhr.send(myJSON);
-      }
+        xhr.send( JSON.stringify(dataForSend) );
+    }
 
+document.querySelector('#startDemo')            .addEventListener('click', () => startAlarmSummary('demo'));
 
 document.querySelector('#startAlarmSummary')    .addEventListener('click', () => startAlarmSummary());
 document.querySelector('#showHideAlarmSummary') .addEventListener('click', () => UI.showHideAlarmSummary());
-document.querySelector('#StringifyArray')       .addEventListener('click', () => sendAlarmsToMySql(alarmSummaryForAllFiles));
-document.querySelector('#ajaxFromDb')           .addEventListener('click', () => loadAlarmsfromMySql(''));
-document.querySelector('#ajaxFromDbUniversal')  .addEventListener('change', () => loadAlarmsfromMySqlUniversal(ajaxFromDbUniversal.value));
+document.querySelector('#uploadToDB')           .addEventListener('click', () => sendAlarmsToMySql(alarmSummaryForAllFiles));
+document.querySelector('#loadFromDB')           .addEventListener('click', () => loadAlarmsfromMySql('select_all'));
+
+document.querySelector('#ajaxFromDbUniversal')  .addEventListener('change',() => loadAlarmsfromMySql(ajaxFromDbUniversal.value));
 
 // Event listener 'input' or 'keyUp keyDown'
 document.querySelector('#search')               .addEventListener('input', () => searchAlarmsLocaly(search.value));
-document.querySelector('#search1')              .addEventListener('input', () => searchAlarmsFromDb(search1.value));
-// removeEventListener() 
-
-
-
-
-
-
+document.querySelector('#searchInDB')           .addEventListener('input', () => searchAlarmsFromDb(searchInDB.value));
 
 
 
@@ -250,9 +256,22 @@ document.querySelector('#search1')              .addEventListener('input', () =>
 // All UI related to DOM manipulation
 class UI {
 
-    // [UI 04] show info for 3 seconds before 'form' DOM
-    // ===============================================
-    // create DOM div from scrath : <div class="alert alert-success">Message</div>
+  static updEventListener() {
+    const update = () => {
+        alarmDetailTd = document.querySelectorAll(".td-mouse-over");
+        alarmDetailTd.forEach( oneTd => oneTd.addEventListener('mouseenter',
+            (event) => event.target.lastElementChild.setAttribute('class', 'my-pre-on')
+        ));
+        alarmDetailTd.forEach( oneTd => oneTd.addEventListener('mouseleave',
+            (event) => event.target.lastElementChild.setAttribute('class', 'my-pre-off')
+        ));
+    }
+    // work around - how to wait if table is rendered
+    setTimeout( update , 1000 );
+  }
+
+
+  // create DOM div from scrath : <div class="alert alert-success">Message</div>
   static showAlert(xhr) {
       const readyStateText = [
         '0 request not initialized',
@@ -269,47 +288,26 @@ class UI {
       div.appendChild(text);
       // store div to parent 'container' before 'form'
       const container = document.querySelector('.container');
-      const place = document.querySelector('#selectedAlarmFile');
+      const place = document.querySelector('.menu');
       // inside '<div container>' insert '<div textAlert>' before '<form>'
       container.insertBefore(div, place);
       // Vanish(remove) DOM with class name 'alert' after 3 second
-      setTimeout( 
-          () => document.querySelector('.alert').remove(),
-          1000            
-          );
+      setTimeout( () => document.querySelector('.alert').remove(), 1000 );
   }
   
 
-  static showAlertUniversal(text1) {
-    const div = document.createElement('div');
-    div.className = `alert`;
-    // append text
-    const text = document.createTextNode(text1);
-    div.appendChild(text);
-    // store div to parent 'container' before 'form'
-    const container = document.querySelector('.container');
-    const place = document.querySelector('#alarm-list-filtered');
-    // inside '<div container>' insert '<div textAlert>' before '<form>'
-    container.insertBefore(div, place);
-    // Vanish(remove) DOM with class name 'alert' after 3 second
-    setTimeout( 
-        () => document.querySelector('.alert').remove(),
-        1000            
-        );
-}
-
-
   static clearAlarmSummary() {
-    const list = document.querySelector('#alarm-list-table');
-    list.style.display = "none";
-  };
-
-  static addQuerySelectorForSearch(){
-    document.querySelector('#sortAlarmSummary-name') .addEventListener('click', event => sortAlarmSummary(0));
-    document.querySelector('#sortAlarmSummary-count').addEventListener('click', event => sortAlarmSummary(1));
-    document.querySelector('#sortAlarmSummary-prio') .addEventListener('click', event => sortAlarmSummary(2));  
-    document.querySelector('#sortAlarmSummary-file') .addEventListener('click', event => sortAlarmSummary(3));  
+      document.querySelector('#alarm-list-table').style.display = "none";
   }
+
+
+  static addQuerySelectorForSearch() {
+      document.querySelector('#sortAlarmSummary-name') .addEventListener('click', () => sortAlarmSummary(0));
+      document.querySelector('#sortAlarmSummary-count').addEventListener('click', () => sortAlarmSummary(1));
+      document.querySelector('#sortAlarmSummary-prio') .addEventListener('click', () => sortAlarmSummary(2));  
+      document.querySelector('#sortAlarmSummary-file') .addEventListener('click', () => sortAlarmSummary(3));  
+  }
+
 
   static showEmptyAlarmSummary() {
     const html = `
@@ -353,8 +351,8 @@ static addHtmlAlarmToSummary(alarm) {
   const list = document.querySelector('#alarm-list');
   // insert <tr> element:
   const row = document.createElement('tr');
+  row.setAttribute ( 'class', 'tr-mouse-over' );
   // add colums to tr: 'btn-sm'=small, 'btn-danger'=red color
-  
   row.innerHTML = UI.tableDataResult(alarm);
   // apend row to the list:
   list.appendChild(row);
@@ -364,36 +362,36 @@ static addHtmlAlarmToSummary(alarm) {
 static theadHtml() {
   return `
   <thead>
-  <tr>
-      <th>
-        <button class="btn" id="sortAlarmSummary-name">
-          Alarm Name
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th>
-        <button class="btn"  id="sortAlarmSummary-count">
-          Count
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th>
-        <button class="btn" id="sortAlarmSummary-prio">
-          Prio
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-      <th>
-        <button class="btn"  id="sortAlarmSummary-file">
-          Source
-          <i class="fas fa-arrow-up"></i>
-          <i class="fas fa-arrow-down"></i>
-        </button>
-      </th>
-  </tr>
+      <tr>
+          <th>
+              <button class="btn" id="sortAlarmSummary-name">
+                  Alarm Name
+                  <i class="fas fa-arrow-up"></i>
+                  <i class="fas fa-arrow-down"></i>
+              </button>
+          </th>
+          <th>
+              <button class="btn"  id="sortAlarmSummary-count">
+                  Count
+                  <i class="fas fa-arrow-up"></i>
+                  <i class="fas fa-arrow-down"></i>
+              </button>
+          </th>
+          <th>
+              <button class="btn" id="sortAlarmSummary-prio">
+                  Prio
+                  <i class="fas fa-arrow-up"></i>
+                  <i class="fas fa-arrow-down"></i>
+              </button>
+          </th>
+          <th>
+              <button class="btn"  id="sortAlarmSummary-file">
+                  Source
+                  <i class="fas fa-arrow-up"></i>
+                  <i class="fas fa-arrow-down"></i>
+              </button>
+          </th>
+      </tr>
   </thead>
   `;
 };
@@ -401,8 +399,9 @@ static theadHtml() {
 
 // [UI create td with result]
 static tableDataResult(alarm) {
+  const [ name, count, prio, source, first, latest ] = alarm;
   let prioClass;
-  switch(alarm[2]){
+  switch(prio){
     case '*** ALARM':   prioClass = 'td-prio-one';       break;
     case '**  ALARM':   prioClass = 'td-prio-two';       break;
     case '*   ALARM':   prioClass = 'td-prio-three';     break;
@@ -413,16 +412,24 @@ static tableDataResult(alarm) {
   }
 
   let aaa, bbb;
-  if (alarm[0] !== "") aaa = alarm[0].substring(0, 50)
-    else aaa = alarm[0];
+  if (name !== "") aaa = name.substring(0, 50)
+    else aaa = name;
 
-  if (alarm[3]) bbb = alarm[3].substring(0, 8)
-    else bbb = alarm[3];
+  if (source) bbb = source.substring(0, 8)
+    else bbb = source;
 
   return `
-    <td>${aaa}</td>
-    <td>${alarm[1]}</td>
-    <td class="${prioClass}">${alarm[2]}</td>
+    <td class="td-mouse-over">
+      ${aaa}
+      <span class="my-pre-off">
+      
+        ${first}
+
+        ${latest}
+      </span>
+    </td>
+    <td>${count}</td>
+    <td class="${prioClass}">${prio}</td>
     <td>${bbb}</td>
   `;
   
@@ -433,20 +440,20 @@ static tableDataResult(alarm) {
 static outputHtmlSearch(matches) {
   // if not empty
   if(matches.length > 0) {
-       const htmlTr = matches.map( alarm => `
-         <tr>
-          ${UI.tableDataResult(alarm)}
-         </tr>
-       `).join('');
-       
-       const html = `
-           ${UI.theadHtml()}
-           <tbody>
-           ${htmlTr}
-           </tbody>
-       `;
-   matchList.innerHTML = html;
-   UI.addQuerySelectorForSearch();
+      const htmlTr = matches.map( alarm => `
+          <tr>
+              ${UI.tableDataResult(alarm)}
+          </tr>
+      `).join('');
+      
+      matchList.innerHTML = `
+          ${UI.theadHtml()}
+          <tbody>
+              ${htmlTr}
+          </tbody>
+      `;
+
+      UI.addQuerySelectorForSearch();
   }
 };
 
@@ -461,24 +468,15 @@ static dynamicSelectButton() {
       console.log(`click : ${count}`);
       if(typeof(count) === "undefined" || count < 2)
       {
-        loadAlarmsfromMySqlUniversal('DISTINCT_alarm');  
+        loadAlarmsfromMySql('DISTINCT_alarm');  
         addActivityItem();
       }
       else {
         console.log(activities.value);
         searchAlarmsFromDb(activities.value);
-
       }
   });
   
-  // activities.addEventListener("changed", () => {
-  //   console.log(`changed : ${activities.value}`);
-  //     if(activities.value == "alarm_list")
-  //     {
-  //         addActivityItem();
-  //         console.log(activities.value);
-  //     }
-  // });
   
   const addActivityItem = () => {
       let dummyText;
@@ -489,8 +487,6 @@ static dynamicSelectButton() {
         option.innerHTML = dummyText;
         activities.appendChild(option);
       })
-      
-
   }
 
 }

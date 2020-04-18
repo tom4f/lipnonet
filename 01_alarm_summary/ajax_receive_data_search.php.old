@@ -1,6 +1,9 @@
 <?php 
+
+include "../rekreace/config/db.php";
+
 // Create Connection
-$conn = mysqli_connect('localhost', 'root', '', 'alarmdb');
+//$conn = mysqli_connect('localhost', 'root', '', 'alarmdb');
 
 // $search = !empty($_GET["search"]) ? $_GET["search"] : null;
    $search = isset($_GET['search']) ? $_GET['search'] : 'tomasek';

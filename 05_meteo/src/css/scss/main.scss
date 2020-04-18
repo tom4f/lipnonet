@@ -1,0 +1,209 @@
+@import 'config';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+body {
+	font-family : $font-stack;
+	line-height: 1.6;
+	background-image: url("../background.gif");
+}
+
+.top_container {
+	background: black;
+	margin: auto;
+	width: 100%;
+	max-width: $my-max-width;
+}
+
+.bottom{
+	text-align : center;
+	background-image: url("../background.gif");
+}
+
+.header{
+	background : #555555;
+	text-align : center;
+	padding: 2px;
+	color: white;
+	font-size: 14px;
+	font-weight : bold;
+	a { 
+		color : White;
+		text-decoration : none;
+		&:hover {
+			color : Lime;
+			text-decoration : none;
+		}
+	}
+}
+
+.mainpictures{
+	text-align : center;
+	width: 100%;
+	max-width: $my-max-width;
+	img{
+		vertical-align: top;  // prevent empty line under img, but why ?
+		width: 100%;
+		max-width: $my-max-width;
+	}
+}
+
+/* -------------------------index.html */
+.kniha_small{
+	background: white;
+	color: black;
+	font-size: 12px;
+}
+
+.happyMeteo{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	align-items: center;
+	
+	fieldset{
+		margin: 3px;
+		padding: 3px;
+		font-size: 0.7rem;
+		border:2px solid green;
+		border-radius:8px;
+		
+		section{
+			display: flex;
+			width: auto;
+
+			header{
+				text-align: right;
+				padding-right: 3px;
+				border-right: 1px dotted lighten(green, 10%);;
+			}
+
+			article{
+				text-align: left;
+				padding-left: 3px;
+			}
+		}
+	}
+}
+
+.kniha-main-page{
+	background-color: white;
+	color: black;
+	font-size: 12px;
+	padding: 5px;
+
+	li{
+		list-style: none;
+	}
+}
+
+// for bedrich.php, ceny.php, kniha.php
+.center{
+	text-align : center;
+    margin: 0 auto;
+	background : #FF9933;
+	color: black;
+}
+
+// for frymburk.php, ceny.php, rekreace.php, form_adm.php
+.text{
+	text-align: justify;
+	padding: 1vw 2vw 2vw 2vw;
+	background : #FF9933;
+	color: black;
+}
+
+.text ul{
+	text-align: left;
+	padding: 1vw 2vw 2vw 2vw;
+
+}
+
+.img-float-left{
+	float: left;
+	margin: 0 1rem 1rem 0;
+	border: 1px solid black;
+}
+
+
+// aktuality.php
+.davis_table{
+	background: white;
+	color: black;
+	width: 724px;
+	font-size: 0px;
+}
+
+
+.page_live_cam {
+	background : black;
+	text-align: center;
+	position: relative;
+	font-size: 0px;
+
+	img{
+		width: 100%;
+		max-width: 640px;
+	}
+
+}
+
+.meteo_box{
+	position: absolute;
+	width: auto;
+	max-width: $my-max-width;
+	height: auto;
+	background-color:rgba(0, 0, 0, 0.4);
+	left: 50%;
+	transition: bottom 2s, color 2s, transform 2s;
+	bottom: 0%;
+	transform: translate(-50%, -50%);
+	color: white;
+	white-space: nowrap;
+	border-radius:8px;	
+
+	fieldset{
+		font-size: 10px;
+		width: auto;
+		display: inline;
+		padding: 3px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		border:2px solid green;
+		border-radius:8px;	
+	}
+}
+
+
+.meteo_box_transition_out{
+	bottom: 100px;
+	color: transparent;
+	transform: rotate(180deg);
+}
+
+table.page {
+  background : #FF9933;
+}
+
+/* bedrich.php */
+.table_bedrich_meteo{
+	width: 95%;
+	border-collapse: collapse;
+	font-size: 12px;
+	margin: 0 auto;
+	background : rgb(255, 139, 23);
+	color: black;
+}
+
+.table_bedrich_meteo td{
+	text-align: center;
+	border: 1px solid white;
+}
+
+
+
+

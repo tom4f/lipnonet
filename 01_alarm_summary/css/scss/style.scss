@@ -1,0 +1,126 @@
+:root {
+    --primary-color: #003699;
+    --dark-color: #333333;
+    --light-color: #4CAF50;
+    --lose-color: #dc3545;
+    --win-color: #28a745;
+    --modal-duration: 1s;
+  }
+  
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+body {
+    background: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    overflow: hidden;
+    padding: 5px;
+    text-align: center;
+}
+
+.alert {
+    background-color: #f5f5f5;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(4, 2fr);
+    grid-gap: 1px;
+    text-align: center;
+
+    input, button, select {
+        /* display: visible; */
+        background: var(--light-color);
+        color: #333;
+        padding: 0.4rem 1.3rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        margin-bottom: 0rem;
+        padding: 5px;
+    }
+
+    input:hover, button:hover, select:hover {
+      background: var(--primary-color);
+    }
+
+}
+
+/* ========================= table start ==========================*/
+
+table {
+    width: 100%;
+    text-align: left;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+
+    th, td {
+        border-bottom: 1px solid #ddd;
+        border: 1px solid #ddd;
+        padding: 6px;
+    }
+
+    th {
+        background-color: #4CAF50;
+    }
+
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .td-header{
+        background: black;
+        color: aqua;
+    }
+  
+    .td-prio-one{
+        background: red;
+    }
+    
+    .td-prio-two{
+        background: orange;
+    }
+    
+    .td-prio-three{
+        background: pink;
+    }
+
+    // shared property
+    %alarmDetail {
+        display: block;
+        unicode-bidi: embed;
+        font-family: monospace;
+        white-space: pre;
+        display: none;
+    }
+
+    .my-pre-off{
+        // use shared property
+        @extend %alarmDetail;
+    }
+    
+    .my-pre-on{
+        @extend %alarmDetail;
+        display: inline;
+    }
+    
+}
+
+
+
+
+
+
+/* ========================= table end ==========================*/
+

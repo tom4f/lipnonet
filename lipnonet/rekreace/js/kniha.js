@@ -146,9 +146,7 @@ let miliSeconds = new Date().getMilliseconds();;
 
 const loadForumfromMySqlStartPage = () => {
   var xhr = new XMLHttpRequest();
-  //xhr.open('GET', `api/ajax_receive_data_universal.php`, true);
   xhr.open('POST', `api/pdo_read_forum.php`, true);
-  //xhr.open('POST', `https://www.frymburk.com/rekreace/api/pdo_read_forum.php`, true);
   xhr.onload = function() {
       if (this.readyState == 4 && this.status == 200) {
         allForum = JSON.parse(this.responseText);
@@ -158,10 +156,27 @@ const loadForumfromMySqlStartPage = () => {
       }
   }
   xhr.send();
+  //xhr.send(JSON.stringify({ 'sqlQuery' : 'read'}));
+}
+
+const loadForumfromMySqlStartPageTen = () => {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', `api/pdo_read_forum.php`, true);
+  xhr.onload = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        allForum = JSON.parse(this.responseText);
+        UI.showForum(begin, end, allForum);
+        UI.showPagination(allForum, '.kniha_pagination');
+
+        setTimeout(loadForumfromMySqlStartPage, 5000);
+      }
+  }
+  //xhr.send();
+  xhr.send(JSON.stringify({'start' : 0, 'limit' : 5}));
 }
 
 UIform.hideFormular();
-loadForumfromMySqlStartPage();
+loadForumfromMySqlStartPageTen();
 // END start kniha.php
 
 

@@ -1,0 +1,188 @@
+.address_and_formular {
+  background: url("../fotogalerie_ubytovani/535b.jpg");
+  background-position: center;
+}
+
+.address_and_formular .formular {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  color: white;
+  margin: auto;
+  border-radius: 5px;
+  border: 1px solid #555;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: relative;
+}
+
+.address_and_formular .formular .adresa {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 90%;
+  border-radius: 5px;
+  border: 1px solid white;
+  padding: 2px;
+  margin: 0.5rem auto 1rem;
+  font-size: 1rem;
+}
+
+.address_and_formular .formular .adresa div {
+  margin: 10px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.address_and_formular .formular .adresa div a {
+  color: white;
+}
+
+.address_and_formular .formular .form_result_alert {
+  position: absolute;
+  width: 80%;
+  height: 60%;
+  top: 50px;
+  color: black;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-align: center;
+  visibility: hidden;
+  text-decoration: none;
+}
+
+.address_and_formular .formular .form_result_alert ul {
+  list-style: none;
+}
+
+.address_and_formular .formular .input_booking {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 90%;
+  border-radius: 5px;
+  border: 1px solid white;
+  padding: 2px;
+  margin: 5px;
+}
+
+.address_and_formular .formular .input_booking:hover {
+  border: 1px solid black;
+}
+
+.address_and_formular .formular .input_booking label {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-align: left;
+  margin: 2px 5px;
+}
+
+.address_and_formular .formular input,
+.address_and_formular .formular textarea {
+  font-size: 1.0rem;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  margin: 2px 5px;
+  -webkit-transition: none;
+  transition: none;
+  color: white;
+  letter-spacing: 0.1rem;
+}
+
+.address_and_formular .formular input[type=email]:focus,
+.address_and_formular .formular textarea:focus {
+  border: none;
+  outline: none;
+}
+
+.address_and_formular .formular .antispam_booking {
+  width: 40%;
+}
+
+.address_and_formular .formular ::-webkit-input-placeholder {
+  /* Edge */
+  color: white;
+}
+
+.address_and_formular .formular :-ms-input-placeholder {
+  /* Internet Explorer */
+  color: white;
+}
+
+.address_and_formular .formular ::-ms-input-placeholder {
+  color: white;
+}
+
+.address_and_formular .formular ::placeholder {
+  color: white;
+}
+
+.address_and_formular .formular .submit_booking {
+  border-radius: 5px;
+  border: 1px solid white;
+  margin: 5px;
+  background-color: rgba(0, 255, 0, 0.4);
+  width: 40%;
+}
+
+.address_and_formular .formular .submit_booking:hover {
+  border: 1px solid black;
+}
+
+.address_and_formular .formular .submit_booking input {
+  width: 100%;
+  padding: 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.address_and_formular .formular .submit_booking input:focus {
+  background-color: rgba(0, 255, 0, 0.5);
+}
+
+.maps {
+  background: url("../fotogalerie_ubytovani/281b.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.maps section {
+  text-align: justify;
+  padding: 10px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+.maps section .img-left {
+  float: left;
+  margin: 0 1rem 1rem 0;
+}
+
+.maps section img {
+  height: auto;
+  max-width: 90%;
+  margin: 1rem;
+}

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- main css for top.php and bottom.php -->
     <link rel="stylesheet" href="css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
     <title>LIPNO FRYMBURK rekreace ubytování U Kučerů On-line kamera</title> 
     <!-- fotogalery links start -->
@@ -14,8 +14,7 @@
       />
     <!-- fotogalery links end -->
     
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- main css for top.php and bottom.php -->
     <meta name="Robots" content="index, follow"> 
     <meta http-equiv="cache-control" content="no-cache">
     <meta name="Author" content="Ing. Tomáš Kučera, Tom4F@seznam.cz">
@@ -43,15 +42,16 @@
     <a class="menu" href="ceny.php" target="_top">Ceny</a> | 
     <a class="menu" href="kontakt.php" target="_top">Kontakt</a> | 
     <a class="menu" href="frymburk.php" target="_top">O Frymburku</a>
+
   </div>
 
-  <div class="mainpictures">
-         <a href="rekreace.php"><img class="img" src="images/main.jpg" alt="Ubytování u Kučerů ve Frymburku - zima"></a>
+  <div class="mainpicture">
+         <a href="rekreace.php"><img class="img" src="images/main_new_mini1.jpg" alt="Ubytování u Kučerů ve Frymburku - zima"></a>
   </div>
 
   <div class="header">
     <a class="menu" href="webcam_ip_archive.html" target="_top">Kamera</a> | 
-    <a class="menu" href="aktuality.php" target="_top">Meteostanice</a> | 
+    <a class="menu" href="aktuality.html" target="_top">Meteostanice</a> | 
     <a class="menu" href="kniha.html" target="_top">Fórum</a> | 
     <a class="menu" href="fotogalerie.html" target="_top">Fotogalerie</a> | 
     <a class="menu" href="profisolar.php" target="_top">Solární ohřev</a> | 

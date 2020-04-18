@@ -1,10 +1,12 @@
 <?php
 
+include "../../rekreace/config/db.php";
+
 $str_json = file_get_contents('php://input');
 $arr      = json_decode($str_json, true);
 
 // Connect to a database
-$conn = mysqli_connect('localhost', 'root', '', 'alarmdb');
+//$conn = mysqli_connect('localhost', 'root', '', 'alarmdb');
 
 echo 'Processing...';
 
@@ -14,8 +16,10 @@ for ($i=0; $i<=(Count($arr)-1); $i++)
     $counter =  $arr[$i][1];
     $prio =     $arr[$i][2];
     $file =     $arr[$i][3];
+    $first =    $arr[$i][4];
+    $latest =   $arr[$i][5];
 
-    $query = "INSERT INTO alarmtable (name, counter, prio, file) VALUES('$name', '$counter', '$prio', '$file')";
+    $query = "INSERT INTO alarm (name, counter, prio, file, first, latest) VALUES('$name', '$counter', '$prio', '$file', '$first', '$latest')";
 
     if(mysqli_query($conn, $query)){
       echo 'OK: '.$query.'<br>';

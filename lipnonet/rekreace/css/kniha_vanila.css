@@ -1,0 +1,92 @@
+
+/* kniha.php */
+
+.kniha_formular input[type=text],
+.kniha_formular textarea[type=text],
+.kniha_formular select,
+.kniha_formular input[type=submit] {
+	padding: 2px 2px;
+	margin: 2px 2px;
+	box-sizing: border-box;
+	border: 3px solid #ccc;
+	-webkit-transition: 0.5s;
+	transition: 0.5s;
+	outline: none;
+  }
+  
+  .kniha_formular input[type=text]:focus,
+  .kniha_formular textarea[type=text]:focus,
+  .kniha_formular select:focus,
+  .kniha_formular input[type=submit]:focus {
+	border: 3px solid #555;
+  }
+
+
+/*--------------------------kniha JSON */
+.kniha_main{
+	width: 100%;
+	margin: 10px auto;
+	padding: 10px;
+	background: #FE9A2C;
+	border: 1px solid #EBEBEB;
+	font-size: 14px;
+}
+
+.kniha_one_entry{
+	margin: 10px;
+	padding: 10px;
+	border: 0px ;
+	background-color: #EBEBEB;
+
+}
+
+.kniha_one_entry .kniha_datum{
+	text-align: right;
+	font-size: 10px;
+}
+
+.kniha_one_entry .kniha_jmeno{
+	text-align: left;
+}
+
+.kniha_one_entry .kniha_text{
+	text-align: left;
+}
+
+.kniha_formular{
+	margin: 10px;
+	padding: 10px;
+}
+
+
+
+.showAlert{
+	background-color: green;
+}
+
+.kniha_pagination{
+	width: 80%;
+	margin: 0 auto;
+	padding-bottom: 10px;
+}
+
+.text-area{
+	min-width:500px;
+	max-width:100%;
+	min-height:50px;
+	height:100%;
+	width:100%;
+}
+
+.pagina, .paginaPrev, .paginaNext{
+	background-color: white;
+	font-size: 12px;
+	padding: 0;
+	margin: 0 ;
+	white-space: nowrap;
+	width: 30px;
+	height: 30px;
+	border-style: none;
+	cursor: pointer;
+	display: inline-block;
+}

@@ -5,6 +5,15 @@
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
   header('Content-Type: application/json');
 
+  // get start + limit for mySQL query
+  $data = json_decode(file_get_contents("php://input"));
+  //
+  if ( isset($data->start) ) $start = $data->start;
+    else $start = 0;
+  //
+  if ( isset($data->limit)) $limit = $data->limit;
+    else $limit = 999999;
+
   include_once '../config/Database.php';
   include_once 'models/Post_forum.php';
 
@@ -16,7 +25,9 @@
   $post = new Post($db);
 
   // Fotogalery post query
-  $result = $post->read();
+    $result = $post->read($start, $limit);
+
+
   // Get row count
   $num = $result->rowCount();
 

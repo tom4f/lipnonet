@@ -17,11 +17,10 @@
     }
 
 
-
     // [0] Get Posts
-    public function read() {
+    public function read($start = 0, $limit = 999999) {
       // Create query
-      $query = 'SELECT * FROM ' . $this->table . ' WHERE typ < 4 order by datum DESC';
+      $query = 'SELECT * FROM ' . $this->table . ' WHERE typ < 4 order by datum DESC LIMIT ' . $start . ',' . $limit;
       // Prepare statement
       $stmt = $this->conn->prepare($query);
       // Execute query

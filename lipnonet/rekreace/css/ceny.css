@@ -1,0 +1,14 @@
+/* ceny.php */
+.table_ceny{
+	width: 90%;
+	border-collapse: collapse;
+	font-size: 14px;
+	margin: 0 auto;
+	background : #FF9933;
+	color: black;
+	text-align: center;
+}
+
+.table_ceny td{
+	border: 1px solid white;
+}

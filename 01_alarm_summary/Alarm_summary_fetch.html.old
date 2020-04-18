@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>
+        <i class="fas fa-book-open text-primary"></i>
+        Alarm Summary
+    </h2>
+    
+    <input  id="selectedAlarmFile"        class="selectFiles"   type="file" multiple>
+    <button id="startDemo"    class="btn" type="button">Demo</button>
+    
+    <div class="menu1">
+        <input  id="searchInDB"           class="btn" type="text" placeholder="Search in DB">
+        <select id="ajaxFromDbUniversal"  class="btn">
+            <option value="select_all">select_all</option>
+            <option value="count_all">count_all</option>
+            <option value="sum_count" selected>sum_count</option>
+            <option value="DISTINCT_alarm">DISTINCT_alarm</option>
+        </select>
+        <select id="dynamicSelectButton"  class="btn"></select>
+        <button id="loadFromDB"           class="btn" type="button">Load from DB</button>
+
+        <input  id="search"               class="btn" type="text" placeholder="Search">
+        <button id="startAlarmSummary"    class="btn" type="button">Start summary!</button>
+        <button id="showHideAlarmSummary" class="btn" type="button">Show/Hide Summary</button>
+        <button id="uploadToDB"           class="btn" type="button">Upload to DB</button>
+    </div>
+
+    <table id="alarm-list-filtered" class="table"></table>
+    
+    <table id="alarm-list-table" class="table"></table>
+
+    <div id="universal"></div>
+
+</div>
+
+<script src="alarm_summary.js"></script>
+
+</body>
+</html>

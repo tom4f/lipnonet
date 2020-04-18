@@ -1,0 +1,76 @@
+.graphs {
+    margin: auto;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.dayGraph {
+    img {
+        width: 100%;
+        max-width: 1480px;
+    }
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    button {
+        font-size: 15px;
+        flex-grow: 1;
+        border-style: solid;
+        border-bottom: 5px;
+        border-color: white;
+        outline: none;
+
+        &:hover {
+            cursor: pointer;
+            background : #555555;
+            color: white;
+        }
+    }
+}
+
+.davisMonth{
+    width: 80%;
+    margin: auto;
+
+    .myPre{
+        display: block;
+        unicode-bidi: embed;
+        font-family: monospace;
+        white-space: pre;
+        text-align: left;
+    }
+
+}
+
+.davisTable {
+    width: 100%;
+    max-width: 1000px;
+    font-size: 10px;
+    overflow-x:auto;
+    margin: auto;
+    table {
+        color: black;
+        width: 100%;
+        //margin: 20px 0 20px 0;
+        tr {
+            background-color: white;
+        }
+
+        .link {
+            text-decoration: underline;
+            &:hover {
+                cursor: pointer;
+                background : #555555;
+                color: white;
+            }
+            
+        }
+    }
+            
+
+}

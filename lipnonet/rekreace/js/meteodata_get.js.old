@@ -1,0 +1,125 @@
+"use strict"
+
+let pocasiResult;
+let davisResult;
+let lastMeteoData = '';
+
+// load POCASI meteo data from mySQL
+const loadPocasi = (lastMeteoData) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `api/pdo_read_pocasi.php`, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            pocasiResult = JSON.parse(xhr.responseText);
+            // show one year table baed on JSON data from MYSQL
+            console.log(pocasiResult[0]);
+            console.log(davisResult[0]);
+
+            meteoTable(davisResult[0], pocasiResult[0], lastMeteoData);
+        } 
+    }
+    xhr.onerror = () => console.log("** An error occurred during the transaction");
+    xhr.send();
+}
+
+
+// load DAVIS meteo data from mySQL
+const loadDavis = (lastMeteoData) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `api/pdo_read_davis.php`, true);
+  //xhr.open('POST', `https://www.frymburk.com/rekreace/api/pdo_read_davis.php`, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            davisResult = JSON.parse(xhr.responseText);
+            // show one year table baed on JSON data from MYSQL
+            loadPocasi(lastMeteoData);
+        } 
+    }
+    xhr.onerror = () => console.log("** An error occurred during the transaction");
+    xhr.send();
+}
+
+
+const meteoTable = (
+    {
+        date,
+        temp_mean,
+        temp_high,
+        temp_high_time,
+        temp_low,
+        temp_low_time,
+        heat_deg_days,
+        cool_deg_days,
+        rain,
+        wind_speed_avg,
+        wind_speed_high,
+        wind_speed_high_time,
+        dir,
+        wind3,
+        wind6,
+        wind9,
+        wind12,
+        bar_min,
+        bar_avg,
+        bar_max,
+        huminidy_min,
+        huminidy_avg,
+        huminidy_max,
+        air_density_min,
+        air_density_avg,
+        air_density_max,
+        rain_rate_max
+    },
+    {
+        id,
+        datum,
+        cas,
+        hladina,
+        pritok,
+        odtok,
+        vzduch,
+        voda,
+        pocasi
+    },
+    lastMeteoData
+    ) =>{
+        const [, , , temp, huminidy, presure, wind, actualDir] = lastMeteoData.split('|');
+        const tr = document.querySelector('.wind_td');
+        tr.innerHTML = `
+            <td><a href='aktuality.php?id=${date}'>${date}</a></td>
+            <td>${wind3}</td>
+            <td>${wind6}</td>
+            <td>${wind9}</td>
+            <td>${wind_speed_avg}</td>
+            <td>${wind_speed_high}</td>
+            <td>${dir}</td>
+            <td>${temp_low}</td>
+            <td>${temp_mean}</td>
+            <td>${temp_high}</td>
+            <td>${voda}</td>
+            <td>${pocasi}</td>
+        `;
+        const tr_second = document.querySelector('.wind_td_second');
+        tr_second.innerHTML = `
+            <td></td>
+            <td>${bar_min}</td>
+            <td>${bar_avg}</td>
+            <td>${bar_max}</td>
+            <td>${huminidy_min}</td>
+            <td>${huminidy_avg}</td>
+            <td>${huminidy_max}</td>
+            <td>${rain}</td>
+            <td>${rain_rate_max}</td>
+            <td>${pritok}</td>
+            <td>${odtok}</td>
+            <td>${hladina}</td>
+
+        `;
+}
+
+
+
+
+

@@ -1,0 +1,22 @@
+{
+    "editor.minimap.enabled": false,
+    "breadcrumbs.enabled": false,
+    "editor.fontSize": 15,
+    "editor.fontWeight": "100",
+    "workbench.colorTheme": "Visual Studio Dark",
+    "liveSassCompile.settings.formats":[
+        // This is Default.
+        /*{
+            "format": "compressedexpanded",
+            "extensionName": ".css",
+            "savePath": null
+        },*/
+        // You can add more
+        {
+            "format": "expanded",
+            "extensionName": ".css",
+            "savePath": "/css"
+        }
+    ],
+    "liveSassCompile.settings.generateMap": false
+}

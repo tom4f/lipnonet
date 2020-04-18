@@ -129,7 +129,7 @@ body{
 .nextPhotoBig:hover, .prevPhotoBig:hover
 {
 	background-color:transparent;
-    color: transparent;
+    color: white;
     cursor: pointer;
 }
 
