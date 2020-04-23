@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-const ShowMeteoTableLipno = ( { globalDate }) => {
+const ShowMeteoTableLipno = () => {
     
     // which lines requested from mySQL
     const [ start,  setStart ]  = useState(0);
@@ -18,9 +18,9 @@ const ShowMeteoTableLipno = ( { globalDate }) => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const pdoResp = JSON.parse(xhr.responseText);
                 setPocasi(pdoResp);
-                const [ year, month, day ] = pdoResp[0].datum.split('-');
-                const clickedDate = new Date( year, month - 1, day );
-                globalDate('yearSum', clickedDate );
+                // const [ year ] = pdoResp[0].datum.split('-');
+                // const clickedDate = new Date( year );
+                // globalDate('yearSum', clickedDate );
 
             } 
         }

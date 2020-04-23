@@ -1,6 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import DateContext from './DateContext';
 
-const ShowMeteoTable = ( { date, globalDate } ) => {
+const ShowMeteoTable = () => {
+
+    const { globalDate } = useContext(DateContext);
 
     // which lines requested from mySQL
     const [ start, setStart ] = useState(0);
@@ -18,9 +21,9 @@ const ShowMeteoTable = ( { date, globalDate } ) => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const pdoResp = JSON.parse(xhr.responseText);
                 setDavis(pdoResp);
-                const [ year, month, day ] = pdoResp[0].date.split('-');
-                const clickedDate = new Date( year, month - 1, day );
-                globalDate('daily', clickedDate );
+                // const [ year, month, day ] = pdoResp[0].date.split('-');
+                // const clickedDate = new Date( year, month - 1, day );
+                // globalDate('daily', clickedDate );
             }
         }
         xhr.onerror = () => console.log("** An error occurred during the transaction");
