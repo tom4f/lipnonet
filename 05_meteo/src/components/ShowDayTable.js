@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
-import DateContext from './DateContext';
+import { DateContext } from './DateContext';
 
-const ShowMeteoTable = () => {
+export const ShowDayTable = () => {
 
     const { globalDate } = useContext(DateContext);
 
@@ -13,17 +13,18 @@ const ShowMeteoTable = () => {
     const loadDavis = () => {
         let xhr = new XMLHttpRequest();
         // for live
-        xhr.open('POST', `./api/pdo_read_davis.php`, true);
+        //xhr.open('POST', `./api/pdo_read_davis.php`, true);
         // for node.js
         // xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_davis.php`, true);
+        xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_davis.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const pdoResp = JSON.parse(xhr.responseText);
                 setDavis(pdoResp);
-                // const [ year, month, day ] = pdoResp[0].date.split('-');
-                // const clickedDate = new Date( year, month - 1, day );
-                // globalDate('daily', clickedDate );
+                const [ year, month, day ] = pdoResp[0].date.split('-');
+                const clickedDate = new Date( year, month - 1, day );
+                globalDate('daily', clickedDate );
             }
         }
         xhr.onerror = () => console.log("** An error occurred during the transaction");
@@ -89,6 +90,7 @@ const ShowMeteoTable = () => {
                 <button onClick={ () => setStart( start <= 2670 ? start + 30 : start ) } > &nbsp; {'<'} &nbsp; </button>
                 &nbsp; {start} &nbsp;
                 <button onClick={ () => setStart( start >= 30 ? start - 30 : start ) } > &nbsp; {'>'} &nbsp; </button>
+                &nbsp; dní
             </header>
                 <section className="davisTable">
                     <table>
@@ -153,9 +155,6 @@ const ShowMeteoTable = () => {
                         </tbody>
                     </table>
                 </section>
-                
         </>
     )
 }
-
-export default ShowMeteoTable;

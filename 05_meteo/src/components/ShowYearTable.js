@@ -1,6 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { DateContext } from './DateContext';
 
-const ShowMeteoTableLipno = () => {
+export const ShowYearTable = () => {
+
+    const { globalDate } = useContext(DateContext);
     
     // which lines requested from mySQL
     const [ start,  setStart ]  = useState(0);
@@ -10,17 +13,18 @@ const ShowMeteoTableLipno = () => {
     const loadPocasi = () => {
         const xhr = new XMLHttpRequest();
         // for live
-        xhr.open('POST', `./api/pdo_read_pocasi.php`, true);
+        //xhr.open('POST', `./api/pdo_read_pocasi.php`, true);
         // for node.js
         // xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi.php`, true);
+        xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_pocasi.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const pdoResp = JSON.parse(xhr.responseText);
                 setPocasi(pdoResp);
-                // const [ year ] = pdoResp[0].datum.split('-');
-                // const clickedDate = new Date( year );
-                // globalDate('yearSum', clickedDate );
+                const [ year ] = pdoResp[0].datum.split('-');
+                const clickedDate = new Date( year );
+                globalDate('yearSum', clickedDate );
 
             } 
         }
@@ -60,6 +64,7 @@ const ShowMeteoTableLipno = () => {
                 <button onClick={ () => setStart( start <= 6900 ? start + 30 : start ) } > &nbsp; {'<'} &nbsp; </button>
                 &nbsp; {start} &nbsp;
                 <button onClick={ () => setStart( start >= 30 ? start - 30 : start ) } > &nbsp; {'>'} &nbsp; </button>
+                &nbsp; dní
             </header>
                 <section className="davisTable">
                     <table>
@@ -96,5 +101,3 @@ const ShowMeteoTableLipno = () => {
         </>
     )
 }
-
-export default ShowMeteoTableLipno;

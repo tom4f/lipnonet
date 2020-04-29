@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext} from 'react';
-import DateContext from './DateContext';
-import ChangeDate from './ChangeDate';
+import { DateContext } from './DateContext';
+import { ChangeDate } from './ChangeDate';
 
-const SelectDavis = ( ) => {
+export const ShowDayStatistic = ( ) => {
 
     const { date : { davisStat }, globalDate } = useContext(DateContext);
 
@@ -41,11 +41,11 @@ const SelectDavis = ( ) => {
             <header className="header">
                 Měsíční a roční statistiky - vyberte měsíc :&nbsp;
                 <button onClick={ () => globalDate('davisStat', ChangeDate('davisStat', davisStat, 'month', -1) ) } > &nbsp; {'<'} &nbsp; </button>&nbsp;
-                {davisStat.getMonth() + 1}&nbsp;
+                { month }&nbsp;
                 <button onClick={ () => globalDate('davisStat', ChangeDate('davisStat', davisStat, 'month', +1) ) } > &nbsp; {'>'} &nbsp; </button>  
                 &nbsp;- rok :&nbsp;
                 <button onClick ={ () => globalDate('davisStat', ChangeDate('davisStat', davisStat, 'year', -1) ) } > &nbsp; {'<'} &nbsp; </button>&nbsp;
-                {davisStat.getFullYear()}&nbsp;
+                { year }&nbsp;
                 <button onClick ={ () => globalDate('davisStat', ChangeDate('davisStat', davisStat, 'year', +1) ) } > &nbsp; {'>'} &nbsp; </button>  
             </header>
 
@@ -56,11 +56,10 @@ const SelectDavis = ( ) => {
             <header className="header">
                 Roční statistiky - rok { year }
             </header>
+            
             <article className="davisMonth">
                 <section className="myPre">{davisYearText}</section>
             </article>
         </>
     )
 }
-
-export default SelectDavis;
