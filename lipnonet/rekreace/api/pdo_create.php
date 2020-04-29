@@ -90,7 +90,7 @@ if (isset($data->dataUrl)) {
       //echo "newwidth: ".$newwidth. "newheight: ".$newheight."width: ".$width."height: ".$height;
     }
 
-    img_resize("$filePathOrig", 100,  "$remote_path",  $rotate);
+    img_resize("$filePathOrig", 200,  "$remote_path",  $rotate);
     img_resize("$filePathOrig", 1000, "$remote_path1", $rotate);
   
 }
