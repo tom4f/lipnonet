@@ -5,18 +5,25 @@ export const ShowDayTable = () => {
 
     const { globalDate } = useContext(DateContext);
 
+    const [ orderBy, setOrderBy ] = useState (
+        {
+            value : 'date',
+            order : 'DESC'
+        }
+    );
+
     // which lines requested from mySQL
     const [ start, setStart ] = useState(0);
     const [ davis, setDavis ] = useState([]);
-    useEffect( () => loadDavis(), [ start ] );
+    useEffect( () => loadDavis(), [ start, orderBy ] );
 
     const loadDavis = () => {
         let xhr = new XMLHttpRequest();
         // for live
-        //xhr.open('POST', `./api/pdo_read_davis.php`, true);
+        // xhr.open('POST', `./api/pdo_read_davis.php`, true);
         // for node.js
-        // xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_davis.php`, true);
-        xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_davis.php`, true);
+        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_davis.php`, true);
+        //xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_davis.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -28,7 +35,14 @@ export const ShowDayTable = () => {
             }
         }
         xhr.onerror = () => console.log("** An error occurred during the transaction");
-        xhr.send(JSON.stringify({ 'start' : start, 'limit' : 30 }));
+        xhr.send(JSON.stringify(
+            { 
+                'start' : start,
+                'limit' : 30,
+                'orderBy' : orderBy.value,
+                'sort' : orderBy.order
+            }
+        ));
     }
 
     const rgbCss = (r, g, b, value) => { return { background: `rgba(${r}, ${g}, ${b}, ${value})` } };  
@@ -56,17 +70,17 @@ export const ShowDayTable = () => {
                     {/*<td className="link" >{one.date}</td>*/}
         
                     <td style={ rgbCss(0, 255, 0, one.wind3                 /1285 ) }>{one.wind3}</td>
-                    <td style={ rgbCss(0, 255, 0, one.wind6                 /850  ) }>{one.wind6}</td>
-                    <td style={ rgbCss(0, 255, 0, one.wind9                 /274  ) }>{one.wind9}</td>
+                    <td style={ rgbCss(0, 255, 0, one.wind6                 /500  ) }>{one.wind6}</td>
+                    <td style={ rgbCss(0, 255, 0, one.wind9                 /100  ) }>{one.wind9}</td>
                     <td style={ rgbCss(0, 255, 0, one.wind_speed_avg        /10   ) }>{one.wind_speed_avg}</td>
-                    <td style={ rgbCss(0, 255, 0, one.wind_speed_high       /50   ) }>{one.wind_speed_high}</td>
+                    <td style={ rgbCss(0, 255, 0, one.wind_speed_high       /30   ) }>{one.wind_speed_high}</td>
                     <td>{one.dir}</td>
 
                     <td style={ rgbCssT(one.temp_low) } >{one.temp_low}</td>
                     <td style={ rgbCssT(one.temp_mean) }>{one.temp_mean}</td>
                     <td style={ rgbCssT(one.temp_high) }>{one.temp_high}</td>
 
-                    <td style={ rgbCss(255, 0, 255, one.rain                /60  ) }>{one.rain}</td>
+                    <td style={ rgbCss(255, 0, 255, one.rain                /30  ) }>{one.rain}</td>
                     <td style={ rgbCss(255, 0, 255, one.rain_rate_max       /50  ) }>{one.rain_rate_max}</td>
 
                     <td style={ rgbCss(255, 127, 0, 1 - (1050 - one.bar_min)/40 ) }>{one.bar_min}</td>
@@ -80,6 +94,15 @@ export const ShowDayTable = () => {
             )
         });
         return output;
+    }
+
+    const sort = (e) => {
+        const clickedName = e.target.id;
+        console.log(clickedName);
+        setOrderBy({
+            value : clickedName,
+            order : orderBy.order === 'DESC' ? 'ASC' : 'DESC'
+        })
     }
 
     return (
@@ -104,30 +127,30 @@ export const ShowDayTable = () => {
                                 <th colSpan="3">vlhkost vzduchu</th>
                             </tr>
                             <tr>
-                                <th>graf</th>
-                                <th>>3<sub>m/s</sub></th>
-                                <th>>6<sub>m/s</sub></th>
-                                <th>>9<sub>m/s</sub></th>
-                                <th>prů</th>
-                                <th>max</th>
-                                <th>směr</th>
-                                <th>min</th>
-                                <th>prů</th>
-                                <th>max</th>
+                                <th><button id="date" onClick={ (e) => sort(e) } >datum</button></th>
+                                <th><button id="wind3" onClick={ (e) => sort(e) } >>3<sub id="wind3">m/s</sub></button></th>
+                                <th><button id="wind6" onClick={ (e) => sort(e) } >>6<sub id="wind6">m/s</sub></button></th>
+                                <th><button id="wind9" onClick={ (e) => sort(e) } >>9<sub id="wind9">m/s</sub></button></th>
+                                <th><button id="wind_speed_avg" onClick={ (e) => sort(e) } >prů</button></th>
+                                <th><button id="wind_speed_high" onClick={ (e) => sort(e) } >max</button></th>
+                                <th><button id="dir" onClick={ (e) => sort(e) } >směr</button></th>
+                                <th><button id="temp_low" onClick={ (e) => sort(e) } >min</button></th>
+                                <th><button id="temp_mean" onClick={ (e) => sort(e) } >prů</button></th>
+                                <th><button id="temp_high" onClick={ (e) => sort(e) } >max</button></th>
                                 
-                                <th>celk</th>
-                                <th>int</th>
+                                <th><button id="rain" onClick={ (e) => sort(e) } >celk</button></th>
+                                <th><button id="rain_rate_max" onClick={ (e) => sort(e) } >int</button></th>
 
-                                <th>min</th>
-                                <th>prů</th>
-                                <th>max</th>
+                                <th><button id="bar_min" onClick={ (e) => sort(e) } >min</button></th>
+                                <th><button id="bar_avg" onClick={ (e) => sort(e) } >prů</button></th>
+                                <th><button id="bar_max" onClick={ (e) => sort(e) } >max</button></th>
 
-                                <th>min</th>
-                                <th>prů</th>
-                                <th>max</th>
+                                <th><button id="huminidy_min" onClick={ (e) => sort(e) } >min</button></th>
+                                <th><button id="huminidy_avg" onClick={ (e) => sort(e) } >prů</button></th>
+                                <th><button id="huminidy_max" onClick={ (e) => sort(e) } >max</button></th>
                             </tr>
                             <tr>
-                                <th>datum</th>
+                                <th>graf</th>
                                 <th>min</th>
                                 <th>min</th>
                                 <th>min</th>

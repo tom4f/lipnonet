@@ -4,19 +4,26 @@ import { DateContext } from './DateContext';
 export const ShowYearTable = () => {
 
     const { globalDate } = useContext(DateContext);
+
+    const [ orderBy, setOrderBy ] = useState (
+        {
+            value : 'datum',
+            order : 'DESC'
+        }
+    );
     
     // which lines requested from mySQL
     const [ start,  setStart ]  = useState(0);
     const [ pocasi, setPocasi ] = useState([]);
-    useEffect( () => loadPocasi(), [ start ]);
+    useEffect( () => loadPocasi(), [ start, orderBy ]);
 
     const loadPocasi = () => {
         const xhr = new XMLHttpRequest();
         // for live
-        //xhr.open('POST', `./api/pdo_read_pocasi.php`, true);
+        xhr.open('POST', `./api/pdo_read_pocasi.php`, true);
         // for node.js
         // xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi.php`, true);
-        xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_pocasi.php`, true);
+        //xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_pocasi.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -30,7 +37,14 @@ export const ShowYearTable = () => {
         }
         xhr.onerror = () => console.log("** An error occurred during the transaction");
         //xhr.send();
-        xhr.send(JSON.stringify({ 'start' : start, 'limit' : 30 }));
+        xhr.send(JSON.stringify(
+            { 
+                'start' : start,
+                'limit' : 30,
+                'orderBy' : orderBy.value,
+                'sort' : orderBy.order
+            }
+        ));
     }
 
     const rgbCss = (r, g, b, value) => { return { background: `rgba(${r}, ${g}, ${b}, ${value})` } };  
@@ -56,6 +70,14 @@ export const ShowYearTable = () => {
         return output;
     }
 
+    const sort = (e) => {
+        const clickedName = e.target.name;
+        setOrderBy({
+            value : clickedName,
+            order : orderBy.order === 'DESC' ? 'ASC' : 'DESC'
+        })
+    }
+
     return (
         <>
             <br/>
@@ -75,16 +97,16 @@ export const ShowYearTable = () => {
                                 <th colSpan="3">[7:00 hod]</th>
                             </tr>
                             <tr>
-                                <th></th>
-                                <th>hladina</th>
-                                <th>přítok</th>
-                                <th>odtok</th>
-                                <th>voda</th>
-                                <th>vzduch</th>
+                                <th><button name="datum" onClick={ (e) => sort(e) } >datum</button></th>
+                                <th><button name="hladina" onClick={ (e) => sort(e) } >hladina</button></th>
+                                <th><button name="pritok" onClick={ (e) => sort(e) } >přítok</button></th>
+                                <th><button name="odtok" onClick={ (e) => sort(e) } >odtok</button></th>
+                                <th><button name="voda" onClick={ (e) => sort(e) } >voda</button></th>
+                                <th><button name="vzduch" onClick={ (e) => sort(e) } >vzduch</button></th>
                                 <th>komentář</th>
                             </tr>
                             <tr>
-                                <th>datum</th>
+                                <th></th>
                                 <th>m n.m.</th>
                                 <th>m<sup>3</sup>/s</th>
                                 <th>m<sup>3</sup>/s</th>

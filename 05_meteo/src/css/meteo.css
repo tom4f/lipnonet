@@ -67,6 +67,14 @@ nav button:hover {
   width: 100%;
 }
 
+.davisTable table button {
+  width: 100%;
+}
+
+.davisTable table button:hover {
+  cursor: alias;
+}
+
 .davisTable table tr {
   background-color: white;
 }

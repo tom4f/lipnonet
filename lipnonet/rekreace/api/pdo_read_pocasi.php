@@ -5,7 +5,7 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
     header('Content-Type: application/json');
     
-    // get start + limit for mySQL query
+    // get start + limit + orderBy for mySQL query
     $data = json_decode(file_get_contents("php://input"));
     //
     if ( isset($data->start) ) $start = $data->start;
@@ -13,6 +13,12 @@
     //
     if ( isset($data->limit)) $limit = $data->limit;
         else $limit = 31;
+
+    if ( isset($data->orderBy)) $orderBy = $data->orderBy;
+        else $orderBy = 'datum';
+
+    if ( isset($data->sort)) $sort = $data->sort;
+        else $sort = 'DESC';
 
     include_once '../config/Database.php';
     include_once 'models/Post_pocasi.php';
@@ -25,7 +31,7 @@
     $post = new Post($db);
 
     // Booking pot query
-    $result = $post->read($start, $limit);
+    $result = $post->read($start, $limit, $orderBy, $sort);
 
     // Get row count
     // rowCount() returns the number of rows affected by the last

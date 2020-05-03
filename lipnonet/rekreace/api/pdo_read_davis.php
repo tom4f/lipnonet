@@ -13,6 +13,12 @@
     if ( isset($data->limit)) $limit = $data->limit;
         else $limit = 31;
 
+    if ( isset($data->orderBy)) $orderBy = $data->orderBy;
+        else $orderBy = 'date';
+
+    if ( isset($data->sort)) $sort = $data->sort;
+        else $sort = 'DESC';
+
     include_once '../config/Database.php';
     include_once 'models/Post_davis.php';
 
@@ -24,7 +30,7 @@
     $post = new Post($db);
 
     // Booking post query
-    $result = $post->read($start, $limit);
+    $result = $post->read($start, $limit, $orderBy, $sort);
 
     // Get row count
     // rowCount() returns the number of rows affected by the last

@@ -19,9 +19,9 @@
         }
 
         // [0] Get Posts
-        public function read($start = 0, $limit = 31){
+        public function read($start = 0, $limit = 31, $orderBy = 'datum', $sort = 'DESC'){
             // Create query
-            $query = 'SELECT * FROM ' . $this->table . ' order by datum DESC LIMIT ' . $start . ',' . $limit;
+            $query = 'SELECT * FROM ' . $this->table . ' order by ' . $orderBy . ' ' . $sort . ' LIMIT ' . $start . ',' . $limit;
             // Prepare statement
             // A prepared statement is a feature used to execute the same (or similar)
             // SQL statements repeatedly with high efficiency

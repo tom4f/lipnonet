@@ -57,6 +57,12 @@ nav {
         color: black;
         width: 100%;
         //margin: 20px 0 20px 0;
+        button {
+            width: 100%;
+            &:hover {
+                cursor: alias;
+            }
+        }
         tr {
             background-color: white;
         }

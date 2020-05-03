@@ -55,9 +55,9 @@ export default class App extends Component {
                         <WebCamSlideShow  day={day} hour={hour} minute={minute} reactChange={this.reactChange} slideId={slideId} timer={timer} />
                     </div>
                     {/*  webCamImgSrc={ `https://frymburk.com/kamera/archive/ip_kamera_${day}-${hour}-${minute}.jpg` }  */}
-                    {/*  webCamImgSrc    ={ `../kamera/archive/ip_kamera_${day}-${hour}-${minute}.jpg` }  */}
+                    {/*  webCamImgSrc={ `../kamera/archive/ip_kamera_${day}-${hour}-${minute}.jpg` }  */}
                     <ShowWebCam
-                        webCamImgSrc    ={ `../kamera/archive/ip_kamera_${day}-${hour}-${minute}.jpg` }
+                        webCamImgSrc    ={ `https://frymburk.com/kamera/archive/ip_kamera_${day}-${hour}-${minute}.jpg` }
                         webCamImgHref   ={ `../kamera/archive/ip_kamera_full_hd_${day}-${hour}-${minute}.jpg` }
                     /> 
                     Build with React
