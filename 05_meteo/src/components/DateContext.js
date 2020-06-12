@@ -14,14 +14,16 @@ export const DateProvider = ( { children } ) => {
                 myDate =  {
                     daily       : new Date(),
                     yearSum     : new Date(),
-                    davisStat   : new Date()
+                    davisStat   : new Date(),
+                    oldStation  : new Date(2012,1,1)
                 }
             } else {
-                const { daily, yearSum, davisStat } = JSON.parse(localStorage.getItem('myDate'));
+                const { daily, yearSum, davisStat, oldStation } = JSON.parse(localStorage.getItem('myDate'));
                 myDate =  {
                     daily       : new Date(daily),
                     yearSum     : new Date(yearSum),
-                    davisStat   : new Date(davisStat)
+                    davisStat   : new Date(davisStat),
+                    oldStation  : new Date(oldStation)
                 }
             }
             return myDate;

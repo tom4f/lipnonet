@@ -1,0 +1,32 @@
+.form_result_alert {
+  width: 50%;
+  height: 500px;
+}
+
+.edit_booking {
+  display: block;
+  width: 80%;
+  text-align: center;
+}
+
+.edit_input_booking {
+  display: block;
+  width: 80%;
+  margin: 10px auto;
+}
+
+.login {
+  width: 80%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+#close-btn {
+  text-align: right;
+  margin-right: 10px;
+}
+
+#close-btn span:hover {
+  border: 1px solid black;
+  cursor: pointer;
+}

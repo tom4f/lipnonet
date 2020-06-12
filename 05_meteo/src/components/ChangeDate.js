@@ -5,7 +5,7 @@
 export const ChangeDate = (dateType, dateObj, interval, direction) => {
     let start;
     switch (dateType) {
-        case 'daily' : start = new Date(2012,9,1);
+        case 'daily' : start = new Date(2012,7,22);
         break;
         case 'yearSum' : start = new Date(2012,8);
         break;

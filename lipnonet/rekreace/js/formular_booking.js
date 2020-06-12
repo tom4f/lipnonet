@@ -1,5 +1,7 @@
 "use strict"
 
+let formResult = [];
+
 // calculate first week (based on first Thuersday in Year) and calculate first Saurday
 const firstWeekStart = (week = 0) => {
     let firstSat = 0;
@@ -25,6 +27,17 @@ const firstWeekStart = (week = 0) => {
 const showTable = (formResult) => {
     // table for booking status
     const bookingTable = document.querySelector('.booking_table');
+
+    // create tr-head
+    bookingTable.innerHTML = `
+        <tr>
+            <th>Datum (týden so-so)</th>
+            <th>Apartmán č.1</th>
+            <th>Apartmán č.2</th>
+            <th>Apartmán č.3</th>
+        </tr>
+    `;
+
     const setBackgroundColor = [
         '',
         'style="background-color:rgba(255, 208,   0, 0.9);"',
@@ -41,9 +54,10 @@ const showTable = (formResult) => {
         } else{
             weekModified = week - formResult.length;
         }
-        let tr = document.createElement('tr');
+        const tr = document.createElement('tr');
+        const termin = `(${weekModified + 1}) ${firstWeekStart(week  ).date}.${firstWeekStart(week  ).month}-${firstWeekStart(week+1).date}.${firstWeekStart(week+1).month}.${firstWeekStart(week+1).year}`
         tr.innerHTML = `
-            <td>(${weekModified + 1}) ${firstWeekStart(week  ).date}.${firstWeekStart(week  ).month}-${firstWeekStart(week+1).date}.${firstWeekStart(week+1).month}.${firstWeekStart(week+1).year}</td>
+            <td>${termin}</td>
             <td ${setBackgroundColor[formResult[weekModified].g1_status]}>${formResult[weekModified].g1_text}</td>
             <td ${setBackgroundColor[formResult[weekModified].g2_status]}>${formResult[weekModified].g2_text}</td>
             <td ${setBackgroundColor[formResult[weekModified].g3_status]}>${formResult[weekModified].g3_text}</td>
@@ -58,21 +72,40 @@ const showTable = (formResult) => {
 
 
 // UI handling AJAX response - after submit button clicek
-const formResultAlert = (formResult) =>{
+const formResultAlert = (formResult, place = 'form_result_alert' ) =>{
+    console.log(formResult);
     const antispamFailed = `
         <h2>Objednávku se nepodařilo odeslat.</h2>
         <h2>špatný kód</h2>`;
     const mailFailed = `
         <h2>Objednávku se nepodařilo odeslat.</h2>
         <h2>zkuste to později</h2>`;
-    const formResultPlace           = document.getElementById('form_result_alert');
+    const loginFailed = `
+        <h2>Přihlášení se nezdařilo :-(</h2>
+        <h2>zkuste to později</h2>`;
+    const loginSuccess = `
+        <h2>Přihlášení proběhlo v pořádku :-)</h2>`;
+
+    const formResultPlace           = document.getElementById( place );
     const antispamCodeInputPlace    = document.getElementById('antispam_code_input');
     
     switch (formResult.mailResult){
         case 'ajax_failed':
             formResultPlace.innerHTML = mailFailed;
             formResultPlace.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';  
-            break;            
+            break; 
+        case 'error':
+            formResultPlace.innerHTML = loginFailed;
+            formResultPlace.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';  
+            break;   
+        case 'loginSuccess':
+            formResultPlace.innerHTML = loginSuccess;
+            formResultPlace.style.backgroundColor = 'rgba(0, 255, 0, 0.8)';  
+            break;
+        case 'loginFailed':
+            formResultPlace.innerHTML = loginFailed;
+            formResultPlace.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';  
+            break;             
         case 'success':
             // adress from <textarea> divided to array based on new lines
             const adressDecode = formResult.mailResult === 'ajax_failed' ? [''] : formResult.adresa_1.split('\r\n');
@@ -113,14 +146,30 @@ const formResultAlert = (formResult) =>{
             formResultPlace.innerHTML = mailFailed;
             formResultPlace.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
             break;
+        case 'termin_changed':
+            const editConfirmation = `
+                <h2>Termmín byl změněn</h2>
+                <h2>Děkujeme</h2>`;
+            formResultPlace.innerHTML = editConfirmation;
+            formResultPlace.style.backgroundColor = 'rgba(0, 255, 0, 0.8)';
+            loadBooking();
+            break;
+        case 'login_success':
+            const loginConfirmation = `
+                <h2>Přihlášení proběhlo úspěšně</h2>
+                <h2>Děkujeme</h2>`;
+            formResultPlace.innerHTML = loginConfirmation;
+            formResultPlace.style.backgroundColor = 'rgba(0, 255, 0, 0.8)';
+            loadBooking();
+            break;
         default:
             formResultPlace.innerHTML = mailFailed;
             formResultPlace.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';        
     }
 
-    formResultPlace.style.visibility = 'visible';
+    formResultPlace.style.display = 'block';
     // hide form alert after 5 seconds
-    setTimeout( () => formResultPlace.style.visibility = 'hidden', 5000 );
+    setTimeout( () => formResultPlace.style.display = 'none', 5000 );
 }
 
 
@@ -141,7 +190,7 @@ const sendFormBooking = (e) => {
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = function(){
             if (this.readyState == 4 && this.status == 200) {
-                const formResult = JSON.parse(this.responseText);
+                formResult = JSON.parse(this.responseText);
                 // show OK green alert box
                 formResultAlert(formResult);
             } 
@@ -163,7 +212,7 @@ const loadBooking = () => {
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                const formResult = JSON.parse(xhr.responseText);
+                formResult = JSON.parse(xhr.responseText);
                 // show one year table baed on JSON data from MYSQL
                 showTable(formResult);
                 // mySQL week starts from 0, real week starts from 1

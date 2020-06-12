@@ -4,6 +4,9 @@ import Top                  from './components/Top';
 import Bottom               from './components/Bottom';
 import { SelectDay }        from './components/SelectDay';
 import { SelectYear }       from './components/SelectYear';
+import { SelectOldStation } from './components/SelectOldStation';
+import { ModifyPocasi }     from './components/ModifyPocasi';
+
 import './css/main.css';
 import './css/meteo.css';
 
@@ -21,12 +24,19 @@ export const App = () => {
     <div className="top_container">
       <Top/>
       <nav>
-          <button style={ menu === 'start' ? btnOn : btnOff } onClick={ () => setMenu('start') } >Meteostanice<br/>Davis Vantage Pro<br/>Frymburk</button>
-          <button style={ menu === 'povodi' ? btnOn : btnOff } onClick={ () => setMenu('povodi') } ><br/>denní hodnoty<br/>Lipno u hráze</button>
+          <button style={ menu === 'start'      ? btnOn : btnOff } onClick={ () => setMenu('start') } >meteostanice<br/>Davis Vantage Pro<br/>Frymburk</button>
+          <button style={ menu === 'povodi'     ? btnOn : btnOff } onClick={ () => setMenu('povodi') } ><br/>denní hodnoty<br/>Lipno u hráze</button>
+          <button style={ menu === 'oldStation' ? btnOn : btnOff } onClick={ () => setMenu('oldStation') } >původní<br/>meteostanice<br/>Frymburk</button>
       </nav>
       <div className="graphs">
         <DateProvider>
-            { menu === 'start' ? <SelectDay /> : <SelectYear />}
+            {
+              window.location.search === '?edit=yes'  ? <ModifyPocasi edit="yes" />
+              : menu === 'start'                      ? <SelectDay />
+              : menu === 'povodi'                     ? <SelectYear />
+              : menu === 'oldStation'                 ? <SelectOldStation />
+              : null
+            }
         </DateProvider>
       </div>
       <Bottom/>

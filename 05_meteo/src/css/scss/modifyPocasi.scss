@@ -1,0 +1,39 @@
+
+.editPocasi {
+    position: relative;
+
+    .login-container, .edit-container, .add-container, .delete-container {
+        position: absolute;
+        width: 90%;
+        max-width: 600px;
+        left: 50%;
+        top: 200px;
+        //transform: translate(-50%, -50%);
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+
+        .close-btn {
+            text-align: right;
+            margin-right: 10px;
+            span {
+                &:hover{
+                    border: 1px solid black;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.datum {
+
+        color: white;
+        font-weight: bold;
+        background-color: red;
+
+}
+
+
+
+
+

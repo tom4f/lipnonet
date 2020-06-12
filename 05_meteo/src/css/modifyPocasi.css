@@ -1,0 +1,30 @@
+.editPocasi {
+  position: relative;
+}
+
+.editPocasi .login-container, .editPocasi .edit-container, .editPocasi .add-container, .editPocasi .delete-container {
+  position: absolute;
+  width: 90%;
+  max-width: 600px;
+  left: 50%;
+  top: 200px;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.editPocasi .login-container .close-btn, .editPocasi .edit-container .close-btn, .editPocasi .add-container .close-btn, .editPocasi .delete-container .close-btn {
+  text-align: right;
+  margin-right: 10px;
+}
+
+.editPocasi .login-container .close-btn span:hover, .editPocasi .edit-container .close-btn span:hover, .editPocasi .add-container .close-btn span:hover, .editPocasi .delete-container .close-btn span:hover {
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.datum {
+  color: white;
+  font-weight: bold;
+  background-color: red;
+}

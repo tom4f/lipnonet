@@ -68,7 +68,10 @@ nav button:hover {
 }
 
 .davisTable table button {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
   width: 100%;
+  font-size: 10px;
 }
 
 .davisTable table button:hover {
@@ -77,9 +80,16 @@ nav button:hover {
 
 .davisTable table tr {
   background-color: white;
+  font-size: 10px;
+}
+
+.davisTable table tr th {
+  font-size: 10px;
+  font-weight: lighter;
 }
 
 .davisTable table .link {
+  white-space: nowrap;
   text-decoration: underline;
 }
 

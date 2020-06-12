@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { DateContext } from './DateContext';
 
-export const ShowYearTable = () => {
+export const ShowYearTable = ( { pocasi, setPocasi, refresh = 0, user = 'no-user', webToken = 'error' } ) => {
 
     const { globalDate } = useContext(DateContext);
 
@@ -12,17 +12,17 @@ export const ShowYearTable = () => {
         }
     );
     
+    
     // which lines requested from mySQL
     const [ start,  setStart ]  = useState(0);
-    const [ pocasi, setPocasi ] = useState([]);
-    useEffect( () => loadPocasi(), [ start, orderBy ]);
+    useEffect( () => loadPocasi(), [ start, orderBy, refresh ]);
 
     const loadPocasi = () => {
         const xhr = new XMLHttpRequest();
         // for live
-        xhr.open('POST', `./api/pdo_read_pocasi.php`, true);
+        // xhr.open('POST', `./api/pdo_read_pocasi.php`, true);
         // for node.js
-        // xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi.php`, true);
+        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi.php`, true);
         //xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_pocasi.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
@@ -58,7 +58,7 @@ export const ShowYearTable = () => {
         const output = [];
         pocasi.forEach( (one, index)  => output.push( 
             <tr key={index}>
-                <td>{one.datum}</td>
+                <td className={ webToken !== 'error' ? 'datum' : null }>{one.datum}</td>
                 <td style={ rgbCss(255, 0, 0, 1 - (725 - one.hladina)       /2 ) }>{one.hladina}</td>
                 <td style={ rgbCss(0, 255, 0, one.pritok                    /100 ) }>{one.pritok}</td>
                 <td style={ rgbCss(0, 255, 0, one.odtok                     /100 ) }>{one.odtok}</td>
@@ -80,7 +80,7 @@ export const ShowYearTable = () => {
 
     return (
         <>
-            <br/>
+            { webToken !== 'error' ? <header className="header">Přihlášený uživatel: {user}</header> : null }
             <header className="header" >
                 Historie : &nbsp; 
                 <button onClick={ () => setStart( start <= 6900 ? start + 30 : start ) } > &nbsp; {'<'} &nbsp; </button>
@@ -88,38 +88,38 @@ export const ShowYearTable = () => {
                 <button onClick={ () => setStart( start >= 30 ? start - 30 : start ) } > &nbsp; {'>'} &nbsp; </button>
                 &nbsp; dní
             </header>
-                <section className="davisTable">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th colSpan="3">vodní nádrž Lipno [00:00 hod]</th>
-                                <th colSpan="3">[7:00 hod]</th>
-                            </tr>
-                            <tr>
-                                <th><button name="datum" onClick={ (e) => sort(e) } >datum</button></th>
-                                <th><button name="hladina" onClick={ (e) => sort(e) } >hladina</button></th>
-                                <th><button name="pritok" onClick={ (e) => sort(e) } >přítok</button></th>
-                                <th><button name="odtok" onClick={ (e) => sort(e) } >odtok</button></th>
-                                <th><button name="voda" onClick={ (e) => sort(e) } >voda</button></th>
-                                <th><button name="vzduch" onClick={ (e) => sort(e) } >vzduch</button></th>
-                                <th>komentář</th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th>m n.m.</th>
-                                <th>m<sup>3</sup>/s</th>
-                                <th>m<sup>3</sup>/s</th>
-                                <th>&deg;C</th>
-                                <th>&deg;C</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {printPocasi()}
-                        </tbody>
-                    </table>
-                </section>
+            <section className="davisTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th colSpan="3">vodní nádrž Lipno [00:00 hod]</th>
+                            <th colSpan="3">[7:00 hod]</th>
+                        </tr>
+                        <tr>
+                            <th><button name="datum" onClick={ (e) => sort(e) } >datum</button></th>
+                            <th><button name="hladina" onClick={ (e) => sort(e) } >hladina</button></th>
+                            <th><button name="pritok" onClick={ (e) => sort(e) } >přítok</button></th>
+                            <th><button name="odtok" onClick={ (e) => sort(e) } >odtok</button></th>
+                            <th><button name="voda" onClick={ (e) => sort(e) } >voda</button></th>
+                            <th><button name="vzduch" onClick={ (e) => sort(e) } >vzduch</button></th>
+                            <th>komentář</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>m n.m.</th>
+                            <th>m<sup>3</sup>/s</th>
+                            <th>m<sup>3</sup>/s</th>
+                            <th>&deg;C</th>
+                            <th>&deg;C</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {printPocasi()}
+                    </tbody>
+                </table>
+            </section>
         </>
     )
 }
