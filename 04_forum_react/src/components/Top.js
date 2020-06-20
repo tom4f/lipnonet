@@ -22,7 +22,7 @@ const Top = () => {
 
             <div className="header">
                 <a className="menu" href="webcam_ip_archive.html" target="_top">Kamera</a> | 
-                <a className="menu" href="aktuality.php" target="_top"> Meteostanice</a> | 
+                <a className="menu" href="aktuality.html" target="_top"> Meteostanice</a> | 
                 <a className="menu" href="kniha.html" target="_top"> Fórum</a> | 
                 <a className="menu" href="fotogalerie.html" target="_top"> Fotogalerie</a> | 
                 <a className="menu" href="profisolar.php" target="_top"> Solární ohřev</a> | 

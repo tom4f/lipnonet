@@ -1,6 +1,6 @@
 <?php 
   // Headers
-  header('Access-Control-Allow-Origin: *');
+  include_once '../config/cor.php';
   header('Content-Type: application/json');
   header('Access-Control-Allow-Methods: POST');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
@@ -65,8 +65,8 @@ if (isset($data->dataUrl)) {
     $filePathOrig = $remote_folder . $fileNumber . "o.jpg";;
     file_put_contents($filePathOrig, base64_decode(explode(',',$dataUrl)[1]));
 
-    $remote_path = $remote_folder . $fileNumber . ".jpg";
-    $remote_path1 =$remote_folder . $fileNumber . "b.jpg";
+    $remote_path_small = $remote_folder . $fileNumber . ".jpg";
+    $remote_path_big   = $remote_folder . $fileNumber . "b.jpg";
 
     function img_resize($filePathOrig, $newwidth, $filePathDest, $rotate){
       $source = imagecreatefromjpeg($filePathOrig);
@@ -90,7 +90,20 @@ if (isset($data->dataUrl)) {
       //echo "newwidth: ".$newwidth. "newheight: ".$newheight."width: ".$width."height: ".$height;
     }
 
-    img_resize("$filePathOrig", 200,  "$remote_path",  $rotate);
-    img_resize("$filePathOrig", 1000, "$remote_path1", $rotate);
+    // Reads the EXIF headers from an image file
+    $exif = exif_read_data($filePathOrig, 'IFD0');
+    // Dumps information about a variable
+    $exif_orientation = $exif['Orientation'];
+    if ( $rotate === '0' && !empty( $exif_orientation ) ) {
+    // rotate based on exif['Orientation'] value
+      switch ( $exif_orientation ) {
+          case 3: case 4: $rotate = 180; break;
+          case 5: case 6: $rotate = 270; break;
+          case 7: case 8: $rotate =  90; break;
+        }
+    }
+
+    img_resize("$filePathOrig", 200,  "$remote_path_small", $rotate);
+    img_resize("$filePathOrig", 1000, "$remote_path_big"  , $rotate);
   
 }

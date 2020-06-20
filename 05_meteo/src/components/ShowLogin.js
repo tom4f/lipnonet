@@ -1,8 +1,12 @@
 import React, { useState }  from 'react';
+import { apiPath } from './apiPath.js'
 
 export const ShowLogin = ({
     user, setUser, password, setPassword, setWebToken, 
-    refresh, setRefresh
+    //refresh, setRefresh,
+    setEditMeteo,
+    editMeteo,
+    editMeteo : { refresh }
 }) => {
 
    let fotoGalleryOwner = '_ubytovani'; 
@@ -18,8 +22,7 @@ export const ShowLogin = ({
             password
         }
         let xhr = new XMLHttpRequest();
-        // xhr.open('POST', `api/foto_login.php`, true);
-        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/foto_login.php`, true);
+        xhr.open('POST', `${apiPath()}foto_login.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = function(){
             if (this.readyState === 4 && this.status === 200) {
@@ -29,9 +32,7 @@ export const ShowLogin = ({
                 if ( newWebToken === 'error' ) {
                     setLoginResp('error');
                 } else {
-                    // reload table => update 'pocasi' => addQuerySelector
-                    setRefresh( refresh + 1 );
-                    
+                    setEditMeteo( { ...editMeteo, refresh : refresh + 1 } )
                     setLoginResp('loginSuccess');
                     setWebToken(newWebToken);
                 }

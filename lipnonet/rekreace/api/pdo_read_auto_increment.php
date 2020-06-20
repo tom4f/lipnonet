@@ -1,6 +1,6 @@
 <?php 
   // Headers
-  header('Access-Control-Allow-Origin: *');
+  include_once '../config/cor.php';
   header('Content-Type: application/json');
 
   // Get raw posted data

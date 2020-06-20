@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { DateContext } from './DateContext';
+import { apiPath } from './apiPath.js'
 
 export const SelectOldStation = () => {
 
@@ -19,11 +20,7 @@ export const SelectOldStation = () => {
 
     const loadDavis = () => {
         let xhr = new XMLHttpRequest();
-        // for live
-        //xhr.open('POST', `./api/pdo_read_old_station.php`, true);
-        // for node.js
-        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_old_station.php`, true);
-        //xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_old_station.php`, true);
+        xhr.open('POST', `${apiPath()}pdo_read_old_station.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {

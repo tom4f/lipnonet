@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './main.css';
-import './forum.css';
+import './css/main.css';
+import './css/forum.css';
 import Top                  from './components/Top';
 import Bottom               from './components/Bottom';
 import axios                from "axios";
@@ -11,6 +11,7 @@ import PostsPerPage         from './components/PostsPerPage';
 import Paginations          from './components/Paginations';
 import SelectPaginate       from './components/SelectPaginate';
 import AddEntry             from './components/AddEntry';
+import { apiPath }          from './components/apiPath.js'
 
 export default class App extends Component {
   constructor(props) {
@@ -35,7 +36,8 @@ componentDidMount(){
     let allForum = [];
     axios
     //.get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-     .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
+    //.get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
+      .get(`${apiPath()}pdo_read_forum.php`, {
       timeout: 5000
     })
     .then(res => {

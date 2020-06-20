@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios                from "axios";
+import { apiPath }          from './apiPath.js'
 // test
 class AddEntry extends Component {
     constructor(props){
@@ -30,9 +31,9 @@ class AddEntry extends Component {
         console.log(this.state.antispam + ' = ' + Number(data.get('antispamForm')));
         if (this.state.antispam === Number(data.get('antispamForm'))){
             //axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
-             axios.post('https://frymburk.com/rekreace/api/pdo_create_forum.php', this.state)
+             axios.post(`${apiPath()}pdo_create_forum.php`, this.state)
                 .then(response => {
-                    console.log(response);
+                    //console.log(response);
                     this.setState({
                         formVisible : false,
                         alert: 'ok'
@@ -45,7 +46,7 @@ class AddEntry extends Component {
     
                     axios
                         //.get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-                         .get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
+                         .get(`${apiPath()}pdo_read_forum.php`, {
                         timeout: 5000
                     })
                     .then(res => {

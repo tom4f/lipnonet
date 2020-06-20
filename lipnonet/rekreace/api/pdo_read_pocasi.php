@@ -1,7 +1,7 @@
 <?php
     
     // to work with COR
-    header('Access-Control-Allow-Origin: *');
+    include_once '../config/cor.php';
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
     header('Content-Type: application/json');
     

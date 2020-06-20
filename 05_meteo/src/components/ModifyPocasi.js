@@ -23,15 +23,17 @@ export const ModifyPocasi = () => {
          editDate : '',
          editKey : '',
          editValue : '',
-         // show/hide edit form 
+         // show/hide forms
          dispEdit : false,
-         dispDelete : false
+         dispDelete : false,
+         dispAdd : false,
+         // trigger for table reload
+         refresh : 0
         }
      );
-    // trigger for table reload
-    const [ refresh, setRefresh ] = useState(0);
+
     // update table querySelector when 'pocasi' changed
-    useEffect( () => addQuerySelector(pocasi, setEditMeteo, webToken), [ pocasi ]);
+    useEffect( () => addQuerySelector(pocasi, editMeteo, setEditMeteo, webToken), [ pocasi ]);
     
     return (
         <>
@@ -41,32 +43,48 @@ export const ModifyPocasi = () => {
                         user={user} setUser={setUser}
                         password={password} setPassword={setPassword}
                         setWebToken={setWebToken}
-                        refresh={refresh} setRefresh={setRefresh}
-                    /> :
+                        editMeteo={editMeteo} setEditMeteo={setEditMeteo}
+                    /> : null  }
+
+                { editMeteo.dispAdd ?
                     <AddPocasi
                         pocasi={pocasi}
+                        editMeteo={editMeteo} setEditMeteo={setEditMeteo}
                         webToken={webToken}
-                        refresh={refresh} setRefresh={setRefresh}
-                /> }
+                    /> : null }
 
                 { editMeteo.dispEdit ?
                     <EditPocasi
                         pocasi={pocasi}
                         editMeteo={editMeteo} setEditMeteo={setEditMeteo}
                         webToken={webToken}
-                        refresh={refresh} setRefresh={setRefresh}
                     /> : null }
+
                 { editMeteo.dispDelete ?
                     <DeletePocasi
                         editMeteo={editMeteo} setEditMeteo={setEditMeteo}
                         webToken={webToken}
-                        refresh={refresh} setRefresh={setRefresh}
                     /> : null }
+                
+                { webToken !== 'error' ?
+                    <div className="form_booking">
+                        <div className="submit_booking">
+                            <input type="submit" onClick={ () => setEditMeteo( 
+                                { 
+                                    ...editMeteo,
+                                    dispEdit: false,
+                                    dispDelete : false,
+                                    dispAdd : true
+                                }) } value="+ Vytvřit nový záznam" />
+                        </div>
+                    </div>
+                : null }            
             </div>
+
             <ShowYearTable
                 pocasi={pocasi} setPocasi={setPocasi}
                 user={user} webToken={webToken}
-                refresh={refresh}
+                editMeteo={editMeteo} setEditMeteo={setEditMeteo}
             />
         </>
 

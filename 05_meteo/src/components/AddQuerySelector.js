@@ -1,4 +1,4 @@
-export const addQuerySelector = ( pocasi, setEditMeteo, webToken ) => {
+export const addQuerySelector = ( pocasi, editMeteo, setEditMeteo, webToken ) => {
     // set 'click' event listener for all table <div>
 
     const editTermin = (event) => {
@@ -31,6 +31,7 @@ export const addQuerySelector = ( pocasi, setEditMeteo, webToken ) => {
         if ( clicedColumnNr ) {
             setEditMeteo(
                 {
+                    ...editMeteo,
                     editDate,
                     editKey,
                     editValue,
@@ -42,6 +43,7 @@ export const addQuerySelector = ( pocasi, setEditMeteo, webToken ) => {
         } else {
             setEditMeteo(
                 {
+                    ...editMeteo,
                     editDate,
                     editKey,
                     editValue,

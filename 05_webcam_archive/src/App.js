@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import './main.css';
-import './webcam_archive.css';
+import './css/main.css';
+import './css/webcam_archive.css';
 import Top                  from './components/Top';
 import Bottom               from './components/Bottom';
 import ShowWebCam           from './components/ShowWebCam';
 import SelectTime           from './components/SelectTime';
 import WebCamSlideShow      from './components/WebCamSlideShow';
 import RangeSlider          from './components/RangeSlider';
+import { apiPath }          from './components/apiPath.js'
 
 export default class App extends Component {
     // MOUNTING : 1st live cycle method = constructor()
@@ -54,11 +55,9 @@ export default class App extends Component {
                         <SelectTime       day={day} hour={hour} minute={minute} reactChange={this.reactChange}/>
                         <WebCamSlideShow  day={day} hour={hour} minute={minute} reactChange={this.reactChange} slideId={slideId} timer={timer} />
                     </div>
-                    {/*  webCamImgSrc={ `https://frymburk.com/kamera/archive/ip_kamera_${day}-${hour}-${minute}.jpg` }  */}
-                    {/*  webCamImgSrc={ `../kamera/archive/ip_kamera_${day}-${hour}-${minute}.jpg` }  */}
                     <ShowWebCam
-                        webCamImgSrc    ={ `https://frymburk.com/kamera/archive/ip_kamera_${day}-${hour}-${minute}.jpg` }
-                        webCamImgHref   ={ `../kamera/archive/ip_kamera_full_hd_${day}-${hour}-${minute}.jpg` }
+                        webCamImgSrc  = { `${apiPath()}ip_kamera_${day}-${hour}-${minute}.jpg` }
+                        webCamImgHref = { `${apiPath()}ip_kamera_full_hd_${day}-${hour}-${minute}.jpg` }
                     /> 
                     Build with React
                 </div>

@@ -1,14 +1,16 @@
-import React    from 'react';
+import React, { useState }    from 'react';
+import { apiPath } from './apiPath.js'
 
 export const DeletePocasi = ({ 
         editMeteo,
         editMeteo : { editDate },
         setEditMeteo,
         webToken,
-        refresh, setRefresh
+        editMeteo : { refresh }
     }) => {
 
     let fotoGalleryOwner = '_ubytovani';
+    const [ loginResp, setLoginResp ] = useState('empty');
 
     const deleteMySQL = (e) => {
         e.preventDefault();
@@ -22,21 +24,28 @@ export const DeletePocasi = ({
         // AJAX
         {
             let xhr = new XMLHttpRequest();
-            
-            xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_delete_pocasi.php`, true);
-            //xhr.open('POST', `api/pdo_update_pocasi.php`, true);
+            xhr.open('POST', `${apiPath()}pdo_delete_pocasi.php`, true);
             xhr.setRequestHeader('Content-type', 'application/json');
             xhr.onload = function(){
                 if (this.readyState === 4 && this.status === 200) {
                     const editResult = JSON.parse(this.responseText);
-                    console.log(editResult);
-                    setRefresh( refresh + 1 );
-                    setEditMeteo( { ...editMeteo, dispDelete : false } );
+                    if ( editResult.result === 'pocasi_deleted' ) {
+                        setEditMeteo( 
+                            { 
+                                ...editMeteo,
+                                dispAdd : false,
+                                dispEdit: false,
+                                dispDelete : false,
+                                refresh : refresh + 1
+                             });
+                        console.log(editResult);
+                    } else {
+                        setLoginResp('error');
+                    }
                 } 
             }
             xhr.onerror = function () {
-                const editResultAjaxEror = JSON.parse('{"mailResult" : "ajax_failed"}');
-                console.log(editResultAjaxEror)
+                setLoginResp('error');
             }
             xhr.send(JSON.stringify(FDobject));
         }
@@ -45,6 +54,7 @@ export const DeletePocasi = ({
     return (
         <div className="delete-container">
           <div className="close-btn" onClick={ () => setEditMeteo( { ...editMeteo, dispDelete : false } ) }><span>x</span></div>
+          { loginResp==='error' ? <div> Někde nastala chyba - { loginResp } :-(</div> : null }
           <h4>Mažete datum {editDate} </h4>
           <form onSubmit={ (e) => deleteMySQL(e) } autoComplete="off" id="delete_form_pocasi">
               <div className="form_booking edit_booking">

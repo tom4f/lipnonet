@@ -1,6 +1,6 @@
 <?php 
   // Headers
-  header('Access-Control-Allow-Origin: *');
+  include_once '../config/cor.php';
   header('Content-Type: application/json');
   header('Access-Control-Allow-Methods: PUT');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
@@ -36,23 +36,23 @@
   $webToken = "".($data->webToken);
 
   if($webToken == $webTokenCalculated) {
-    // if update OK
-    if($post->create()) {
-      echo json_encode( array('result' => 'pocasi_added') );
-      // update last update date
-      $fp = FOpen("../formular_counter.dat", "w+");
-      $LastChange=StrFTime("%d.%m.%Y");
-      FPutS($fp, $LastChange);
-      FClose($fp);
-    // if update failed
-    } else {
-      echo json_encode(
-        array('result' => 'pocasi_not_added')
-      );
-    }
-    // if login failed
-  } else {
-    echo json_encode(
-      array('result' => 'loginFailed')
-    );
+      // if db connect ok
+      if($db){
+          // if db operation ok
+          if($post->create()) {
+              echo json_encode( array('result' => 'pocasi_added') );
+              // update last update date
+              $fp = FOpen("../formular_counter.dat", "w+");
+              $LastChange=StrFTime("%d.%m.%Y");
+              FPutS($fp, $LastChange);
+              FClose($fp);
+            } else {
+                echo json_encode( array('result' => 'pocasi_not_added')  );
+              }
+      } else {
+        echo json_encode( array('result' => 'pocasi_not_deleted - db error')  );
+      }
+// if login failed
+} else {
+      echo json_encode( array('result' => 'loginFailed') );
   }

@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { DateContext } from './DateContext';
+import { apiPath } from './apiPath.js'
 
-export const ShowYearTable = ( { pocasi, setPocasi, refresh = 0, user = 'no-user', webToken = 'error' } ) => {
+export const ShowYearTable = ({
+    pocasi, setPocasi,
+    //refresh = 0,
+    editMeteo : { refresh } = 0,
+    user = 'no-user',
+    webToken = 'error' }) => {
 
     const { globalDate } = useContext(DateContext);
 
@@ -19,11 +25,7 @@ export const ShowYearTable = ( { pocasi, setPocasi, refresh = 0, user = 'no-user
 
     const loadPocasi = () => {
         const xhr = new XMLHttpRequest();
-        // for live
-        // xhr.open('POST', `./api/pdo_read_pocasi.php`, true);
-        // for node.js
-        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi.php`, true);
-        //xhr.open('POST', `https://frymburk.com/rekreace/api/pdo_read_pocasi.php`, true);
+        xhr.open('POST', `${apiPath()}pdo_read_pocasi.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -32,7 +34,6 @@ export const ShowYearTable = ( { pocasi, setPocasi, refresh = 0, user = 'no-user
                 const [ year ] = pdoResp[0].datum.split('-');
                 const clickedDate = new Date( year );
                 globalDate('yearSum', clickedDate );
-
             } 
         }
         xhr.onerror = () => console.log("** An error occurred during the transaction");

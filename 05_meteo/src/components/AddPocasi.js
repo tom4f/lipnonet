@@ -1,6 +1,11 @@
 import React, { useState }          from 'react';
+import { apiPath } from './apiPath.js'
 
-export const AddPocasi = ( { pocasi, webToken, refresh, setRefresh } ) => {
+export const AddPocasi = ({
+        pocasi, webToken,
+        editMeteo : { refresh },
+        editMeteo, setEditMeteo
+    }) => {
 
     const { hladina, pritok, odtok, voda, vzduch, pocasi : komentar } = pocasi[0];
    
@@ -26,25 +31,27 @@ export const AddPocasi = ( { pocasi, webToken, refresh, setRefresh } ) => {
         pocasi: komentar
     });
 
-    const [ showForm, setShowForm ] = useState(false);
     const [ loginResp, setLoginResp ] = useState('empty');
  
     const insert = (e) =>{
         e.preventDefault();
         // AJAX
         let xhr = new XMLHttpRequest();
-        
-        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_add_pocasi.php`, true);
-        //xhr.open('POST', `api/pdo_update_pocasi.php`, true);
+        xhr.open('POST', `${apiPath()}pdo_add_pocasi.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = function(){
             if (this.readyState === 4 && this.status === 200) {
                 const editResult = JSON.parse(this.responseText);
                 console.log(editResult.result);
                 if ( editResult.result === 'pocasi_added' ) {
-                    setShowForm(false);
-                    setRefresh( refresh + 1 );
-                    setLoginResp('success'); 
+                    setEditMeteo( 
+                        { 
+                            ...editMeteo,
+                            dispAdd : false,
+                            dispEdit: false,
+                            dispDelete : false,
+                            refresh : refresh + 1
+                         });
                 } else {
                     setLoginResp('error');
                 }
@@ -52,6 +59,7 @@ export const AddPocasi = ( { pocasi, webToken, refresh, setRefresh } ) => {
             }
         }
         xhr.onerror = function () {
+            setLoginResp('error');
         }
         xhr.send(JSON.stringify( { ...newValues, webToken, fotoGalleryOwner }));
 
@@ -63,17 +71,16 @@ export const AddPocasi = ( { pocasi, webToken, refresh, setRefresh } ) => {
         setNewValues( { ...newValues, [param]: value });
     }
 
+
+       // setLoginResp('empty');
+
+
+
     return (
         <>
-            <div className="form_booking">
-                <div className="submit_booking">
-                    <input type="submit" onClick={ () => setShowForm(!showForm) } value="+ Vytvřit nový záznam" />
-                </div>
-            </div>
-        { showForm ?
         <div className="add-container">
+          <div className="close-btn" onClick={ () => setEditMeteo( { ...editMeteo, dispAdd : false } ) } ><span>x</span></div>
           { loginResp==='error' ? <div> Někde nastala chyba :-(</div> : null }
-          <div className="close-btn" onClick={ () => setShowForm(false) } ><span>x</span></div>
           <h4>Nový záznam  </h4>
           <form onSubmit={ e => insert(e) }  autoComplete="off" id="edit_form_pocasi" name="edit_form_pocasi">
               <div className="form_booking add_booking">
@@ -112,8 +119,6 @@ export const AddPocasi = ( { pocasi, webToken, refresh, setRefresh } ) => {
               </div>
           </form>
         </div>
-        : null }
-
         </>
     )
 }
