@@ -11,9 +11,10 @@
 
   // logins
   $users = array(
-    'Pavel'   => ['192c12b0d4b594b0e02bd9b97b7b9df4', '_pavlik'   ],
-    'Lucka'   => ['e1effe4b56633573edc20ace2a73ac72', '_lucka'    ],
-    'Bedrich' => ['6b8936614987e4c8118481d050d6df3b', '_ubytovani']
+    'Pavel'      => ['192c12b0d4b594b0e02bd9b97b7b9df4', '_pavlik'   ],
+    'Lucka'      => ['e1effe4b56633573edc20ace2a73ac72', '_lucka'    ],
+    'Bedrich'    => ['6b8936614987e4c8118481d050d6df3b', '_ubytovani'],
+    'Elektrarna' => ['574a795533fe98ddda1e2bb8dfe197d5', '_ubytovani']
   );
 
   //echo md5($users['Lucka'][0]);
@@ -22,6 +23,7 @@
   $webTokenCalculated = array('webToken' => 'error');
   // by default no webAccess = error status
   $webAccess = array('webAccess' => 'error');
+  $webUser = array('webUser' => 'error');
 
   // check if user user is inside array $users
   foreach ($users as $index => $value){
@@ -29,6 +31,7 @@
       $date = md5("" . Date('d') . Date('m') . Date('Y'));
       $webTokenCalculated = array('webToken' => md5($date));
       $webAccess = array('webAccess' => $value[1]);
+      $webUser = array('webUser' => $index);
     }
   }
   
@@ -36,7 +39,5 @@
   $posts_arr = array();
   array_push($posts_arr, $webTokenCalculated);
   array_push($posts_arr, $webAccess);
+  array_push($posts_arr, $webUser);
   echo json_encode($posts_arr);
-
-
-

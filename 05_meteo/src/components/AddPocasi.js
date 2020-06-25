@@ -2,9 +2,10 @@ import React, { useState }          from 'react';
 import { apiPath } from './apiPath.js'
 
 export const AddPocasi = ({
-        pocasi, webToken,
+        pocasi,
         editMeteo : { refresh },
-        editMeteo, setEditMeteo
+        editMeteo, setEditMeteo,
+        webToken, user
     }) => {
 
     const { hladina, pritok, odtok, voda, vzduch, pocasi : komentar } = pocasi[0];
@@ -43,7 +44,7 @@ export const AddPocasi = ({
             if (this.readyState === 4 && this.status === 200) {
                 const editResult = JSON.parse(this.responseText);
                 console.log(editResult.result);
-                if ( editResult.result === 'pocasi_added' ) {
+                if ( editResult.result === 'pocasi_create_ok' ) {
                     setEditMeteo( 
                         { 
                             ...editMeteo,
@@ -61,7 +62,7 @@ export const AddPocasi = ({
         xhr.onerror = function () {
             setLoginResp('error');
         }
-        xhr.send(JSON.stringify( { ...newValues, webToken, fotoGalleryOwner }));
+        xhr.send(JSON.stringify( { ...newValues, webToken, webUser : user, fotoGalleryOwner }));
 
     }
 

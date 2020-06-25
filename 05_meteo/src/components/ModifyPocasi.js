@@ -50,20 +50,20 @@ export const ModifyPocasi = () => {
                     <AddPocasi
                         pocasi={pocasi}
                         editMeteo={editMeteo} setEditMeteo={setEditMeteo}
-                        webToken={webToken}
+                        webToken={webToken} user={user}
                     /> : null }
 
                 { editMeteo.dispEdit ?
                     <EditPocasi
                         pocasi={pocasi}
                         editMeteo={editMeteo} setEditMeteo={setEditMeteo}
-                        webToken={webToken}
+                        webToken={webToken} user={user}
                     /> : null }
 
                 { editMeteo.dispDelete ?
                     <DeletePocasi
                         editMeteo={editMeteo} setEditMeteo={setEditMeteo}
-                        webToken={webToken}
+                        webToken={webToken} user={user}
                     /> : null }
                 
                 { webToken !== 'error' ?

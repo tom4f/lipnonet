@@ -5,7 +5,7 @@ export const DeletePocasi = ({
         editMeteo,
         editMeteo : { editDate },
         setEditMeteo,
-        webToken,
+        webToken, user,
         editMeteo : { refresh }
     }) => {
 
@@ -19,6 +19,7 @@ export const DeletePocasi = ({
         const FD = new FormData(form);
         FD.append('fotoGalleryOwner', fotoGalleryOwner);
         FD.append('webToken', webToken);
+        FD.append('webUser', user);
         const FDobject = {};
         FD.forEach( (value, key) => FDobject[key] = value );
         // AJAX
@@ -29,7 +30,7 @@ export const DeletePocasi = ({
             xhr.onload = function(){
                 if (this.readyState === 4 && this.status === 200) {
                     const editResult = JSON.parse(this.responseText);
-                    if ( editResult.result === 'pocasi_deleted' ) {
+                    if ( editResult.result === 'pocasi_delete_ok' ) {
                         setEditMeteo( 
                             { 
                                 ...editMeteo,

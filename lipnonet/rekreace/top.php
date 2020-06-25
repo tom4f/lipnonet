@@ -20,14 +20,14 @@
     <meta name="Author" content="Ing. Tomáš Kučera, Tom4F@seznam.cz">
     <meta name="Keywords" content="Lipno, lipensko, Frymburk, jezero, lake, Vltava, šumava, houby, dovolena, rekreace, kamera, meteostanice, Kramolín, brusle, solární, panely, ohřev, vody, Apricus">
     <meta name="description" content="Ubytování na břehu lipenského jezera v malebném městečku Frymburk. Aktuální počasí na Lipně, webkamera, teplota, vítr, srážky. Solární ohřev vody">
-</head>
+    </head>
 
 <?php
-  $domain=$_SERVER['HTTP_HOST']; 
-  if ($domain == "www.lipnonet.cz")  include "google_analytics_lipnonet_cz.js";
-  if ($domain == "www.lipno.net")    include "google_analytics_lipno_net.js";
-  if ($domain == "www.frymburk.com") include "google_analytics_frymburk_com.js";
-  if ($domain == "www.frymburk.eu")  include "google_analytics_frymburk_eu.js";
+  // $domain=$_SERVER['HTTP_HOST']; 
+  // if ($domain == "www.lipnonet.cz")  include "google_analytics_lipnonet_cz.js";
+  // if ($domain == "www.lipno.net")    include "google_analytics_lipno_net.js";
+  // if ($domain == "www.frymburk.com") include "google_analytics_frymburk_com.js";
+  // if ($domain == "www.frymburk.eu")  include "google_analytics_frymburk_eu.js";
 ?>
 
 <body>
@@ -62,13 +62,11 @@
 
 <!-- old google Adv -->
 <script type="text/javascript">
-    <!--
     google_ad_client = "pub-6892058759603615";
     /* Reklama_1 */
     google_ad_slot = "6550229081";
     google_ad_width = 724;
     google_ad_height = 90;
-    //-->
 </script>
 
 <script type="text/javascript" src="https://pagead2.googlesyndication.com/pagead/show_ads.js"></script>

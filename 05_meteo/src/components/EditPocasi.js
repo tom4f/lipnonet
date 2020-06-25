@@ -8,7 +8,7 @@ export const EditPocasi = ({
         editMeteo : { editValue },
         editMeteo : { refresh },
         setEditMeteo,
-        webToken,
+        webToken, user
     }) => {
 
     let fotoGalleryOwner = '_ubytovani';
@@ -22,6 +22,7 @@ export const EditPocasi = ({
         const FD = new FormData(form);
         FD.append('fotoGalleryOwner', fotoGalleryOwner);
         FD.append('webToken', webToken);
+        FD.append('webUser', user);
         // real object
         const FDobject = {};
         // fill form data ojbect
@@ -35,7 +36,7 @@ export const EditPocasi = ({
                 if (this.readyState === 4 && this.status === 200) {
                     const editResult = JSON.parse(this.responseText);
                     console.log(editResult);
-                    if ( editResult.result === 'pocasi_updated' ) {
+                    if ( editResult.result === 'pocasi_update_ok' ) {
                          setEditMeteo( 
                             { 
                                 ...editMeteo,
