@@ -111,10 +111,10 @@ export const SelectOldStation = () => {
                             </tr>
                             <tr>
                                 <th><button id="date" onClick={ (e) => sort(e) } >datum</button></th>
-                                <th><button id="wind3" onClick={ (e) => sort(e) } >>3<sub id="wind3">m/s</sub></button></th>
-                                <th><button id="wind6" onClick={ (e) => sort(e) } >>6<sub id="wind6">m/s</sub></button></th>
-                                <th><button id="wind9" onClick={ (e) => sort(e) } >>9<sub id="wind9">m/s</sub></button></th>
-                                <th><button id="wind12" onClick={ (e) => sort(e) } >>12<sub id="wind12">m/s</sub></button></th>
+                                <th><button id="wind3" onClick={ (e) => sort(e) } >&gt;3<sub id="wind3">m/s</sub></button></th>
+                                <th><button id="wind6" onClick={ (e) => sort(e) } >&gt;6<sub id="wind6">m/s</sub></button></th>
+                                <th><button id="wind9" onClick={ (e) => sort(e) } >&gt;9<sub id="wind9">m/s</sub></button></th>
+                                <th><button id="wind12" onClick={ (e) => sort(e) } >&gt;12<sub id="wind12">m/s</sub></button></th>
                                 <th><button id="windmax" onClick={ (e) => sort(e) } >max</button></th>
                                 <th><button id="direct" onClick={ (e) => sort(e) } >směr</button></th>
       

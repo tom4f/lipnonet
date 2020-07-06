@@ -7,7 +7,7 @@ export const ChangeDate = (dateType, dateObj, interval, direction) => {
     switch (dateType) {
         case 'daily' : start = new Date(2012,7,22);
         break;
-        case 'yearSum' : start = new Date(2012,8);
+        case 'yearSum' : start = new Date(2000,10,20);
         break;
         case 'davisStat' : start = new Date(2012,9,1);
         break;

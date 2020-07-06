@@ -18,6 +18,7 @@ export const ShowYearTable = ({
         }
     );
     
+    const limit = 30;
     
     // which lines requested from mySQL
     const [ start,  setStart ]  = useState(0);
@@ -30,10 +31,12 @@ export const ShowYearTable = ({
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const pdoResp = JSON.parse(xhr.responseText);
-                setPocasi(pdoResp);
-                const [ year ] = pdoResp[0].datum.split('-');
-                const clickedDate = new Date( year );
-                globalDate('yearSum', clickedDate );
+                if ( pdoResp.length ) {
+                    setPocasi(pdoResp);
+                    const [ year, month, day ] = pdoResp[0].datum.split('-');
+                    const clickedDate = new Date( year, month - 1, day );
+                    globalDate('yearSum', clickedDate );
+                }
             } 
         }
         xhr.onerror = () => console.log("** An error occurred during the transaction");
@@ -41,7 +44,7 @@ export const ShowYearTable = ({
         xhr.send(JSON.stringify(
             { 
                 'start' : start,
-                'limit' : 30,
+                'limit' : limit,
                 'orderBy' : orderBy.value,
                 'sort' : orderBy.order
             }
@@ -84,9 +87,9 @@ export const ShowYearTable = ({
             { webToken !== 'error' ? <header className="header">Přihlášený uživatel: {user}</header> : null }
             <header className="header" >
                 Historie : &nbsp; 
-                <button onClick={ () => setStart( start <= 6900 ? start + 30 : start ) } > &nbsp; {'<'} &nbsp; </button>
+                <button onClick={ () => pocasi.length === limit ? setStart( start + limit ) : null  } > &nbsp; {'<'} &nbsp; </button>
                 &nbsp; {start} &nbsp;
-                <button onClick={ () => setStart( start >= 30 ? start - 30 : start ) } > &nbsp; {'>'} &nbsp; </button>
+                <button onClick={ () => start - limit >= 0 ? setStart( start - limit ) : null  } > &nbsp; {'>'} &nbsp; </button>
                 &nbsp; dní
             </header>
             <section className="davisTable">

@@ -13,6 +13,8 @@ export const ShowDayTable = () => {
         }
     );
 
+    const limit = 30;
+
     // which lines requested from mySQL
     const [ start, setStart ] = useState(0);
     const [ davis, setDavis ] = useState([]);
@@ -25,17 +27,19 @@ export const ShowDayTable = () => {
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const pdoResp = JSON.parse(xhr.responseText);
-                setDavis(pdoResp);
-                const [ year, month, day ] = pdoResp[0].date.split('-');
-                const clickedDate = new Date( year, month - 1, day );
-                globalDate('daily', clickedDate );
+                if ( pdoResp.length ) {
+                    setDavis(pdoResp);
+                    const [ year, month, day ] = pdoResp[0].date.split('-');
+                    const clickedDate = new Date( year, month - 1, day );
+                    globalDate('daily', clickedDate );
+                }
             }
         }
         xhr.onerror = () => console.log("** An error occurred during the transaction");
         xhr.send(JSON.stringify(
             { 
                 'start' : start,
-                'limit' : 30,
+                'limit' : limit,
                 'orderBy' : orderBy.value,
                 'sort' : orderBy.order
             }
@@ -107,9 +111,9 @@ export const ShowDayTable = () => {
             <br/>
             <header className="header" >
                 Historie : &nbsp; 
-                <button onClick={ () => setStart( start <= 2670 ? start + 30 : start ) } > &nbsp; {'<'} &nbsp; </button>
+                <button onClick={ () => davis.length === limit ? setStart( start + limit ) : null } > &nbsp; {'<'} &nbsp; </button>
                 &nbsp; {start} &nbsp;
-                <button onClick={ () => setStart( start >= 30 ? start - 30 : start ) } > &nbsp; {'>'} &nbsp; </button>
+                <button onClick={ () => start - limit >= 0 ? setStart( start - limit ) : null } > &nbsp; {'>'} &nbsp; </button>
                 &nbsp; dní
             </header>
                 <section className="davisTable">
@@ -125,9 +129,9 @@ export const ShowDayTable = () => {
                             </tr>
                             <tr>
                                 <th><button id="date" onClick={ (e) => sort(e) } >datum</button></th>
-                                <th><button id="wind3" onClick={ (e) => sort(e) } >>3<sub id="wind3">m/s</sub></button></th>
-                                <th><button id="wind6" onClick={ (e) => sort(e) } >>6<sub id="wind6">m/s</sub></button></th>
-                                <th><button id="wind9" onClick={ (e) => sort(e) } >>9<sub id="wind9">m/s</sub></button></th>
+                                <th><button id="wind3" onClick={ (e) => sort(e) } >&gt;3<sub id="wind3">m/s</sub></button></th>
+                                <th><button id="wind6" onClick={ (e) => sort(e) } >&gt;6<sub id="wind6">m/s</sub></button></th>
+                                <th><button id="wind9" onClick={ (e) => sort(e) } >&gt;9<sub id="wind9">m/s</sub></button></th>
                                 <th><button id="wind_speed_avg" onClick={ (e) => sort(e) } >prů</button></th>
                                 <th><button id="wind_speed_high" onClick={ (e) => sort(e) } >max</button></th>
                                 <th><button id="dir" onClick={ (e) => sort(e) } >směr</button></th>
