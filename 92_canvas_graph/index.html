@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div style="position: relative;">
-        <canvas id="canvas"></canvas>
-        <canvas id="canvas_pointer"></canvas>
+    <div id="all-graphs">
+        <article id="one-graph" class="one-graph">
+            <canvas id="canvas" class="canvas"></canvas>
+            <canvas id="canvas_pointer" class="canvas_pointer"></canvas>
+        </article>
+        <article id="one-graph" class="one-graph">
+            <canvas id="canvas1" class="canvas"></canvas>
+            <canvas id="canvas1_pointer" class="canvas_pointer"></canvas>
+        </article>
+        <article id="one-graph" class="one-graph">
+            <canvas id="canvas2" class="canvas"></canvas>
+            <canvas id="canvas2_pointer" class="canvas_pointer"></canvas>
+        </article>
     </div>
-
     <script src="./modules/Draw.js"></script>
     <script src="script.js"></script>
 </body>
