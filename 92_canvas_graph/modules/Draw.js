@@ -1,26 +1,40 @@
 class Draw {
 
-    constructor( type, color, canvas, yTextPlace = 'left', canvas_pointer, second_type, header ) {
+    constructor( type, color, canvas, yTextPlace = 'left', canvas_pointer, second_type, header, date ) {
+        // status if all available data for specific graph was already downloaded
+        this.isAllDownloadedForOneGraph = false;
+        // date identificator in DB object
+        this.date = date;
+        this.ctx = canvas.getContext('2d');
+        this.ctx_pointer = canvas_pointer.getContext('2d');
+        // array of data object
+        this.dataOrig    = pdoResp;
         // what graph to draw
         this.type = type;
         this.second_type = second_type;
-        // array of data object
-        this.dataOrig    = pdoResp;
         // how many lines to draw
-        this.dataReduced = this.getInitStartDate();
-        this.start = this.dataReduced[0].datum;
-        this.end   = this.dataReduced[ this.dataReduced.length - 1].datum;
-        this.limit = this.lastDayNumber() - this.firstDayNumber() ;
+        this.dataReduced = pdoResp;
+        // also for refresh:
+        this.refresh = () => {
 
-        this.graphArray = this.graphArr();
-        this.max = Math.max( ...this.graphArray );
-        this.min = Math.min( ...this.graphArray );
-
-        if ( this.second_type ) {
-            this.graphArray_second = this.graphArrSecond();
-            this.max_second = Math.max( ...this.graphArray_second );
-            this.min_second = Math.min( ...this.graphArray_second );
+            this.start = this.dataReduced[0][this.date];
+            this.end   = this.dataReduced[ this.dataReduced.length - 1][this.date];
+            
+            this.limit = this.lastDayNumber() - this.firstDayNumber() ;
+            this.graphArray = this.graphArr();
+            this.max = Math.max( ...this.graphArray );
+            this.min = Math.min( ...this.graphArray );
+    
+            if ( this.second_type ) {
+                this.graphArray_second = this.graphArrSecond();
+                this.max_second = Math.max( ...this.graphArray_second );
+                this.min_second = Math.min( ...this.graphArray_second );
+            } else {
+                this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
+            }
         }
+
+        this.refresh();
 
         this.header = header;
 
@@ -32,8 +46,6 @@ class Draw {
         this.clientWidth  = canvas.clientWidth;
         this.clientHeight = canvas.clientHeight;
 
-        this.ctx = canvas.getContext('2d');
-        this.ctx_pointer = canvas_pointer.getContext('2d');
 
         this.canvas_pointer = canvas_pointer;
 
@@ -86,11 +98,11 @@ class Draw {
             const y = event.offsetY;
             if (y >= 0  && y <= btnHeight ) {
                 // decrease month
-                if ( x >= btnX.startPrev && x <= btnX.startPrev + btnWidth) { this.getDataReduced('start', -1); dispBtn( btnX.startPrev, '<', 0.9 ); }
-                if ( x >= btnX.startNext && x <= btnX.startNext + btnWidth) { this.getDataReduced('start', +1); dispBtn( btnX.startNext, '>', 0.9 ); }
+                if ( x >= btnX.startPrev && x <= btnX.startPrev + btnWidth) { this.updateGraph('start', -1); dispBtn( btnX.startPrev, '<', 0.9 ); }
+                if ( x >= btnX.startNext && x <= btnX.startNext + btnWidth) { this.updateGraph('start', +1); dispBtn( btnX.startNext, '>', 0.9 ); }
                 // add month
-                if ( x >= btnX.endPrev && x <= btnX.endPrev + btnWidth) { this.getDataReduced('end', -1); dispBtn( btnX.endPrev,   '<', 0.9 ); }
-                if ( x >= btnX.endNext && x <= btnX.endNext + btnWidth) { this.getDataReduced('end', +1); dispBtn( btnX.endNext,   '>', 0.9 );}
+                if ( x >= btnX.endPrev && x <= btnX.endPrev + btnWidth) { this.updateGraph('end', -1); dispBtn( btnX.endPrev,   '<', 0.9 ); }
+                if ( x >= btnX.endNext && x <= btnX.endNext + btnWidth) { this.updateGraph('end', +1); dispBtn( btnX.endNext,   '>', 0.9 );}
             }
         }
         // handle mousemove event over button
@@ -134,47 +146,64 @@ class Draw {
     }
 
 
-    getInitStartDate( move = - 2 * 365 ) {
-            const origDate = new Date( this.dataOrig[ this.dataOrig.length - 1].datum );
-            const updDate = new Date( origDate.setDate ( origDate.getDate() + move )  );
-            this.start = `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }`;
-            // get new filtered data array
-            return this.dataOrig.filter( (value) => new Date( value.datum ) > updDate);
+    getTextDateFromNewDate(updDate){
+        return `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }`;
+    }
+
+
+    dataReducer(startOrEnd, move) {
+        const dateBeforeModification = new Date( this[startOrEnd] );
+        // change start or end date by +1 year or -1 year
+        const updatedDate  = new Date( dateBeforeModification.setFullYear ( dateBeforeModification.getFullYear() + move )  );
+        // get new filtered data array
+        const dataReducedForValidation = this.dataOrig.filter( (value) => {
+            const oneDate = new Date( value[this.date] );
+            if ( startOrEnd === 'start' ) return ( oneDate >= updatedDate ) && ( oneDate <= new Date(this.end)   );
+            if ( startOrEnd === 'end'   ) return ( oneDate <= updatedDate ) && ( oneDate >= new Date(this.start) );
+        });
+        // check if new array is valid
+        console.log(dataReducedForValidation.length);
+        if (   dataReducedForValidation[0] === null
+            || dataReducedForValidation[0] === undefined
+            || dataReducedForValidation.length < 2
+        ) return null; 
+        return this.dataReduced = dataReducedForValidation;
+
     }
     
 
-    getDataReduced(startOrEnd, move) {
-        const addMonth = () => {
-            const origDate = new Date( this[startOrEnd] );
-            const endDate = new Date( this.end );
-            const startDate = new Date( this.start );
-            const updDate = new Date( origDate.setFullYear( origDate.getFullYear() + move )  );
-            this[startOrEnd] = `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }`;
-            // get new filtered data array
-            this.dataReduced = this.dataOrig.filter( (value) => {
-                const newDate = new Date( value.datum );
-                if ( startOrEnd === 'start' ) return ( newDate > updDate ) && ( newDate < endDate   );
-                if ( startOrEnd === 'end'   ) return ( newDate < updDate ) && ( newDate > startDate );
-              });
+    async updateGraph(startOrEnd, move) {
+        console.time('Start');
+        // promis AJAX query
+        if (isAllDownloaded === false) {
+            try { 
+                pdoResp = await loadPocasi('1999-01-01', '2099-01-01');
+                //console.timeLog('Start');
+                console.timeEnd('Start');
+                isAllDownloaded = true;
+            }
+            catch (err) {
+                console.log(err)
+                return null;
+            }
         }
-
-        addMonth();
-
-        this.limit = this.lastDayNumber() - this.firstDayNumber() ;
-        this.graphArray = this.graphArr();
-        this.max = Math.max( ...this.graphArray );
-        this.min = Math.min( ...this.graphArray );
-
-        if ( this.second_type ) {
-            this.graphArray_second = this.graphArrSecond();
-            this.max_second = Math.max( ...this.graphArray_second );
-            this.min_second = Math.min( ...this.graphArray_second );
-        } else {
-            this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
+        // 
+        if ( this.isAllDownloadedForOneGraph === false) {
+            this.dataOrig = pdoResp;
+            this.isAllDownloadedForOneGraph = true;
         }
-
+        // change start or end date for graph
+        this.dataReducer(startOrEnd, move);
+        // update variables needed for fresh graph
+        console.log( `%c this.start: ${this.start}`, 'color: green; font-weight: bold;' );
+        console.log( `%c this.end:   ${this.end  }`, 'color: red  ; font-weight: bold;' );
+        this.refresh();
+        console.log( `%c this.start: ${this.start}`, 'color: green; font-weight: bold;' );
+        console.log( `%c this.end:   ${this.end  }`, 'color: red  ; font-weight: bold;' );
+        // show fresh graph
         this.graph();
     }
+
 
     getInfo(x = event.offsetX, yPos = event.offsetY){
 
@@ -187,8 +216,6 @@ class Draw {
         // if mouseover is inside graph
         if (   (x >= this.graphSpaceLeft && x <= this.clientWidth  - this.graphSpaceLeft) &&
                (yPos >= this.graphSpaceBtn  && yPos <= this.clientHeight - this.graphSpaceBtn ) ){
-
-
 
             //this.yForInfo = y;
             this.xForInfo = x;
@@ -204,85 +231,90 @@ class Draw {
             const valueX = (x - this.graphSpaceLeft) / ( (this.clientWidth - 2 * this.graphSpaceLeft)/this.limit );
             const dayNumber = this.firstDayNumber() + valueX;
             const dayNumberInMs = dayNumber * ( 1000 * 60 * 60 * 24 );
-            const myDate = new Date(dayNumberInMs);
-            const shortDate = `${myDate.getFullYear()}-${ ('0' + (myDate.getMonth() + 1)).slice(-2) }-${ ('0' + myDate.getDate()).slice(-2) }`;
+            const shortDate = this.getTextDateFromNewDate( new Date(dayNumberInMs) );
             // search entry with datum
-            const valueY = (this.dataReduced).find( value => value.datum == shortDate );
-            // calculate y for graph from 
-            const y = this.graphSpaceBtn + (this.max - valueY[this.type]) / (this.max - this.min) * (this.clientHeight - 2 * this.graphSpaceBtn )
+            const valueY = (this.dataReduced).find( value => value[this.date] == shortDate );
+            const showInfo = () => {
+                // calculate y for graph from 
+                const y = this.graphSpaceBtn + (this.max - valueY[this.type]) / (this.max - this.min) * (this.clientHeight - 2 * this.graphSpaceBtn )
 
-            // show line for x
-            this.ctx_pointer.beginPath(); 
-            this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
-            this.ctx_pointer.fillRect(x , this.graphSpaceBtn, 1 , this.clientHeight - 2 * this.graphSpaceBtn ); 
-
-            // show background for X text
-            this.ctx_pointer.beginPath(); 
-            this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
-            this.ctx_pointer.fillRect(x - 40, this.graphSpaceBtn - 20, 80 , 20 ); 
-
-            // show X text
-            this.ctx_pointer.font = '12px Arial';
-            this.ctx_pointer.fillStyle = 'white';
-            this.ctx_pointer.textBaseline = 'middle';
-            this.ctx_pointer.textAlign = 'center';
-            this.ctx_pointer.fillText( ` ${ shortDate }`, x, this.graphSpaceBtn - 8 );
-
-
-            const infoLeftY = ( type, yValue ) => {
-                // show line for y
+                // show line for x
                 this.ctx_pointer.beginPath(); 
                 this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
-                this.ctx_pointer.fillRect(this.graphSpaceLeft , yValue , x - this.graphSpaceLeft , 1 ); 
+                this.ctx_pointer.fillRect(x , this.graphSpaceBtn, 1 , this.clientHeight - 2 * this.graphSpaceBtn ); 
 
-                // show background for Y text
+                // show background for X text
                 this.ctx_pointer.beginPath(); 
                 this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
-                this.ctx_pointer.fillRect(0, yValue - 10, this.graphSpaceLeft , 20 ); 
+                this.ctx_pointer.fillRect(x - 40, this.graphSpaceBtn - 20, 80 , 20 ); 
 
-                // show Y text
+                // show X text
                 this.ctx_pointer.font = '12px Arial';
                 this.ctx_pointer.fillStyle = 'white';
                 this.ctx_pointer.textBaseline = 'middle';
-                this.ctx_pointer.textAlign = 'right';
-                this.ctx_pointer.fillText(` ${ valueY[type] }`, this.graphSpaceLeft, yValue );
+                this.ctx_pointer.textAlign = 'center';
+                this.ctx_pointer.fillText( ` ${ shortDate }`, x, this.graphSpaceBtn - 8 );
+
+
+                const infoLeftY = ( type, yValue ) => {
+                    // show line for y
+                    this.ctx_pointer.beginPath(); 
+                    this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
+                    this.ctx_pointer.fillRect(this.graphSpaceLeft , yValue , x - this.graphSpaceLeft , 1 ); 
+
+                    // show background for Y text
+                    this.ctx_pointer.beginPath(); 
+                    this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
+                    this.ctx_pointer.fillRect(0, yValue - 10, this.graphSpaceLeft , 20 ); 
+
+                    // show Y text
+                    this.ctx_pointer.font = '12px Arial';
+                    this.ctx_pointer.fillStyle = 'white';
+                    this.ctx_pointer.textBaseline = 'middle';
+                    this.ctx_pointer.textAlign = 'right';
+                    this.ctx_pointer.fillText(` ${ valueY[type] }`, this.graphSpaceLeft, yValue );
+                }
+
+                const infoRightY = ( type, yValue ) => {
+
+                    // show line for y second
+                    this.ctx_pointer.beginPath(); 
+                    this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
+                    this.ctx_pointer.fillRect(x, yValue, this.clientWidth - this.graphSpaceLeft - x, 1 ); 
+
+                    // show background for Y second text
+                    this.ctx_pointer.beginPath(); 
+                    this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
+                    this.ctx_pointer.fillRect(this.clientWidth - this.graphSpaceLeft, yValue - 10, this.graphSpaceLeft , 20 ); 
+
+                    // show Y second text
+                    this.ctx_pointer.font = '12px Arial';
+                    this.ctx_pointer.fillStyle = 'white';
+                    this.ctx_pointer.textBaseline = 'middle';
+                    this.ctx_pointer.textAlign = 'left';
+                    this.ctx_pointer.fillText(` ${ valueY[type] }`, this.clientWidth - this.graphSpaceLeft, yValue );
+                }
+
+                if ( !this.second_type ) {
+                    if ( this.yTextPlace === 'left' ) {
+                        infoLeftY( this.type, y );
+                    } else {
+                        infoRightY(this.type, y);
+                    }
+                } else {
+                    const ySecond = this.graphSpaceBtn + (this.max_second - valueY[this.second_type]) / (this.max_second - this.min_second) * (this.clientHeight - 2 * this.graphSpaceBtn )
+                    if ( this.yTextPlace === 'right' ) {
+                        infoRightY(this.type, y);
+                        infoLeftY( this.second_type, ySecond );
+                    } else {
+                        infoLeftY( this.type, y );
+                        infoRightY(this.second_type, ySecond);
+                    }
+                }
             }
 
-            const infoRightY = ( type, yValue ) => {
-
-                // show line for y second
-                this.ctx_pointer.beginPath(); 
-                this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
-                this.ctx_pointer.fillRect(x, yValue, this.clientWidth - this.graphSpaceLeft - x, 1 ); 
-
-                // show background for Y second text
-                this.ctx_pointer.beginPath(); 
-                this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
-                this.ctx_pointer.fillRect(this.clientWidth - this.graphSpaceLeft, yValue - 10, this.graphSpaceLeft , 20 ); 
-
-                // show Y second text
-                this.ctx_pointer.font = '12px Arial';
-                this.ctx_pointer.fillStyle = 'white';
-                this.ctx_pointer.textBaseline = 'middle';
-                this.ctx_pointer.textAlign = 'left';
-                this.ctx_pointer.fillText(` ${ valueY[type] }`, this.clientWidth - this.graphSpaceLeft, yValue );
-            }
-
-            if ( !this.second_type ) {
-                if ( this.yTextPlace === 'left' ) {
-                    infoLeftY( this.type, y );
-                } else {
-                    infoRightY(this.type, y);
-                }
-            } else {
-                const ySecond = this.graphSpaceBtn + (this.max_second - valueY[this.second_type]) / (this.max_second - this.min_second) * (this.clientHeight - 2 * this.graphSpaceBtn )
-                if ( this.yTextPlace === 'right' ) {
-                    infoRightY(this.type, y);
-                    infoLeftY( this.second_type, ySecond );
-                } else {
-                    infoLeftY( this.type, y );
-                    infoRightY(this.second_type, ySecond);
-                }
+            if (valueY) {
+                showInfo();
             }
 
         } else {
@@ -294,7 +326,6 @@ class Draw {
     setClientWidthHeight(){
         this.clientWidth  = canvas.clientWidth;
         this.clientHeight = canvas.clientHeight;
-        //this.xForInfo = (x - this.graphSpaceLeft) / ( (this.clientWidth - 2 * this.graphSpaceLeft)/this.limit );
     }
 
     resizeCanvas() {
@@ -459,7 +490,7 @@ class Draw {
         const line = ( oneEntry ) => {
             this.ctx.lineTo(
                 // X
-                this.graphSpaceLeft + this.xValueFromDate(oneEntry.datum) * (this.clientWidth - 2 * this.graphSpaceLeft)/this.limit,
+                this.graphSpaceLeft + this.xValueFromDate(oneEntry[this.date]) * (this.clientWidth - 2 * this.graphSpaceLeft)/this.limit,
                 // Y
                 this.graphSpaceBtn + (this.max - oneEntry[this.type]) / (this.max - this.min) * (this.clientHeight - 2 * this.graphSpaceBtn )
                 )
