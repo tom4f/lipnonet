@@ -1,0 +1,38 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: black;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  /*overflow: hidden;*/
+}
+
+#all-graphs {
+    .one-graph {
+        position: relative;
+
+        .canvas {
+          background: black;
+          position: absolute;
+        }
+
+        .canvas_pointer {
+          background: transparent;
+          position: absolute;
+        }
+    }
+}
+
+.pointerOn {
+  cursor: crosshair;
+}
+
+.pointerOnGrab {
+  cursor: pointer;
+}
+

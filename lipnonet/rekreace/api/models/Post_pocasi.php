@@ -146,9 +146,10 @@
             $stmt->execute();
         }
         catch( PDOException $Exception ) {
-            // $message = $Exception->getMessage();
-            // $code = (int)$Exception->getCode();
-            // printf($message);
+            $message = $Exception->getMessage();
+            $code = (int)$Exception->getCode();
+            //printf($message);
+            //printf($code);
             return(false);
         }
         return(true);

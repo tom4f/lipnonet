@@ -14,27 +14,6 @@ class Draw {
         this.second_type = second_type;
         // how many lines to draw
         this.dataReduced = pdoResp;
-        // also for refresh:
-        this.refresh = () => {
-
-            this.start = this.dataReduced[0][this.date];
-            this.end   = this.dataReduced[ this.dataReduced.length - 1][this.date];
-            
-            this.limit = this.lastDayNumber() - this.firstDayNumber() ;
-            this.graphArray = this.graphArr();
-            this.max = Math.max( ...this.graphArray );
-            this.min = Math.min( ...this.graphArray );
-    
-            if ( this.second_type ) {
-                this.graphArray_second = this.graphArrSecond();
-                this.max_second = Math.max( ...this.graphArray_second );
-                this.min_second = Math.min( ...this.graphArray_second );
-            } else {
-                this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
-            }
-        }
-
-        this.refresh();
 
         this.header = header;
 
@@ -54,6 +33,46 @@ class Draw {
 
         this.xForInfo = this.clientWidth  - this.graphSpaceLeft;
         this.yForInfo = this.clientHeight - this.graphSpaceBtn;
+
+
+        // also for refresh:
+        this.refresh = () => {
+
+            this.start = this.dataReduced[0][this.date];
+            this.end   = this.dataReduced[ this.dataReduced.length - 1][this.date];
+            
+            this.limit = this.lastDayNumber() - this.firstDayNumber() ;
+            this.graphArray = this.graphArr();
+            if ( !this.second_type ) {
+                this.max = Math.max( ...this.graphArray );
+                this.min = Math.min( ...this.graphArray );
+                this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
+                console.log(`min: ${this.min}, max: ${this.max}`);
+            } else {
+                // 2nd graph in one canvas
+                this.graphArray_second = this.graphArrSecond();
+
+                const max = Math.max(...this.graphArray, ...this.graphArray_second);
+                const min = Math.min(...this.graphArray, ...this.graphArray_second);
+
+                console.log(`min: ${this.min}, max: ${this.max}`);
+
+                this.max = max;
+                this.min = min;
+
+                this.max_second = max;
+                this.min_second = min;
+
+                if (this.color === 'white') {
+                   console.log(this.color);
+                   this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
+                }
+            }
+        }
+
+        this.refresh();
+
+
 
     }
 
@@ -112,6 +131,7 @@ class Draw {
                 this.canvas_pointer.classList.remove('pointerOnGrab');
                 if ( x >= btnX.startPrev && x <= btnX.startPrev + btnWidth) {
                     dispBtn( btnX.startPrev, '<', 0.9 );
+                    this.canvas_pointer.classList.add('pointerOnGrab'); 
                 } else {
                     dispBtn( btnX.startPrev, '<', 0.5 );
                 }
@@ -134,7 +154,17 @@ class Draw {
                     dispBtn( btnX.endNext,   '>', 0.5 );
                 }
             } else {
-               this.canvas_pointer.classList.remove('pointerOnGrab');
+
+                if (  !(    (x >= this.graphSpaceLeft && x <= this.clientWidth  - this.graphSpaceLeft)
+                         && (y >= this.graphSpaceBtn  && y <= this.clientHeight - this.graphSpaceBtn ) ) ){
+                    // remove onGrab pointer outside button & graph
+                    this.canvas_pointer.classList.remove('pointerOnGrab');
+                    // decrease opacity of button outside button & graph
+                    dispBtn( btnX.startPrev, '<', 0.5 );
+                    dispBtn( btnX.startNext, '>', 0.5 );
+                    dispBtn( btnX.endPrev,   '<', 0.5 );
+                    dispBtn( btnX.endNext,   '>', 0.5 );
+                }
             }
         }
         // return button methods
@@ -294,7 +324,7 @@ class Draw {
                     this.ctx_pointer.textAlign = 'left';
                     this.ctx_pointer.fillText(` ${ valueY[type] }`, this.clientWidth - this.graphSpaceLeft, yValue );
                 }
-
+                // 2nd graph in canvas
                 if ( !this.second_type ) {
                     if ( this.yTextPlace === 'left' ) {
                         infoLeftY( this.type, y );
@@ -485,6 +515,7 @@ class Draw {
     }
 
     graph() {
+
         // show axess
         this.axesXY();
         const line = ( oneEntry ) => {
