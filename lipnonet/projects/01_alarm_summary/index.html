@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Nokia Alarm Summary</title>
+</head>
+
+<body>
+
+<div class="container">
+    <img width="400" id="drop-src" src="">
+    <h2>
+        <i class="fas fa-book-open text-primary"></i>
+        Nokia Alarm Summary
+    </h2>
+
+    <br>
+    Input:
+    <div id="drag-area">
+        <input id="input" type="file" multiple>
+        <ul id='imgs-place' ></ul>
+    </div>
+
+    <br>
+    Drag & Drop:
+    <br>
+    URL.createObjectURL( e.dataTransfer.items[0].getAsFile() )
+    <div id="drag-area">
+        <input id="drop" type="file" multiple >
+        <label for="drop" > Drop label </label>
+    </div>
+
+    <br>
+    Select your files or move files to blue area :
+    <div id="drag-area">
+        <input id="newupload" type="file" multiple>
+    </div>
+    
+    <br>
+    <div class="menu">
+        <button id="loadFromDB"            type="button">Load from DB</button>
+        <button id="uploadToDB"            type="button">Upload to DB</button>
+        <button id="startDemo"             type="button">Load Demo Files</button>
+
+ <!--
+        <select id="ajaxFromDbUniversal"  >
+            <option value="select_all">select_all</option>
+            <option value="count_all">count_all</option>
+            <option value="sum_count" selected>sum_count</option>
+            <option value="DISTINCT_alarm">DISTINCT_alarm</option>
+        </select>
+        
+
+        <select id="dynamicSelectButton"  ></select>
+-->       
+    </div>
+    <br>
+    Search text in alarms:
+    <div class="menu">
+        <div>
+            <input type="checkbox" id="search_name" value="search_name" checked>
+            <label for="search_name">name</label>
+            <input type="checkbox" id="search_source" value="search_source" checked>
+            <label for="search_source">source</label>
+            <br>
+            <input type="checkbox" id="search_first" value="search_first" checked>
+            <label for="search_first">first</label>
+            <input type="checkbox" id="search_latest" value="search_latest" checked>
+            <label for="search_latest">latest</label>
+        </div>
+        <input  id="search"                type="text" placeholder="Search">
+        <input  id="searchInDB"            type="text" placeholder="Search in DB">
+    </div>
+
+    <table id="alarm-list-filtered" class="table"></table>
+    
+    <table id="alarm-list-table" class="table"></table>
+
+    <div id="universal"></div>
+
+</div>
+
+<script src="alarm_summary.js"></script>
+
+</body>
+</html>
