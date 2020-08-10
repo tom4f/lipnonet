@@ -25,13 +25,12 @@ export const App = () => {
   return (
     <div className="top_container">
       <Top/>
-      <nav>
-        <button style={ btnOn }>
-          &nbsp;<br/>
-          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/"> Testujeme nové interaktivní grafy - klikněte zde </a>
-          <br/>&nbsp;
-        </button>
-      </nav>
+      <div className="graphs">
+        Testujeme nové interaktivní grafy:<br/>
+          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/index_davis.html">Meteostanice Frymburk - klikněte zde </a>
+          <br/>
+          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/">Lipno u hráze - klikněte zde </a>
+      </div>
       <nav>
           <button style={ menu === 'start'      ? btnOn : btnOff } onClick={ () => setMenu('start') } >meteostanice<br/>Davis Vantage Pro<br/>Frymburk</button>
           <button style={ menu === 'povodi'     ? btnOn : btnOff } onClick={ () => setMenu('povodi') } ><br/>denní hodnoty<br/>Lipno u hráze</button>

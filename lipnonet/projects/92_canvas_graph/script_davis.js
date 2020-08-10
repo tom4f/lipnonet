@@ -36,7 +36,6 @@ const loadPocasi = (
     return new Promise( (resolve, reject) => {
 
         const xhr = new XMLHttpRequest();
-        //xhr.open('POST', `../../rekreace/api/pdo_read_pocasi_by_date.php`, true);
         //xhr.open('POST', `https://www.frymburk.com/rekreace/api/pdo_read_pocasi_by_date.php`, true);
         xhr.open('POST', `../../rekreace/api/pdo_read_davis_by_date.php`, true);
         //xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_davis_by_date.php`, true);
@@ -73,20 +72,20 @@ const loadPocasiAsync = async () => {
     if (pdoResp.length === 0) return null;
     console.log( `%c Data loaded on start!`, 'color: orange; font-weight: bold;' );
     // Instantiate Object
-    temp_low        = new Draw('temp_low'       , 'white', canvas , 'left' , canvas_pointer , 'temp_high'      , 'temp_low  [\xB0C]', dateStorage );
-    temp_high       = new Draw('temp_high'      , 'green', canvas , 'right', canvas_pointer , 'temp_low'       , 'temp_high [\xB0C]', dateStorage);
+    temp_low        = new Draw('temp_low'       , 'white', canvas , 'left' , canvas_pointer , 'temp_high'      , 'temp_low  [\xB0C]', dateStorage, true );
+    temp_high       = new Draw('temp_high'      , 'green', canvas , 'right', canvas_pointer , 'temp_low'       , 'temp_high [\xB0C]', dateStorage, true );
     //
-    wind_speed_avg  = new Draw('wind_speed_avg' , 'white', canvas1, 'left' , canvas1_pointer, 'wind_speed_high', 'wind_speed_avg [m/s]', dateStorage );
-    wind_speed_high = new Draw('wind_speed_high', 'green', canvas1, 'right', canvas1_pointer, 'wind_speed_avg' , 'wind_speed_high [m/s]', dateStorage);
+    wind_speed_avg  = new Draw('wind_speed_avg' , 'white', canvas1, 'left' , canvas1_pointer, 'wind_speed_high', 'wind_speed_avg [m/s]', dateStorage, true  );
+    wind_speed_high = new Draw('wind_speed_high', 'green', canvas1, 'right', canvas1_pointer, 'wind_speed_avg' , 'wind_speed_high [m/s]', dateStorage, true );
     //
-    bar_min         = new Draw('bar_min'        , 'white', canvas2, 'left' , canvas2_pointer, 'bar_max'        , 'bar_min [hPa]', dateStorage );
-    bar_max         = new Draw('bar_max'        , 'green', canvas2, 'right', canvas2_pointer, 'bar_min'        , 'bar_max [hPa]', dateStorage);
+    bar_min         = new Draw('bar_min'        , 'white', canvas2, 'left' , canvas2_pointer, 'bar_max'        , 'bar_min [hPa]', dateStorage , true );
+    bar_max         = new Draw('bar_max'        , 'green', canvas2, 'right', canvas2_pointer, 'bar_min'        , 'bar_max [hPa]', dateStorage, true );
     //
-    huminidy_avg    = new Draw('huminidy_avg'        , 'white', canvas3, 'left' , canvas3_pointer, 'huminidy_min'        , 'huminidy_avg [%]', dateStorage );
-    huminidy_min    = new Draw('huminidy_min'        , 'green', canvas3, 'right', canvas3_pointer, 'huminidy_avg'        , 'huminidy_min [%]', dateStorage);
+    huminidy_avg    = new Draw('huminidy_avg'   , 'white', canvas3, 'left' , canvas3_pointer, 'huminidy_min'        , 'huminidy_avg [%]', dateStorage, true  );
+    huminidy_min    = new Draw('huminidy_min'   , 'green', canvas3, 'right', canvas3_pointer, 'huminidy_avg'        , 'huminidy_min [%]', dateStorage, true );
    //
-   rain_rate_max    = new Draw('rain_rate_max'        , 'white', canvas4, 'left' , canvas4_pointer, 'rain'        , 'rain_rate_max [mm/h]', dateStorage );
-   rain             = new Draw('rain'        , 'green', canvas4, 'right', canvas4_pointer, 'rain_rate_max'        , 'rain [mm]', dateStorage);
+   rain_rate_max    = new Draw('rain_rate_max'  , 'white', canvas4, 'left' , canvas4_pointer, 'rain'        , 'rain_rate_max [mm/h]', dateStorage, false );
+   rain             = new Draw('rain'           , 'green', canvas4, 'right', canvas4_pointer, 'rain_rate_max'        , 'rain [mm]', dateStorage, false );
 
    
     // show graphs
@@ -147,5 +146,8 @@ window.addEventListener('resize', () => {
     //
     huminidy_avg.resizeCanvas();
     huminidy_min.resizeCanvas();
+    //
+    rain_rate_max.resizeCanvas();
+    rain.resizeCanvas();
 });
 
