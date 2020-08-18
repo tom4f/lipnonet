@@ -1,6 +1,6 @@
 class Draw {
 
-    constructor( type, color, canvas, yTextPlace = 'left', canvas_pointer, second_type, header, date, sameY ) {
+    constructor( type, color, canvas, yTextPlace = 'left', canvas_pointer, second_type, header, date, sameY, design = 'line' ) {
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
         // date identificator in DB object
@@ -14,7 +14,6 @@ class Draw {
         this.second_type = second_type;
         // how many lines to draw
         this.dataReduced = pdoResp;
-
         this.header = header;
 
         this.yTextPlace = yTextPlace;
@@ -25,6 +24,7 @@ class Draw {
         this.clientWidth  = canvas.clientWidth;
         this.clientHeight = canvas.clientHeight;
 
+        this.design = design;
 
         this.canvas_pointer = canvas_pointer;
 
@@ -45,11 +45,12 @@ class Draw {
             const graphArray = ( operation, type, second_type ) => {
                 const myArray = [];
                 this.dataReduced.forEach( value => {
-                    myArray.push( value[type] );
+                    // WA : Math.max() failed if one value is NaN
+                    !isNaN(value[type]) ? myArray.push( value[type] ) : null;
                     if ( !second_type ) return null;
-                    myArray.push( value[second_type] );
+                    !isNaN(value[second_type]) ? myArray.push( value[second_type] ) : null;
                  } );
-                return Math[operation](...myArray);
+                 return Math[operation](...myArray);
             }
 
             if (sameY) {
@@ -81,7 +82,10 @@ class Draw {
     // static method - use method without instantiate
 
     // like const???
+    
+    // [minutes_test]
     get MILISECONDS_FOR_ONE_DAY() { return 1000 * 60 * 60 * 24 };
+    //get MILISECONDS_FOR_ONE_DAY() { return 1000 * 60 };
 
     // button method
     get button(){
@@ -183,7 +187,10 @@ class Draw {
 
 
     getTextDateFromNewDate(updDate){
-        return `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }`;
+        //return `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }`;
+        // return `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }T${ ('0' + updDate.getHours()).slice(-2) }:${ ('0' + updDate.getMinutes()).slice(-2) }Z`;
+        //return `${updDate.toISOString().slice(0, 16)}:00.000Z`;
+        return `${updDate.toISOString().slice(0, 16)}:00.000Z`;
     }
 
 
@@ -256,9 +263,20 @@ class Draw {
             const valueX = (xPos - this.graphSpaceLeft) * this.xLimit / (this.clientWidth - 2 * this.graphSpaceLeft);
             const dayNumberInMs = ( this.firstDayNumber() + valueX ) * this.MILISECONDS_FOR_ONE_DAY;
             const shortDate = this.getTextDateFromNewDate( new Date(dayNumberInMs) );
+            const dayText = () => {
+                    // different x text for day and year graph
+                    if ( this.dataReduced[0][this.date].length === 10){
+                        return shortDate.slice(0,10)
+                    } else {
+                        return shortDate.slice(11,16)
+                    }
+              }
 
-            // search entry with datum
-            const valueY = (this.dataReduced).find( value => value[this.date] === shortDate );
+               // search entry with datum
+            const valueY = (this.dataReduced).find( value => ( value[this.date] === shortDate || value[this.date] === shortDate.split('T')[0] ) );
+
+            console.log(shortDate)
+            console.log( this.xLimit )
 
             const showInfo = () => {
 
@@ -276,7 +294,7 @@ class Draw {
                 this.ctx_pointer.fillStyle = 'white';
                 this.ctx_pointer.textBaseline = 'middle';
                 this.ctx_pointer.textAlign = 'center';
-                this.ctx_pointer.fillText( ` ${ shortDate }`, xPos, this.graphSpaceBtn - 8 );
+                this.ctx_pointer.fillText( dayText(), xPos, this.graphSpaceBtn - 8 );
 
                 const infoLeftY = ( type, yValue ) => {
                     this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)"; 
@@ -420,7 +438,9 @@ class Draw {
     // calculate day number started from 0
     xValueFromDate( date ) {
         const myDate = new Date( date );
-        const dayNumber =  myDate.getTime() / ( 1000 * 60 * 60 *24 ) ;
+        // [minutes_test]
+        //get MILISECONDS_FOR_ONE_DAY() { return 1000 * 60 * 60 * 24 };
+        const dayNumber =  myDate.getTime() / ( this.MILISECONDS_FOR_ONE_DAY ) ;
         return dayNumber - this.firstDayNumber();
     }
 
@@ -445,11 +465,13 @@ class Draw {
         this.ctx.moveTo( X, this.graphSpaceBtn );
         this.ctx.lineTo( X, this.clientHeight - this.graphSpaceBtn);
 
-        const miliSec = ( 1000 * 60 * 60 *24 ) * ( this.firstDayNumber() + this.xLimit * (10 - number) / 10 );
+        const miliSec = ( this.MILISECONDS_FOR_ONE_DAY ) * ( this.firstDayNumber() + this.xLimit * (10 - number) / 10 );
         const dateX = new Date(miliSec);
-        const year = '' + dateX.getFullYear();
-        const month = 1 + dateX.getMonth();
-        const day = dateX.getDate();
+        //const year = '' + dateX.getFullYear();
+        const month = 1 + dateX.getUTCMonth();
+        const day = dateX.getUTCDate();
+        const hour = dateX.getUTCHours();
+        const minutes = dateX.getUTCMinutes();
         
         // text for axes X
         this.ctx.font = '14px Arial';
@@ -459,7 +481,15 @@ class Draw {
         this.ctx.rotate( - Math.PI / 4);
         this.ctx.textBaseline = 'hanging';
         this.ctx.textAlign = 'right';
-        this.ctx.fillText(`${day}.${month}.`, 0, 0);
+            // different x text for day and year graph
+            if ( this.dataReduced[0][this.date].length === 10){
+                this.ctx.fillText(`${day}.${month}.`, 0, 0);
+            } else {
+                this.ctx.fillText(`${ ('0' + hour).slice(-2) }:${ ('0' + minutes).slice(-2) }`, 0, 0);
+            }
+  
+
+
         this.ctx.restore();
         
         // text for axes Y
@@ -491,15 +521,27 @@ class Draw {
         this.axesXY();
 
         // values to graph
-        const line = oneEntry => {
-            this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]), this.yPositionFromDate(oneEntry[this.type], this.min, this.max) )
-        }
         this.ctx.beginPath();
         //this.ctx.moveTo(0,0)
         this.ctx.setLineDash([0]);
         this.ctx.strokeStyle = this.color;
         this.ctx.lineWidth = 1;
+
+
+
+        const line = oneEntry => {
+
+            if ( this.design === 'area' ) {
+                this.ctx.moveTo( this.xPositionFromDate(oneEntry[this.date]),
+                                this.clientHeight - this.graphSpaceBtn);
+            }
+            this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
+                             this.yPositionFromDate(oneEntry[this.type], this.min, this.max));
+        }
         this.dataReduced.forEach( oneEntry => line(oneEntry) );
+
+        console.log(this.dataReduced);
+        
         //this.ctx.closePath();
         this.ctx.stroke();
 

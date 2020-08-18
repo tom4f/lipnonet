@@ -32,9 +32,9 @@ const loadPocasi = (
     return new Promise( (resolve, reject) => {
 
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', `../../rekreace/api/pdo_read_pocasi_by_date.php`, true);
+        //xhr.open('POST', `../../rekreace/api/pdo_read_pocasi_by_date.php`, true);
         //xhr.open('POST', `https://www.frymburk.com/rekreace/api/pdo_read_pocasi_by_date.php`, true);
-        //xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi_by_date.php`, true);
+        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi_by_date.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {

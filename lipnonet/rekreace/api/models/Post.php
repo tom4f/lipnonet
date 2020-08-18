@@ -25,7 +25,7 @@
       // use global variable inside class - owner Pavlik, Lucka, ''
       global $fotoGalleryOwner;
       // Create query
-      $query = 'SELECT * FROM ' . $this->table . $fotoGalleryOwner . ' order by insertDate DESC';
+      $query = 'SELECT * FROM ' . $this->table . $fotoGalleryOwner . ' WHERE typ < 10 order by insertDate DESC';
       // Prepare statement
       $stmt = $this->conn->prepare($query);
       // Execute query
