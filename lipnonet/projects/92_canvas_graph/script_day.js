@@ -29,14 +29,16 @@ const getTextDateFromNewDate = (updDate) =>{
     return `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }`;
 }
 
-const SOURCE_FILE = 'downld02.txt'
+const SOURCE_FILE = 'https://www.frymburk.com/davis/downld02.txt'
+//const SOURCE_FILE = 'downld02.txt'
 const ONE_MINUTE = 1000 * 60
 const ONE_DAY = ONE_MINUTE * 60 * 24 
 
 const loadPocasiAsync = async () => {
     try { 
+        console.time('Start');
         const response = await fetch(SOURCE_FILE)
-
+        console.timeEnd('Start');
         if (response.status != 200) return null
         
         const text = await response.text()
@@ -54,7 +56,7 @@ const loadPocasiAsync = async () => {
 
         const arrOfObj = arr.map( line => {
             
-            const arrFromLine = line.split(/  +/g);
+            const arrFromLine = line.split(/ +/g);
             
             const [ myDate, Time, TempOut, TempHi, TempLow, HumOut, DewPt, WindSpeed, WindDir, WindRun, HiSpeed, HiDir, WindChill, HeatIndex, THWIndex, Bar, Rain, RainRate, HeatDD, CoolDD, TempIn, HumIn, DewIn, HeatIn, EMCIn, AirDensityIn, WindSamp, WindTx, ISSRecept, ArcInt
                   ] = arrFromLine;
@@ -76,13 +78,17 @@ const loadPocasiAsync = async () => {
 
         pdoResp = arrOfObj
 
-        TempOut     = new Draw('TempOut', 'green', canvas , 'left' , canvas_pointer , 'THWIndex'   , 'TempOut [\xB0C]', dateStorage, true, 'area' );
-        THWIndex    = new Draw('THWIndex', 'orange', canvas , 'right' , canvas_pointer , 'TempOut'   , 'THWIndex [\xB0C]', dateStorage, true );
+        TempOut     = new Draw('TempOut', 'white', canvas , 'left' , canvas_pointer , 'THWIndex'   , 'TempOut [\xB0C]', dateStorage, true, 'line' );
+        THWIndex    = new Draw('THWIndex', 'green', canvas , 'right' , canvas_pointer , 'TempOut'   , 'THWIndex [\xB0C]', dateStorage, true, 'line' );
         
         WindSpeed   = new Draw('WindSpeed', 'green', canvas1 , 'left' , canvas1_pointer , 'HiSpeed'   , 'WindSpeed [m/s]', dateStorage, true, 'area' );
         HiSpeed     = new Draw('HiSpeed', 'yellow', canvas1 , 'right' , canvas1_pointer , 'WindSpeed'   , 'HiSpeed [m/s]', dateStorage, true, 'area' );
 
-        Bar         = new Draw('Bar', 'orange', canvas2 , 'left' , canvas2_pointer , null   , 'Bar [hPa]', dateStorage, true );
+        Bar         = new Draw('Bar', 'white', canvas2 , 'left' , canvas2_pointer , 'HumOut'   , 'Bar [hPa]', dateStorage, false, 'line' );
+        HumOut      = new Draw('HumOut', 'orange', canvas2 , 'right' , canvas2_pointer , 'Bar'   , 'HumOut [%]', dateStorage, false, 'line' );
+
+        Rain        = new Draw('Rain', 'white', canvas3 , 'left' , canvas3_pointer , 'RainRate'   , 'Rain [mm]', dateStorage, false, 'area' );
+        RainRate    = new Draw('RainRate', 'green', canvas3 , 'right' , canvas3_pointer , 'Rain'   , 'RainRate [mm/h]', dateStorage, false, 'area', 2 );
  
 
         // show graphs
@@ -93,6 +99,10 @@ const loadPocasiAsync = async () => {
         WindSpeed.graph();
 
         Bar.graph();
+        HumOut.graph();
+
+        Rain.graph();
+        RainRate.graph();
 
     }
     catch (err) {
@@ -133,6 +143,10 @@ window.addEventListener('resize', () => {
     HiSpeed.resizeCanvas();
     WindSpeed.resizeCanvas();
 
+    Rain.resizeCanvas();
+    RainRate.resizeCanvas();
+
     Bar.resizeCanvas();
+    HumOut.resizeCanvas();
 });
 

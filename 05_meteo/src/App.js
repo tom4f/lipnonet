@@ -27,7 +27,9 @@ export const App = () => {
       <Top/>
       <div className="graphs">
         Testujeme nové interaktivní grafy:<br/>
-          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/index_davis.html">Meteostanice Frymburk - klikněte zde </a>
+          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/index_davis.html">Meteostanice Frymburk / roky - klikněte zde </a>
+          <br/>
+          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/day.html">Meteostanice Frymburk / minuty - klikněte zde </a>
           <br/>
           <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/">Lipno u hráze - klikněte zde </a>
       </div>

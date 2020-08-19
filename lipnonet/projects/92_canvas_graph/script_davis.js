@@ -37,8 +37,8 @@ const loadPocasi = (
 
         const xhr = new XMLHttpRequest();
         //xhr.open('POST', `https://www.frymburk.com/rekreace/api/pdo_read_pocasi_by_date.php`, true);
-        //xhr.open('POST', `../../rekreace/api/pdo_read_davis_by_date.php`, true);
-        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_davis_by_date.php`, true);
+        xhr.open('POST', `../../rekreace/api/pdo_read_davis_by_date.php`, true);
+        //xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_davis_by_date.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -72,33 +72,33 @@ const loadPocasiAsync = async () => {
     if (pdoResp.length === 0) return null;
     console.log( `%c Data loaded on start!`, 'color: orange; font-weight: bold;' );
     // Instantiate Object
-    temp_low        = new Draw('temp_low'       , 'white', canvas , 'left' , canvas_pointer , 'temp_high'      , 'temp_low  [\xB0C]', dateStorage, true );
-    temp_high       = new Draw('temp_high'      , 'green', canvas , 'right', canvas_pointer , 'temp_low'       , 'temp_high [\xB0C]', dateStorage, true );
+    temp_low        = new Draw('temp_low'       , 'white', canvas , 'left' , canvas_pointer , 'temp_high'      , 'temp_low  [\xB0C]', dateStorage, true, 'line' );
+    temp_high       = new Draw('temp_high'      , 'green', canvas , 'right', canvas_pointer , 'temp_low'       , 'temp_high [\xB0C]', dateStorage, true, 'line' );
     //
-    wind_speed_avg  = new Draw('wind_speed_avg' , 'white', canvas1, 'left' , canvas1_pointer, 'wind_speed_high', 'wind_speed_avg [m/s]', dateStorage, true  );
-    wind_speed_high = new Draw('wind_speed_high', 'green', canvas1, 'right', canvas1_pointer, 'wind_speed_avg' , 'wind_speed_high [m/s]', dateStorage, true );
+    wind_speed_avg  = new Draw('wind_speed_avg' , 'white', canvas1, 'left' , canvas1_pointer, 'wind_speed_high', 'wind_speed_avg [m/s]', dateStorage, true, 'area'  );
+    wind_speed_high = new Draw('wind_speed_high', 'green', canvas1, 'right', canvas1_pointer, 'wind_speed_avg' , 'wind_speed_high [m/s]', dateStorage, true, 'area' );
     //
-    bar_min         = new Draw('bar_min'        , 'white', canvas2, 'left' , canvas2_pointer, 'bar_max'        , 'bar_min [hPa]', dateStorage , true );
-    bar_max         = new Draw('bar_max'        , 'green', canvas2, 'right', canvas2_pointer, 'bar_min'        , 'bar_max [hPa]', dateStorage, true );
+    bar_min         = new Draw('bar_min'        , 'white', canvas2, 'left' , canvas2_pointer, 'bar_max'        , 'bar_min [hPa]', dateStorage , true, 'line' );
+    bar_max         = new Draw('bar_max'        , 'green', canvas2, 'right', canvas2_pointer, 'bar_min'        , 'bar_max [hPa]', dateStorage, true, 'line', 2 );
     //
-    huminidy_avg    = new Draw('huminidy_avg'   , 'white', canvas3, 'left' , canvas3_pointer, 'huminidy_min'        , 'huminidy_avg [%]', dateStorage, true  );
-    huminidy_min    = new Draw('huminidy_min'   , 'green', canvas3, 'right', canvas3_pointer, 'huminidy_avg'        , 'huminidy_min [%]', dateStorage, true );
+    huminidy_max    = new Draw('huminidy_max'   , 'white', canvas3, 'left' , canvas3_pointer, 'huminidy_min'        , 'huminidy_max [%]', dateStorage, true, 'line'  );
+    huminidy_min    = new Draw('huminidy_min'   , 'green', canvas3, 'right', canvas3_pointer, 'huminidy_max'        , 'huminidy_min [%]', dateStorage, true, 'line', 2 );
    //
-   rain_rate_max    = new Draw('rain_rate_max'  , 'white', canvas4, 'left' , canvas4_pointer, 'rain'        , 'rain_rate_max [mm/h]', dateStorage, false );
-   rain             = new Draw('rain'           , 'green', canvas4, 'right', canvas4_pointer, 'rain_rate_max'        , 'rain [mm]', dateStorage, false );
+   rain_rate_max    = new Draw('rain_rate_max'  , 'white', canvas4, 'left' , canvas4_pointer, 'rain'        , 'rain_rate_max [mm/h]', dateStorage, false, 'line' );
+   rain             = new Draw('rain'           , 'green', canvas4, 'right', canvas4_pointer, 'rain_rate_max'        , 'rain [mm]', dateStorage, false, 'line', 2 );
 
    
     // show graphs
     temp_low.graph();
     temp_high.graph();
     //
-    wind_speed_avg.graph();
     wind_speed_high.graph();
+    wind_speed_avg.graph();
     //
     bar_min.graph();
     bar_max.graph();
     //
-    huminidy_avg.graph();
+    huminidy_max.graph();
     huminidy_min.graph();
     //
     rain_rate_max.graph();
@@ -144,7 +144,7 @@ window.addEventListener('resize', () => {
     bar_min.resizeCanvas();
     bar_max.resizeCanvas();
     //
-    huminidy_avg.resizeCanvas();
+    huminidy_max.resizeCanvas();
     huminidy_min.resizeCanvas();
     //
     rain_rate_max.resizeCanvas();

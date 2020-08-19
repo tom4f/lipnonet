@@ -32,9 +32,9 @@ const loadPocasi = (
     return new Promise( (resolve, reject) => {
 
         const xhr = new XMLHttpRequest();
-        //xhr.open('POST', `../../rekreace/api/pdo_read_pocasi_by_date.php`, true);
+        xhr.open('POST', `../../rekreace/api/pdo_read_pocasi_by_date.php`, true);
         //xhr.open('POST', `https://www.frymburk.com/rekreace/api/pdo_read_pocasi_by_date.php`, true);
-        xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi_by_date.php`, true);
+        //xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read_pocasi_by_date.php`, true);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -68,13 +68,13 @@ const loadPocasiAsync = async () => {
     if (pdoResp.length === 0) return null;
     console.log( `%c Data loaded on start!`, 'color: orange; font-weight: bold;' );
     // Instantiate Object
-    hladina = new Draw('hladina', 'white', canvas , 'left' , canvas_pointer , null   , 'Hladina Lipna [m n.m]', dateStorage, true );
+    hladina = new Draw('hladina', 'white', canvas , 'left' , canvas_pointer , null   , 'Hladina Lipna [m n.m]', dateStorage, true, 'line' );
     //
-    odtok   = new Draw('odtok'  , 'white', canvas1, 'left' , canvas1_pointer, 'pritok'   , 'Odtok [m\xB3/s]', dateStorage, true);
-    pritok  = new Draw('pritok' , 'green', canvas1, 'right', canvas1_pointer, 'odtok', 'Přítok [m\xB3/s]', dateStorage, true);
+    odtok   = new Draw('odtok'  , 'white', canvas1, 'left' , canvas1_pointer, 'pritok'   , 'Odtok [m\xB3/s]', dateStorage, true, 'line');
+    pritok  = new Draw('pritok' , 'green', canvas1, 'right', canvas1_pointer, 'odtok', 'Přítok [m\xB3/s]', dateStorage, true, 'line', 2);
     //
-    voda    = new Draw('voda'   , 'white', canvas2, 'left' , canvas2_pointer, 'vzduch'   , 'Teplota vody [\xB0C]', dateStorage, true);
-    vzduch  = new Draw('vzduch' , 'green', canvas2, 'right', canvas2_pointer, 'voda' , 'Teplota vzduchu ráno [\xB0C]', dateStorage, true);
+    voda    = new Draw('voda'   , 'white', canvas2, 'left' , canvas2_pointer, 'vzduch'   , 'Teplota vody [\xB0C]', dateStorage, true, 'line');
+    vzduch  = new Draw('vzduch' , 'green', canvas2, 'right', canvas2_pointer, 'voda' , 'Teplota vzduchu ráno [\xB0C]', dateStorage, true, 'line', 2);
     // show graphs
     hladina.graph();
     //

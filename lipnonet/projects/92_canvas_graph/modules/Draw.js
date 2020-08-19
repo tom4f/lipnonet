@@ -1,6 +1,6 @@
 class Draw {
 
-    constructor( type, color, canvas, yTextPlace = 'left', canvas_pointer, second_type, header, date, sameY, design = 'line' ) {
+    constructor( type, color, canvas, yTextPlace = 'left', canvas_pointer, second_type, header, date, sameY, design = 'line', lineWidth = 1 ) {
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
         // date identificator in DB object
@@ -18,6 +18,7 @@ class Draw {
 
         this.yTextPlace = yTextPlace;
         this.color = color;
+        this.lineWidth = lineWidth;
         this.graphSpaceLeft = 50;
         this.graphSpaceBtn = 50;
 
@@ -211,8 +212,8 @@ class Draw {
     
 
     async updateGraph(startOrEnd, move) {
-        console.time('Start');
         // promis AJAX query
+        console.time('Start');
         if (isAllDownloaded === false) {
             try { 
                 pdoResp = await loadPocasi('1999-01-01', '2099-01-01');
@@ -223,6 +224,7 @@ class Draw {
                 return null;
             }
         }
+        console.timeEnd('Start');
         // 
         if ( this.isAllDownloadedForOneGraph === false) {
             this.dataOrig = pdoResp;
@@ -268,15 +270,13 @@ class Draw {
                     if ( this.dataReduced[0][this.date].length === 10){
                         return shortDate.slice(0,10)
                     } else {
-                        return shortDate.slice(11,16)
+                        const [, month, day] = shortDate.slice(0,10).split('-')
+                        return `${day}.${month}. ${shortDate.slice(11,16)}`
                     }
               }
 
                // search entry with datum
             const valueY = (this.dataReduced).find( value => ( value[this.date] === shortDate || value[this.date] === shortDate.split('T')[0] ) );
-
-            console.log(shortDate)
-            console.log( this.xLimit )
 
             const showInfo = () => {
 
@@ -379,6 +379,7 @@ class Draw {
         //line arround graph
         this.ctx.beginPath();
         this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = 1;
         this.ctx.moveTo( this.graphSpaceLeft, this.clientHeight - this.graphSpaceBtn );
         this.ctx.lineTo( this.clientWidth - this.graphSpaceLeft, this.clientHeight - this.graphSpaceBtn );
         this.ctx.lineTo( this.clientWidth - this.graphSpaceLeft, this.graphSpaceBtn );
@@ -481,7 +482,7 @@ class Draw {
         this.ctx.rotate( - Math.PI / 4);
         this.ctx.textBaseline = 'hanging';
         this.ctx.textAlign = 'right';
-            // different x text for day and year graph
+            // different x text length for day and year graph
             if ( this.dataReduced[0][this.date].length === 10){
                 this.ctx.fillText(`${day}.${month}.`, 0, 0);
             } else {
@@ -525,23 +526,19 @@ class Draw {
         //this.ctx.moveTo(0,0)
         this.ctx.setLineDash([0]);
         this.ctx.strokeStyle = this.color;
-        this.ctx.lineWidth = 1;
-
-
+        this.ctx.lineWidth = this.lineWidth;
 
         const line = oneEntry => {
-
             if ( this.design === 'area' ) {
                 this.ctx.moveTo( this.xPositionFromDate(oneEntry[this.date]),
-                                this.clientHeight - this.graphSpaceBtn);
+                                 this.clientHeight - this.graphSpaceBtn);
             }
             this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
                              this.yPositionFromDate(oneEntry[this.type], this.min, this.max));
         }
+
         this.dataReduced.forEach( oneEntry => line(oneEntry) );
 
-        console.log(this.dataReduced);
-        
         //this.ctx.closePath();
         this.ctx.stroke();
 
