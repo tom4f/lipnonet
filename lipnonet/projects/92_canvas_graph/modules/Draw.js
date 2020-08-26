@@ -1,36 +1,33 @@
 class Draw {
 
-    constructor( type, color, canvas, yTextPlace = 'left', canvas_pointer, second_type, header, date, sameY, design = 'line', lineWidth = 1 ) {
+    constructor( common, ...graphs) {
+        [
+        this.canvas,
+        this.canvas_pointer,
+        this.date ] = common;
+
+        this.graphs = graphs;
+
         // status if all available data for specific graph was already downloaded
         this.isAllDownloadedForOneGraph = false;
         // date identificator in DB object
-        this.date = date;
-        this.ctx = canvas.getContext('2d');
-        this.ctx_pointer = canvas_pointer.getContext('2d');
+
+        this.ctx = this.canvas.getContext('2d');
+        this.ctx_pointer = this.canvas_pointer.getContext('2d');
         // array of data object
         this.dataOrig    = pdoResp;
-        // what graph to draw
-        this.type = type;
-        this.second_type = second_type;
+
         // how many lines to draw
         this.dataReduced = pdoResp;
-        this.header = header;
 
-        this.yTextPlace = yTextPlace;
-        this.color = color;
-        this.lineWidth = lineWidth;
         this.graphSpaceLeft = 50;
         this.graphSpaceBtn = 50;
 
-        this.clientWidth  = canvas.clientWidth;
-        this.clientHeight = canvas.clientHeight;
+        this.clientWidth  = this.canvas.clientWidth;
+        this.clientHeight = this.canvas.clientHeight;
 
-        this.design = design;
-
-        this.canvas_pointer = canvas_pointer;
-
-        canvas_pointer.addEventListener('mousemove', ()      => this.getInfo() );
-        canvas_pointer.addEventListener('mousedown', (event) => this.button.click(event) );
+        this.canvas_pointer.addEventListener('mousemove', ()      => this.getInfo() );
+        this.canvas_pointer.addEventListener('mousedown', (event) => this.button.click(event) );
 
         // initial info position
         this.xForInfo = this.clientWidth  - this.graphSpaceLeft;
@@ -38,53 +35,53 @@ class Draw {
 
         // also for refresh:
         this.refresh = () => {
-
+       
             this.start = this.dataReduced[0][this.date];
             this.end   = this.dataReduced[ this.dataReduced.length - 1][this.date];
             this.xLimit = this.lastDayNumber() - this.firstDayNumber();
 
-            const graphArray = ( operation, type, second_type ) => {
+            const graphArray = ( operation, group) => {
                 const myArray = [];
+                const myArraySecond = [];
+
                 this.dataReduced.forEach( value => {
-                    // WA : Math.max() failed if one value is NaN
-                    !isNaN(value[type]) ? myArray.push( value[type] ) : null;
-                    if ( !second_type ) return null;
-                    !isNaN(value[second_type]) ? myArray.push( value[second_type] ) : null;
-                 } );
-                 return Math[operation](...myArray);
+                    for (let graphNumber = 0; graphNumber < this.graphs.length; graphNumber++) {
+                        const type = this.graphs[graphNumber][0];
+                        if(this.graphs[graphNumber][5] === 1){
+
+                            isNaN(value[type]) ? null : myArray.push( value[type] );
+                        }
+
+                        if(this.graphs[graphNumber][5] === 2){
+                              isNaN(value[type]) ? null : myArraySecond.push( value[type] );
+                        }
+                    }
+                  } );
+
+                 const bothGroups = [ Math[operation](...myArray), Math[operation](...myArraySecond)];
+
+                 return bothGroups[group];
             }
 
-            if (sameY) {
-                // for multiple graph - same Y
-                this.maxSecond = this.max = graphArray('max', this.type, this.second_type);
-                this.minSecond = this.min = graphArray('min', this.type, this.second_type);
-                this.yLimitSecond = this.yLimit = this.max - this.min;
+            // for multiple graph - different Y
+            this.max = graphArray('max', 0);
+            this.min = graphArray('min', 0);
+            this.yLimit = this.max - this.min;
 
-            } else {
-                // for multiple graph - different Y
-                this.max = graphArray('max', this.type);
-                this.min = graphArray('min', this.type);
-                this.yLimit = this.max - this.min;
+            this.maxSecond = graphArray('max', 1);
+            this.minSecond = graphArray('min', 1);
+            this.yLimitSecond = this.maxSecond - this.minSecond;
 
-                this.maxSecond = graphArray('max', this.second_type);
-                this.minSecond = graphArray('min', this.second_type);
-                this.yLimitSecond = this.maxSecond - this.minSecond;
-            }
+            console.log('group: ' + this.group);
+            console.log('this.yLimit: ' + this.yLimit);
+            console.log('this.yLimitSecond: ' + this.yLimitSecond);
 
-            // WA: do not clear canvas before second graph (second color)
-            if ( this.color != 'white' ) return null;
-            
-            this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
         }
 
         this.refresh();
     }
 
-    // static method - use method without instantiate
-
     // like const???
-    
-    // [minutes_test]
     get MILISECONDS_FOR_ONE_DAY() { return 1000 * 60 * 60 * 24 };
     //get MILISECONDS_FOR_ONE_DAY() { return 1000 * 60 };
 
@@ -210,7 +207,7 @@ class Draw {
         return this.dataReduced = dataReduced;
     }
     
-
+    // download all
     async updateGraph(startOrEnd, move) {
         // promis AJAX query
         console.time('Start');
@@ -328,31 +325,20 @@ class Draw {
                     this.ctx_pointer.textAlign = 'left';
                     this.ctx_pointer.fillText(` ${ valueY[type] }`, this.clientWidth - this.graphSpaceLeft, yValue );
                 }
-
                 // calculate y for graph 
-                const y = this.yPositionFromDate(valueY[this.type], this.min, this.max);
-                
-                if ( !this.second_type ) {
-                    if ( this.yTextPlace === 'left' ) {
-                        infoLeftY( this.type, y );
-                        return null
-                    } 
+                const firstInfoType  = this.graphs[0][0];
+                const y = this.yPositionFromDate(valueY[firstInfoType], this.min, this.max);
+                infoLeftY( firstInfoType, y );
 
-                    infoRightY(this.type, y);
-                    return null;
-                }
+                if (this.graphs.length === 1) return null;
 
                 // 2nd graph in canvas
-                const ySecond = this.yPositionFromDate(valueY[this.second_type], this.minSecond, this.maxSecond);
-                
-                if ( this.yTextPlace === 'right' ) {
-                    infoRightY(this.type, y);
-                    infoLeftY( this.second_type, ySecond );
-                    return null
-                }
-
-                infoLeftY( this.type, y );
-                infoRightY(this.second_type, ySecond);
+                let ySecond;
+                const secondInfoType = this.graphs[1][0];
+                const secondGroup = this.graphs[1][5]
+                if (secondGroup === 1) ySecond = this.yPositionFromDate(valueY[secondInfoType], this.min, this.max);
+                if (secondGroup === 2) ySecond = this.yPositionFromDate(valueY[secondInfoType], this.minSecond, this.maxSecond);
+                infoRightY(secondInfoType, ySecond);
             }
 
             if (!valueY) return null;
@@ -374,11 +360,11 @@ class Draw {
         this.graph();
     }
     
-    axesXY( color = 'grey' ) {
+    axesXY( graphNumber ) {
 
         //line arround graph
         this.ctx.beginPath();
-        this.ctx.strokeStyle = color;
+        this.ctx.strokeStyle = 'grey';
         this.ctx.lineWidth = 1;
         this.ctx.moveTo( this.graphSpaceLeft, this.clientHeight - this.graphSpaceBtn );
         this.ctx.lineTo( this.clientWidth - this.graphSpaceLeft, this.clientHeight - this.graphSpaceBtn );
@@ -389,11 +375,11 @@ class Draw {
 
         // inner axesX & axesY
         this.ctx.beginPath();
-        this.ctx.strokeStyle = color;
+        this.ctx.strokeStyle = 'grey';
         this.ctx.lineWidth = 1;
         this.ctx.setLineDash([1, 2]);
         for(let number = 10; number >= 0; number-- ) {
-            this.textAndAxesXY(number);
+            this.textAndAxesXY(number, graphNumber);
         }
         this.ctx.stroke();
 
@@ -401,11 +387,10 @@ class Draw {
         this.button.show();
 
         // show graph header
-        this.textHeader();
+        this.textHeader(graphNumber);
 
         // show year lines
         this.yearLine();
-
     }
 
     firstDayNumber() {
@@ -445,17 +430,20 @@ class Draw {
         return dayNumber - this.firstDayNumber();
     }
 
-    textHeader() {
+    textHeader(graphNumber) {
         this.ctx.font = '20px Arial';
         this.ctx.fillStyle = this.color;
         this.ctx.textBaseline = 'top';
-        this.ctx.textAlign = 'center';
-        this.yTextPlace === 'right' ? this.ctx.fillText(this.header, this.clientWidth / 2, 0)  : null;
-        this.yTextPlace === 'left'  ? this.ctx.fillText(this.header, this.clientWidth / 2, 20) : null;
+        this.ctx.textAlign = 'left';
+        graphNumber === 0 ? this.ctx.fillText(this.header, this.clientWidth / 2, 0)  : null;
+        graphNumber === 1 ? this.ctx.fillText(this.header, this.clientWidth / 2, 20) : null;
+        this.ctx.textAlign = 'right';
+        graphNumber === 2 ? this.ctx.fillText(this.header, this.clientWidth / 2, 0)  : null;
+        graphNumber === 3 ? this.ctx.fillText(this.header, this.clientWidth / 2, 20) : null;
     }
 
     // lines + text for axes X, Y
-    textAndAxesXY(number) {
+    textAndAxesXY(number, graphNumber) {
 
         const Y = this.clientHeight - this.graphSpaceBtn  - (this.clientHeight - 2 * this.graphSpaceBtn ) * number / 10;
         const X = this.clientWidth  - this.graphSpaceLeft - (this.clientWidth  - 2 * this.graphSpaceLeft) * number / 10;
@@ -489,21 +477,27 @@ class Draw {
                 this.ctx.fillText(`${ ('0' + hour).slice(-2) }:${ ('0' + minutes).slice(-2) }`, 0, 0);
             }
   
-
-
         this.ctx.restore();
         
         // text for axes Y
         this.ctx.font = '12px Arial';
         this.ctx.fillStyle = this.color;
         this.ctx.textBaseline = 'middle';
-        const yText = ` ${ ( this.min + (this.yLimit) * number / 10 ).toFixed(1) } `;
-        if ( this.yTextPlace === 'right' ) {
-            this.ctx.textAlign = 'left';
-            this.ctx.fillText( yText, this.clientWidth - this.graphSpaceLeft, Y );
-        } else {
+
+        let yText = ` ${ ( this.min + (this.yLimit) * number / 10 ).toFixed(1) } `;
+
+        if (this.group === 2 ) {
+            yText = ` ${ ( this.minSecond + (this.yLimitSecond) * number / 10 ).toFixed(1) } `;
+        } 
+
+        if (graphNumber === 0) {
             this.ctx.textAlign = 'right'
             this.ctx.fillText( yText, this.graphSpaceLeft, Y );
+        }
+
+        if (graphNumber === 1) {
+            this.ctx.textAlign = 'left';
+            this.ctx.fillText( yText, this.clientWidth - this.graphSpaceLeft, Y );
         }
     }
 
@@ -518,31 +512,65 @@ class Draw {
 
     graph() {
 
-        // show axess
-        this.axesXY();
+        // clear canvas
+        this.ctx.clearRect(0 , 0, this.clientWidth, this.clientHeight ); 
 
-        // values to graph
-        this.ctx.beginPath();
-        //this.ctx.moveTo(0,0)
-        this.ctx.setLineDash([0]);
-        this.ctx.strokeStyle = this.color;
-        this.ctx.lineWidth = this.lineWidth;
-
-        const line = oneEntry => {
-            if ( this.design === 'area' ) {
-                this.ctx.moveTo( this.xPositionFromDate(oneEntry[this.date]),
-                                 this.clientHeight - this.graphSpaceBtn);
-            }
-            this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
-                             this.yPositionFromDate(oneEntry[this.type], this.min, this.max));
+        this.graphSelect = (graphNumber) =>{
+            [   this.type,
+                this.color,
+                this.design,
+                this.lineWidth,
+                this.header,
+                this.group,
+                this.lineDash
+            ] = this.graphs[graphNumber];
         }
 
-        this.dataReduced.forEach( oneEntry => line(oneEntry) );
+        // show all graphs
+        for (let graphNumber = 0; graphNumber < this.graphs.length; graphNumber++) {
 
-        //this.ctx.closePath();
-        this.ctx.stroke();
+            this.graphSelect(graphNumber);
+
+            // show axess
+            this.axesXY(graphNumber);
+
+            // values to graph
+            this.ctx.beginPath();
+            this.ctx.setLineDash(this.lineDash);
+            this.ctx.strokeStyle = this.color;
+            this.ctx.lineWidth = this.lineWidth;
+
+            let min = this.min;
+            let max = this.max;
+
+            if (this.graphs.length > 1) {
+                if (this.group === 2 )
+                {
+                    min = this.minSecond;
+                    max = this.maxSecond;
+                }
+            }
+
+            const line = oneEntry => {
+                // for graph type = area
+                if ( this.design === 'area' ) {
+                    this.ctx.moveTo( this.xPositionFromDate(oneEntry[this.date]),
+                                    this.clientHeight - this.graphSpaceBtn);
+                }
+                this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
+                                this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max));
+            }
+
+            this.dataReduced.forEach( oneEntry => line(oneEntry) );
+
+            //this.ctx.closePath();
+            this.ctx.stroke();
+
+        }
+
 
         // get data from graph
         this.getInfo(this.xForInfo, this.yForInfo);
+
     }
 }

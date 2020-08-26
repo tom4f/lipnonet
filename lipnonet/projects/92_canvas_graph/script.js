@@ -1,3 +1,5 @@
+"use strict"
+
 // data from DB
 let pdoResp = [];
 // data from DB should be downloaded only once
@@ -13,11 +15,26 @@ graph.forEach( value => value.style.height = 100 / graphHeight + 'vh' );
 // definition of all graphs
 const canvas  = document.getElementById('canvas' );
 const canvas1 = document.getElementById('canvas1');
-const canvas2 = document.getElementById('canvas2');
 // definition of all graph pointers
 const canvas_pointer  = document.getElementById('canvas_pointer');
 const canvas1_pointer = document.getElementById('canvas1_pointer');
-const canvas2_pointer = document.getElementById('canvas2_pointer');
+
+const canvasSize = ( can, can_pointer, size ) => {
+    const clientWidth  = document.documentElement.clientWidth;
+    const clientHeight = document.documentElement.clientHeight;
+    can.width  = clientWidth;
+    can.height = clientHeight / size;
+    can_pointer.width  = clientWidth;
+    can_pointer.height = clientHeight / size;
+}
+
+const allCanvasSize = () => {
+    canvasSize(canvas , canvas_pointer , graphHeight);
+    canvasSize(canvas1, canvas1_pointer, graphHeight);
+}
+
+allCanvasSize();
+
 
 // convert new Date() object to string, e.g. 2019-05-18
 const getTextDateFromNewDate = (updDate) =>{
@@ -68,53 +85,35 @@ const loadPocasiAsync = async () => {
     if (pdoResp.length === 0) return null;
     console.log( `%c Data loaded on start!`, 'color: orange; font-weight: bold;' );
     // Instantiate Object
-    hladina = new Draw('hladina', 'white', canvas , 'left' , canvas_pointer , null   , 'Hladina Lipna [m n.m]', dateStorage, true, 'line' );
-    //
-    odtok   = new Draw('odtok'  , 'white', canvas1, 'left' , canvas1_pointer, 'pritok'   , 'Odtok [m\xB3/s]', dateStorage, true, 'line');
-    pritok  = new Draw('pritok' , 'green', canvas1, 'right', canvas1_pointer, 'odtok', 'Přítok [m\xB3/s]', dateStorage, true, 'line', 2);
-    //
-    voda    = new Draw('voda'   , 'white', canvas2, 'left' , canvas2_pointer, 'vzduch'   , 'Teplota vody [\xB0C]', dateStorage, true, 'line');
-    vzduch  = new Draw('vzduch' , 'green', canvas2, 'right', canvas2_pointer, 'voda' , 'Teplota vzduchu ráno [\xB0C]', dateStorage, true, 'line', 2);
+
+    const hladina     = new Draw(
+        [ canvas, canvas_pointer, dateStorage ]
+        , [ 'pritok' , 'lime' , 'line', 2, 'pritok [m\xB3/s]', 1, [] ]
+        , [ 'hladina', 'white', 'line', 2, 'hladina [m n.m.]', 2, [] ]
+        , [ 'odtok'  , 'blue' , 'line', 2, 'odtok [m\xB3/s]' , 1, [] ]
+    ); 
+
+    const teplota     = new Draw(
+        [ canvas1, canvas1_pointer, dateStorage ]
+        , [ 'voda'  , 'white', 'line', 2, 'voda [\xB0C]'  , 1, [] ]
+        , [ 'vzduch', 'lime' , 'line', 2, 'vzduch ráno [\xB0C]', 1, []  ]
+    ); 
+
+    
     // show graphs
     hladina.graph();
-    //
-    voda.graph();
-    vzduch.graph();
-    //
-    pritok.graph();
-    odtok.graph();
+    teplota.graph();
+
+    window.addEventListener('resize', () => {
+        // set canvas size
+        allCanvasSize();
+        // reload graphs
+        hladina.resizeCanvas();
+        teplota.resizeCanvas();
+    });
 }
 
 // Start App
 
 // load data + show graphs
 loadPocasiAsync();
-
-// set canvas size
-const canvasSize = ( can, can_pointer, size ) => {
-    const clientWidth  = document.documentElement.clientWidth;
-    const clientHeight = document.documentElement.clientHeight;
-    can.width  = clientWidth;
-    can.height = clientHeight / size;
-    can_pointer.width  = clientWidth;
-    can_pointer.height = clientHeight / size;
-}
-
-canvasSize(canvas , canvas_pointer , graphHeight);
-canvasSize(canvas1, canvas1_pointer, graphHeight);
-canvasSize(canvas2, canvas2_pointer, graphHeight);
-
-
-window.addEventListener('resize', () => {
-    // set canvas size
-    canvasSize(canvas , canvas_pointer , graphHeight);
-    canvasSize(canvas1, canvas1_pointer, graphHeight);
-    canvasSize(canvas2, canvas2_pointer, graphHeight);
-    // reload graphs
-    hladina.resizeCanvas();
-    pritok.resizeCanvas();
-    odtok.resizeCanvas();
-    voda.resizeCanvas();
-    vzduch.resizeCanvas();
-});
-

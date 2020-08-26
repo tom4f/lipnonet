@@ -1,3 +1,5 @@
+"use strict"
+
 // data from DB
 let pdoResp = [];
 // data from DB should be downloaded only once
@@ -22,6 +24,27 @@ const canvas1_pointer = document.getElementById('canvas1_pointer');
 const canvas2_pointer = document.getElementById('canvas2_pointer');
 const canvas3_pointer = document.getElementById('canvas3_pointer');
 const canvas4_pointer = document.getElementById('canvas4_pointer');
+
+// set canvas size
+
+const canvasSize = ( can, can_pointer, size ) => {
+    const clientWidth  = document.documentElement.clientWidth;
+    const clientHeight = document.documentElement.clientHeight;
+    can.width  = clientWidth;
+    can.height = clientHeight / size;
+    can_pointer.width  = clientWidth;
+    can_pointer.height = clientHeight / size;
+}
+
+const allCanvasSize = () => {
+    canvasSize(canvas , canvas_pointer , graphHeight);
+    canvasSize(canvas1, canvas1_pointer, graphHeight);
+    canvasSize(canvas2, canvas2_pointer, graphHeight);
+    canvasSize(canvas3, canvas3_pointer, graphHeight);
+    canvasSize(canvas4, canvas4_pointer, graphHeight);
+}
+
+allCanvasSize();
 
 // convert new Date() object to string, e.g. 2019-05-18
 const getTextDateFromNewDate = (updDate) =>{
@@ -72,37 +95,58 @@ const loadPocasiAsync = async () => {
     if (pdoResp.length === 0) return null;
     console.log( `%c Data loaded on start!`, 'color: orange; font-weight: bold;' );
     // Instantiate Object
-    temp_low        = new Draw('temp_low'       , 'white', canvas , 'left' , canvas_pointer , 'temp_high'      , 'temp_low  [\xB0C]', dateStorage, true, 'line' );
-    temp_high       = new Draw('temp_high'      , 'green', canvas , 'right', canvas_pointer , 'temp_low'       , 'temp_high [\xB0C]', dateStorage, true, 'line' );
-    //
-    wind_speed_avg  = new Draw('wind_speed_avg' , 'white', canvas1, 'left' , canvas1_pointer, 'wind_speed_high', 'wind_speed_avg [m/s]', dateStorage, true, 'area'  );
-    wind_speed_high = new Draw('wind_speed_high', 'green', canvas1, 'right', canvas1_pointer, 'wind_speed_avg' , 'wind_speed_high [m/s]', dateStorage, true, 'area' );
-    //
-    bar_min         = new Draw('bar_min'        , 'white', canvas2, 'left' , canvas2_pointer, 'bar_max'        , 'bar_min [hPa]', dateStorage , true, 'line' );
-    bar_max         = new Draw('bar_max'        , 'green', canvas2, 'right', canvas2_pointer, 'bar_min'        , 'bar_max [hPa]', dateStorage, true, 'line', 2 );
-    //
-    huminidy_max    = new Draw('huminidy_max'   , 'white', canvas3, 'left' , canvas3_pointer, 'huminidy_min'        , 'huminidy_max [%]', dateStorage, true, 'line'  );
-    huminidy_min    = new Draw('huminidy_min'   , 'green', canvas3, 'right', canvas3_pointer, 'huminidy_max'        , 'huminidy_min [%]', dateStorage, true, 'line', 2 );
-   //
-   rain_rate_max    = new Draw('rain_rate_max'  , 'white', canvas4, 'left' , canvas4_pointer, 'rain'        , 'rain_rate_max [mm/h]', dateStorage, false, 'line' );
-   rain             = new Draw('rain'           , 'green', canvas4, 'right', canvas4_pointer, 'rain_rate_max'        , 'rain [mm]', dateStorage, false, 'line', 2 );
+       //
+    const temp     = new Draw(
+        [ canvas, canvas_pointer, dateStorage ]
+        , [ 'temp_low' , 'red'  , 'line', 1, 'temp_low [\xB0C]' , 1, [1, 1]  ]
+        , [ 'temp_high', 'blue' , 'line', 1, 'temp_high [\xB0C]', 1, [1, 1] ]
+        , [ 'temp_mean', 'white', 'line', 2, 'temp_mean [\xB0C]', 1, []  ]
+    ); 
 
+    const wind     = new Draw(
+        [ canvas1, canvas1_pointer, dateStorage]
+        , [ 'wind_speed_high', 'orange', 'area', 5, 'wind_speed_high [m/s]', 1, [] ]
+        , [ 'wind_speed_avg' , 'green' , 'area', 5, 'wind_speed_avg [m/s]' , 2, [] ]
+    ); 
+
+    const bar     = new Draw(
+        [ canvas2, canvas2_pointer, dateStorage]
+        , [ 'bar_min', 'green' , 'line', 1, 'bar_min [hPa]', 1, [1, 1] ]
+        , [ 'bar_max', 'blue'  , 'line', 1, 'bar_max [hPa]', 1, [1, 1] ]
+        , [ 'bar_avg', 'white' , 'line', 2, 'bar_avg [hPa]' , 1, [] ]
+    ); 
+
+    const huminidy     = new Draw(
+        [ canvas3, canvas3_pointer, dateStorage]
+        , [ 'huminidy_min', 'green' , 'line', 1, 'huminidy_min [%]', 1, [1, 1] ]
+        , [ 'huminidy_max', 'blue'  , 'line', 1, 'huminidy_max [%]', 1, [1, 1] ]
+        , [ 'huminidy_avg', 'white' , 'line', 2, 'huminidy_avg [%]' , 1, [] ]
+    ); 
+
+    const rain     = new Draw(
+        [ canvas4, canvas4_pointer, dateStorage]
+        , [ 'rain_rate_max', 'orange', 'line', 1, 'rain_rate_max [mm/h]', 1, [] ]
+        , [ 'rain'         , 'white' , 'line', 2, 'rain [mm/h]' , 2, [] ]
+    ); 
    
     // show graphs
-    temp_low.graph();
-    temp_high.graph();
-    //
-    wind_speed_high.graph();
-    wind_speed_avg.graph();
-    //
-    bar_min.graph();
-    bar_max.graph();
-    //
-    huminidy_max.graph();
-    huminidy_min.graph();
-    //
-    rain_rate_max.graph();
+    temp.graph();
+    wind.graph();
+    bar.graph();
+    huminidy.graph();
     rain.graph();
+
+    window.addEventListener('resize', () => {
+        // set canvas size
+        allCanvasSize();
+        // reload graphs
+        temp.resizeCanvas();
+        wind.resizeCanvas();
+        bar.resizeCanvas();
+        huminidy.resizeCanvas();
+        rain.resizeCanvas();
+    
+    });
 }
 
 // Start App
@@ -110,44 +154,7 @@ const loadPocasiAsync = async () => {
 // load data + show graphs
 loadPocasiAsync();
 
-// set canvas size
-const canvasSize = ( can, can_pointer, size ) => {
-    const clientWidth  = document.documentElement.clientWidth;
-    const clientHeight = document.documentElement.clientHeight;
-    can.width  = clientWidth;
-    can.height = clientHeight / size;
-    can_pointer.width  = clientWidth;
-    can_pointer.height = clientHeight / size;
-}
-
-canvasSize(canvas , canvas_pointer , graphHeight);
-canvasSize(canvas1, canvas1_pointer, graphHeight);
-canvasSize(canvas2, canvas2_pointer, graphHeight);
-canvasSize(canvas3, canvas3_pointer, graphHeight);
-canvasSize(canvas4, canvas4_pointer, graphHeight);
 
 
-window.addEventListener('resize', () => {
-    // set canvas size
-    canvasSize(canvas , canvas_pointer , graphHeight);
-    canvasSize(canvas1, canvas1_pointer, graphHeight);
-    canvasSize(canvas2, canvas2_pointer, graphHeight);
-    canvasSize(canvas3, canvas3_pointer, graphHeight);
-    canvasSize(canvas4, canvas4_pointer, graphHeight);
-    // reload graphs
-    temp_low.resizeCanvas();
-    temp_high.resizeCanvas();
-    //
-    wind_speed_avg.resizeCanvas();
-    wind_speed_high.resizeCanvas();
-    //
-    bar_min.resizeCanvas();
-    bar_max.resizeCanvas();
-    //
-    huminidy_max.resizeCanvas();
-    huminidy_min.resizeCanvas();
-    //
-    rain_rate_max.resizeCanvas();
-    rain.resizeCanvas();
-});
+
 

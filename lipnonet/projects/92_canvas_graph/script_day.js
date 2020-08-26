@@ -1,3 +1,5 @@
+"use strict"
+
 // data from DB
 let pdoResp = [];
 // data from DB should be downloaded only once
@@ -6,7 +8,7 @@ let isAllDownloaded = false;
 const dateStorage = 'Date'
 
 // set height for one graph
-const graphHeight = 3;
+const graphHeight = 2;
 const graph = document.querySelectorAll('.one-graph');
 graph.forEach( value => value.style.height = 100 / graphHeight + 'vh' );
 
@@ -15,24 +17,39 @@ const canvas  = document.getElementById('canvas' );
 const canvas1 = document.getElementById('canvas1');
 const canvas2 = document.getElementById('canvas2');
 const canvas3 = document.getElementById('canvas3');
-const canvas4 = document.getElementById('canvas4');
 // definition of all graph pointers
 const canvas_pointer  = document.getElementById('canvas_pointer');
 const canvas1_pointer = document.getElementById('canvas1_pointer');
 const canvas2_pointer = document.getElementById('canvas2_pointer');
 const canvas3_pointer = document.getElementById('canvas3_pointer');
-const canvas4_pointer = document.getElementById('canvas4_pointer');
 
 
-// convert new Date() object to string, e.g. 2019-05-18
-const getTextDateFromNewDate = (updDate) =>{
-    return `${updDate.getFullYear()}-${ ('0' + (updDate.getMonth() + 1)).slice(-2) }-${ ('0' + updDate.getDate()).slice(-2) }`;
-}
-
-const SOURCE_FILE = 'https://www.frymburk.com/davis/downld02.txt'
+//const SOURCE_FILE = 'https://www.frymburk.com/davis/downld02.txt'
+const SOURCE_FILE = '../../davis/downld02.txt'
 //const SOURCE_FILE = 'downld02.txt'
 const ONE_MINUTE = 1000 * 60
 const ONE_DAY = ONE_MINUTE * 60 * 24 
+
+// set canvas size
+
+const canvasSize = ( can, can_pointer, size ) => {
+    const clientWidth  = document.documentElement.clientWidth;
+    const clientHeight = document.documentElement.clientHeight;
+    can.width  = clientWidth;
+    can.height = clientHeight / size;
+    can_pointer.width  = clientWidth;
+    can_pointer.height = clientHeight / size;
+}
+
+const allCanvasSize = () => {
+    canvasSize(canvas , canvas_pointer , graphHeight);
+    canvasSize(canvas1, canvas1_pointer, graphHeight);
+    canvasSize(canvas2, canvas2_pointer, graphHeight);
+    canvasSize(canvas3, canvas3_pointer, graphHeight);
+}
+
+allCanvasSize();
+
 
 const loadPocasiAsync = async () => {
     try { 
@@ -78,75 +95,56 @@ const loadPocasiAsync = async () => {
 
         pdoResp = arrOfObj
 
-        TempOut     = new Draw('TempOut', 'white', canvas , 'left' , canvas_pointer , 'THWIndex'   , 'TempOut [\xB0C]', dateStorage, true, 'line' );
-        THWIndex    = new Draw('THWIndex', 'green', canvas , 'right' , canvas_pointer , 'TempOut'   , 'THWIndex [\xB0C]', dateStorage, true, 'line' );
-        
-        WindSpeed   = new Draw('WindSpeed', 'green', canvas1 , 'left' , canvas1_pointer , 'HiSpeed'   , 'WindSpeed [m/s]', dateStorage, true, 'area' );
-        HiSpeed     = new Draw('HiSpeed', 'yellow', canvas1 , 'right' , canvas1_pointer , 'WindSpeed'   , 'HiSpeed [m/s]', dateStorage, true, 'area' );
-
-        Bar         = new Draw('Bar', 'white', canvas2 , 'left' , canvas2_pointer , 'HumOut'   , 'Bar [hPa]', dateStorage, false, 'line' );
-        HumOut      = new Draw('HumOut', 'orange', canvas2 , 'right' , canvas2_pointer , 'Bar'   , 'HumOut [%]', dateStorage, false, 'line' );
-
-        Rain        = new Draw('Rain', 'white', canvas3 , 'left' , canvas3_pointer , 'RainRate'   , 'Rain [mm]', dateStorage, false, 'area' );
-        RainRate    = new Draw('RainRate', 'green', canvas3 , 'right' , canvas3_pointer , 'Rain'   , 'RainRate [mm/h]', dateStorage, false, 'area', 2 );
- 
-
-        // show graphs
-        THWIndex.graph();
-        TempOut.graph();
-        
-        HiSpeed.graph();
-        WindSpeed.graph();
-
-        Bar.graph();
-        HumOut.graph();
-
-        Rain.graph();
-        RainRate.graph();
-
     }
     catch (err) {
         console.log(err)
         return null;
     }
+
+    const temp     = new Draw(
+        [ canvas, canvas_pointer, dateStorage]
+        , [ 'THWIndex' , 'lime'  , 'line', 1, 'THWIndex [\xB0C]', 1, [] ]
+        , [ 'TempOut'  , 'white' , 'line', 1, 'TempOut [\xB0C]' , 1, [] ]
+    ); 
+
+    const huminidy     = new Draw(
+        [ canvas1, canvas1_pointer, dateStorage]
+        , [ 'HumOut', 'white', 'line', 1, 'HumOut [%]', 1, [] ]
+        , [ 'Bar'   , 'lime', 'line', 1, 'Bar [hPa]' , 2, [] ]
+    ); 
+    
+    const rain     = new Draw(
+        [ canvas2, canvas2_pointer, dateStorage]
+        , [ 'Rain'    , 'green', 'line', 1, 'Rain [mm]'       , 1, [] ]
+        , [ 'RainRate', 'white', 'line', 1, 'RainRate [mm/h]' , 2, [] ]
+    ); 
+
+    const wind     = new Draw(
+        [ canvas3, canvas3_pointer, dateStorage]
+        , [ 'HiSpeed'  , 'lime'  , 'area', 1, 'HiSpeed [m/s]'  , 1, [] ]
+        , [ 'WindSpeed', 'blue', 'area', 1, 'WindSpeed [m/s]', 1, [] ]
+    ); 
+    // show graphs
+    //THWIndex.graph();
+    temp.graph();
+    huminidy.graph();
+    rain.graph();
+    wind.graph();
+
+
+    window.addEventListener('resize', () => {
+        // set canvas size
+        allCanvasSize();
+        // reload graphs
+        //THWIndex.resizeCanvas();
+        temp.resizeCanvas();
+        huminidy.resizeCanvas();
+        rain.resizeCanvas();
+        wind.resizeCanvas();
+    });
+
 }
 
 loadPocasiAsync();
 
-// set canvas size
-const canvasSize = ( can, can_pointer, size ) => {
-    const clientWidth  = document.documentElement.clientWidth;
-    const clientHeight = document.documentElement.clientHeight;
-    can.width  = clientWidth;
-    can.height = clientHeight / size;
-    can_pointer.width  = clientWidth;
-    can_pointer.height = clientHeight / size;
-}
-
-canvasSize(canvas , canvas_pointer , graphHeight);
-canvasSize(canvas1, canvas1_pointer, graphHeight);
-canvasSize(canvas2, canvas2_pointer, graphHeight);
-canvasSize(canvas3, canvas3_pointer, graphHeight);
-canvasSize(canvas4, canvas4_pointer, graphHeight);
-
-window.addEventListener('resize', () => {
-    // set canvas size
-    canvasSize(canvas , canvas_pointer , graphHeight);
-    canvasSize(canvas1, canvas1_pointer, graphHeight);
-    canvasSize(canvas2, canvas2_pointer, graphHeight);
-    canvasSize(canvas3, canvas3_pointer, graphHeight);
-    canvasSize(canvas4, canvas4_pointer, graphHeight);
-    // reload graphs
-    THWIndex.resizeCanvas();
-    TempOut.resizeCanvas();
-
-    HiSpeed.resizeCanvas();
-    WindSpeed.resizeCanvas();
-
-    Rain.resizeCanvas();
-    RainRate.resizeCanvas();
-
-    Bar.resizeCanvas();
-    HumOut.resizeCanvas();
-});
 
