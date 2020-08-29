@@ -98,35 +98,35 @@ const loadPocasiAsync = async () => {
        //
     const temp     = new Draw(
         [ canvas, canvas_pointer, dateStorage ]
-        , [ 'temp_low' , 'red'  , 'line', 1, 'temp_low [\xB0C]' , 1, [1, 1]  ]
-        , [ 'temp_high', 'blue' , 'line', 1, 'temp_high [\xB0C]', 1, [1, 1] ]
-        , [ 'temp_mean', 'white', 'line', 2, 'temp_mean [\xB0C]', 1, []  ]
+        , [ 'temp_low' , 'lime'  , 'line', 3, 'temp_low [\xB0C]' , 1, [2, 2]  ]
+        , [ 'temp_high', 'yellow', 'line', 3, 'temp_high [\xB0C]', 1, [2, 2] ]
+        , [ 'temp_mean', 'white' , 'line', 2, 'temp_mean [\xB0C]', 1, []  ]
     ); 
 
     const wind     = new Draw(
         [ canvas1, canvas1_pointer, dateStorage]
-        , [ 'wind_speed_high', 'orange', 'area', 5, 'wind_speed_high [m/s]', 1, [] ]
-        , [ 'wind_speed_avg' , 'green' , 'area', 5, 'wind_speed_avg [m/s]' , 2, [] ]
+        , [ 'wind_speed_high', 'red'  , 'area', 5, 'wind_speed_high [m/s]', 1, [] ]
+        , [ 'wind_speed_avg' , 'white', 'area', 5, 'wind_speed_avg [m/s]' , 1, [] ]
     ); 
 
     const bar     = new Draw(
         [ canvas2, canvas2_pointer, dateStorage]
-        , [ 'bar_min', 'green' , 'line', 1, 'bar_min [hPa]', 1, [1, 1] ]
-        , [ 'bar_max', 'blue'  , 'line', 1, 'bar_max [hPa]', 1, [1, 1] ]
-        , [ 'bar_avg', 'white' , 'line', 2, 'bar_avg [hPa]' , 1, [] ]
+        , [ 'bar_min', 'green', 'line', 3, 'bar_min [hPa]', 1, [2, 2] ]
+        , [ 'bar_max', 'red'  , 'line', 3, 'bar_max [hPa]', 1, [2, 2] ]
+        , [ 'bar_avg', 'white', 'line', 1, 'bar_avg [hPa]', 1, [] ]
     ); 
 
     const huminidy     = new Draw(
         [ canvas3, canvas3_pointer, dateStorage]
-        , [ 'huminidy_min', 'green' , 'line', 1, 'huminidy_min [%]', 1, [1, 1] ]
-        , [ 'huminidy_max', 'blue'  , 'line', 1, 'huminidy_max [%]', 1, [1, 1] ]
-        , [ 'huminidy_avg', 'white' , 'line', 2, 'huminidy_avg [%]' , 1, [] ]
+        , [ 'huminidy_min', 'green' , 'line', 3, 'huminidy_min [%]', 1, [2, 2] ]
+        , [ 'huminidy_max', 'ping'  , 'line', 3, 'huminidy_max [%]', 1, [2, 2] ]
+        , [ 'huminidy_avg', 'white' , 'line', 2, 'huminidy_avg [%]', 1, [] ]
     ); 
 
     const rain     = new Draw(
         [ canvas4, canvas4_pointer, dateStorage]
-        , [ 'rain_rate_max', 'orange', 'line', 1, 'rain_rate_max [mm/h]', 1, [] ]
-        , [ 'rain'         , 'white' , 'line', 2, 'rain [mm/h]' , 2, [] ]
+        , [ 'rain_rate_max', 'orange', 'area', 5, 'rain_rate_max [mm/h]', 1, [] ]
+        , [ 'rain'         , 'white' , 'area', 5, 'rain [mm/h]'         , 2, [] ]
     ); 
    
     // show graphs

@@ -72,10 +72,6 @@ class Draw {
             this.minSecond = graphArray('min', 1);
             this.yLimitSecond = this.maxSecond - this.minSecond;
 
-            console.log('group: ' + this.group);
-            console.log('this.yLimit: ' + this.yLimit);
-            console.log('this.yLimitSecond: ' + this.yLimitSecond);
-
         }
 
         this.refresh();
@@ -402,21 +398,51 @@ class Draw {
     }
 
     yearLine() {
-        const firstYear = new Date( this.start ).getFullYear();
-        const lastYear  = new Date( this.end   ).getFullYear();
+
+        console.log(this.start.slice(0,10));
+
         this.ctx.beginPath();
         this.ctx.strokeStyle = 'red';
         this.ctx.lineWidth = 2;
         this.ctx.setLineDash([1, 0]);
-        for (let year = firstYear + 1; year <= lastYear; year++) {
-            // line for year
-            this.ctx.moveTo( this.xPositionFromDate(`${year}-01-01`), this.graphSpaceBtn );
-            this.ctx.lineTo( this.xPositionFromDate(`${year}-01-01`), this.clientHeight - this.graphSpaceBtn );
-            // text for year
+
+        let firstDate;
+        let lastDate;
+
+        // days step
+        if (this.dataReduced[0][this.date].length === 24){
+            firstDate = new Date( this.start ).getDate() - 1;
+            lastDate  = new Date( this.end   ).getDate();
+        }
+
+        // year step
+        if (this.dataReduced[0][this.date].length === 10){
+            firstDate = new Date( this.start ).getFullYear();
+            lastDate  = new Date( this.end   ).getFullYear();
+        }
+
+
+        let lineDate;
+
+        for (let dayStep = firstDate + 1; dayStep <= lastDate; dayStep++) {
+            console.log(dayStep);
+
+            if (this.dataReduced[0][this.date].length === 24){
+                lineDate = `${this.start.slice(0,7)}-${dayStep}`;
+            }
+    
+            if (this.dataReduced[0][this.date].length === 10){
+                lineDate = `${dayStep}-01-01`;
+            }
+
+            // line for dayStep
+            this.ctx.moveTo( this.xPositionFromDate(lineDate), this.graphSpaceBtn );
+            this.ctx.lineTo( this.xPositionFromDate(lineDate), this.clientHeight - this.graphSpaceBtn );
+            // text for dayStep
             this.ctx.font = '12px Arial';
             this.ctx.textAlign = 'left';
             this.ctx.fillStyle = 'white';
-            this.ctx.fillText( `${year}`, this.xPositionFromDate(`${year}-01-01`), this.graphSpaceBtn );
+            this.ctx.fillText( `${dayStep}`, this.xPositionFromDate(lineDate), this.graphSpaceBtn );
         }
         this.ctx.stroke();
     }
@@ -531,15 +557,32 @@ class Draw {
 
             this.graphSelect(graphNumber);
 
-            // show axess
+        // show axess
             this.axesXY(graphNumber);
 
-            // values to graph
+        // values to graph
             this.ctx.beginPath();
             this.ctx.setLineDash(this.lineDash);
             this.ctx.strokeStyle = this.color;
-            this.ctx.lineWidth = this.lineWidth;
+            //this.ctx.lineWidth = this.lineWidth;
 
+        // minutes step
+            let minutesInOneDay = 1;
+            if (this.dataReduced[0][this.date].length === 24) minutesInOneDay = 24 * 60;
+
+            // automatic lineWidth for 'area' type
+            if ( this.design === 'area' ) {
+                const widthOfOneValue = (this.clientWidth - 2 * this.graphSpaceLeft) / ( this.xLimit * minutesInOneDay );
+                if (widthOfOneValue > 3) {
+                    this.ctx.lineWidth = widthOfOneValue - 1
+                } else {
+
+                    this.ctx.lineWidth = widthOfOneValue < 1 ? 1 : widthOfOneValue;
+                }
+            } else {
+                this.ctx.lineWidth = this.lineWidth;
+            }
+            
             let min = this.min;
             let max = this.max;
 
@@ -552,13 +595,32 @@ class Draw {
             }
 
             const line = oneEntry => {
+
+                // do not show direction if no wind
+                if ( this.graphs[graphNumber][0] === 'WindDir' && oneEntry[this.graphs[graphNumber][0]] === 360 ) return null;
+
                 // for graph type = area
+                if( this.design === 'dot') {
+                    this.ctx.fillRect(
+                        this.xPositionFromDate(oneEntry[this.date]),
+                        - this.lineWidth / 2 + this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max),
+                        1, this.lineWidth
+                    )
+                 }
+
                 if ( this.design === 'area' ) {
                     this.ctx.moveTo( this.xPositionFromDate(oneEntry[this.date]),
                                     this.clientHeight - this.graphSpaceBtn);
+
+                    this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
+                    this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max));
                 }
-                this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
-                                this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max));
+
+                if (this.design === 'line') {
+                    this.ctx.lineTo( this.xPositionFromDate(oneEntry[this.date]),
+                    this.yPositionFromDate(oneEntry[this.graphs[graphNumber][0]], min, max));
+                }
+
             }
 
             this.dataReduced.forEach( oneEntry => line(oneEntry) );
@@ -567,7 +629,6 @@ class Draw {
             this.ctx.stroke();
 
         }
-
 
         // get data from graph
         this.getInfo(this.xForInfo, this.yForInfo);

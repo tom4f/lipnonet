@@ -41,7 +41,8 @@
     <a class="menu" href="formular.php" target="_top">Objednávka</a> | 
     <a class="menu" href="ceny.php" target="_top">Ceny</a> | 
     <a class="menu" href="kontakt.php" target="_top">Kontakt</a> | 
-    <a class="menu" href="frymburk.php" target="_top">O Frymburku</a>
+    <a class="menu" href="frymburk.php" target="_top">O Frymburku</a> | 
+    <a class="menu" href="kaliste.php" target="_top">Kaliště</a>
 
   </div>
 

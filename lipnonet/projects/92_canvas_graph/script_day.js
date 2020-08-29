@@ -23,10 +23,11 @@ const canvas1_pointer = document.getElementById('canvas1_pointer');
 const canvas2_pointer = document.getElementById('canvas2_pointer');
 const canvas3_pointer = document.getElementById('canvas3_pointer');
 
+console.log(window.location.hostname);
 
 //const SOURCE_FILE = 'https://www.frymburk.com/davis/downld02.txt'
-const SOURCE_FILE = '../../davis/downld02.txt'
-//const SOURCE_FILE = 'downld02.txt'
+const SOURCE_FILE = '../../davis/downld02.txt';
+//const SOURCE_FILE = 'downld02.txt';
 const ONE_MINUTE = 1000 * 60
 const ONE_DAY = ONE_MINUTE * 60 * 24 
 
@@ -90,8 +91,32 @@ const loadPocasiAsync = async () => {
 
             objFromLine.Date = dateString;
 
+           const dirObj = {
+                '---' : 16,
+                'NNW' : 15,
+                'NW' : 14,
+                'WNW' : 13,
+                'W' : 12,
+                'WSW' : 11,
+                'SW' : 10,
+                'SSW' : 9,
+                'S' : 8,
+                'SSE' : 7,
+                'SE' : 6,
+                'ESE' : 5,
+                'E' : 4,
+                'ENE' : 3,
+                'NE' : 2,
+                'NNE' : 1,
+                'N' : 0
+           }
+
+           objFromLine.WindDir = 22.5 *dirObj[objFromLine.WindDir];
+
             return objFromLine
         })
+
+
 
         pdoResp = arrOfObj
 
@@ -110,7 +135,7 @@ const loadPocasiAsync = async () => {
     const huminidy     = new Draw(
         [ canvas1, canvas1_pointer, dateStorage]
         , [ 'HumOut', 'white', 'line', 1, 'HumOut [%]', 1, [] ]
-        , [ 'Bar'   , 'lime', 'line', 1, 'Bar [hPa]' , 2, [] ]
+        , [ 'Bar'   , 'lime' , 'line', 1, 'Bar [hPa]' , 2, [] ]
     ); 
     
     const rain     = new Draw(
@@ -121,9 +146,10 @@ const loadPocasiAsync = async () => {
 
     const wind     = new Draw(
         [ canvas3, canvas3_pointer, dateStorage]
-        , [ 'HiSpeed'  , 'lime'  , 'area', 1, 'HiSpeed [m/s]'  , 1, [] ]
-        , [ 'WindSpeed', 'blue', 'area', 1, 'WindSpeed [m/s]', 1, [] ]
-    ); 
+        , [ 'HiSpeed'  , 'lime' , 'area', 1, 'HiSpeed [m/s]'  , 1, [] ]
+        , [ 'WindDir'  , 'white', 'dot' , 6, 'WindDir [\xB0]' , 2, [] ]
+        , [ 'WindSpeed', 'blue' , 'area', 1, 'WindSpeed [m/s]', 1, [] ]
+        ); 
     // show graphs
     //THWIndex.graph();
     temp.graph();

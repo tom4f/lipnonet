@@ -184,7 +184,10 @@ const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
         loadPicturesfromAllPhoto(limit, offset, event);
       }
     }
-    xhr.send(JSON.stringify({ 'fotoGalleryOwner' : fotoGalleryOwner}));
+    xhr.send(JSON.stringify({
+      'fotoGalleryOwner' : fotoGalleryOwner,
+      'searchCriteria' : searchCriteria
+    }));
 }
 
 const startPresentation = (event) => {

@@ -21,7 +21,8 @@
     'profisolar.php' : ['Solární, ohřev, panel, voda, profislolar'],
     'ceny.php' : ['Ceny','css/ceny.css'],
     'webcam_ip_archive.php' : ['Výhled na vodu'],
-    'bedrich.php' : ['Administrace']
+    'bedrich.php' : ['Administrace'],
+    'kaliste.php' : ['Kopec Kaliště 993m n.m', 'css/photogallery.css', 'css/kaliste.css' ]
   }
   // actual title DOM
   const headTitle = document.getElementsByTagName('TITLE')[0];

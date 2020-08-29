@@ -9,7 +9,6 @@
 
   include_once '../config/Database.php';
   include_once 'models/Post.php';
-  //include_once 'models/Post'.$fotoGalleryOwner.'.php';
 
   // Instantiate DB & connect
   $database = new Database();
@@ -17,6 +16,8 @@
 
   // Instantiate fotogalery post object
   $post = new Post($db);
+
+  $post->searchCriteria = $data->searchCriteria;
 
   // Fotogalery post query
   $result = $post->read();
