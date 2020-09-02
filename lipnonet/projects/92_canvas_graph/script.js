@@ -89,8 +89,8 @@ const loadPocasiAsync = async () => {
     const hladina     = new Draw(
         [ canvas, canvas_pointer, dateStorage ]
         , [ 'pritok' , 'lime' , 'line', 2, 'pritok [m\xB3/s]', 1, [] ]
-        , [ 'hladina', 'white', 'line', 2, 'hladina [m n.m.]', 2, [] ]
-        , [ 'odtok'  , 'blue' , 'line', 2, 'odtok [m\xB3/s]' , 1, [] ]
+        , [ 'hladina', 'red', 'line', 2, 'hladina [m n.m.]', 2, [] ]
+        , [ 'odtok'  , 'white' , 'line', 2, 'odtok [m\xB3/s]' , 1, [] ]
     ); 
 
     const teplota     = new Draw(

@@ -98,9 +98,9 @@ const loadPocasiAsync = async () => {
        //
     const temp     = new Draw(
         [ canvas, canvas_pointer, dateStorage ]
-        , [ 'temp_low' , 'lime'  , 'line', 3, 'temp_low [\xB0C]' , 1, [2, 2]  ]
-        , [ 'temp_high', 'yellow', 'line', 3, 'temp_high [\xB0C]', 1, [2, 2] ]
-        , [ 'temp_mean', 'white' , 'line', 2, 'temp_mean [\xB0C]', 1, []  ]
+        , [ 'temp_low' , 'lime'  , 'line', 1, 'temp_low [\xB0C]' , 1, []  ]
+        , [ 'temp_high', 'yellow', 'line', 1, 'temp_high [\xB0C]', 1, [] ]
+        , [ 'temp_mean', 'white' , 'line', 1, 'temp_mean [\xB0C]', 1, []  ]
     ); 
 
     const wind     = new Draw(
@@ -111,16 +111,16 @@ const loadPocasiAsync = async () => {
 
     const bar     = new Draw(
         [ canvas2, canvas2_pointer, dateStorage]
-        , [ 'bar_min', 'green', 'line', 3, 'bar_min [hPa]', 1, [2, 2] ]
-        , [ 'bar_max', 'red'  , 'line', 3, 'bar_max [hPa]', 1, [2, 2] ]
+        , [ 'bar_min', 'green', 'line', 1, 'bar_min [hPa]', 1, [] ]
+        , [ 'bar_max', 'red'  , 'line', 1, 'bar_max [hPa]', 1, [] ]
         , [ 'bar_avg', 'white', 'line', 1, 'bar_avg [hPa]', 1, [] ]
     ); 
 
     const huminidy     = new Draw(
         [ canvas3, canvas3_pointer, dateStorage]
-        , [ 'huminidy_min', 'green' , 'line', 3, 'huminidy_min [%]', 1, [2, 2] ]
-        , [ 'huminidy_max', 'ping'  , 'line', 3, 'huminidy_max [%]', 1, [2, 2] ]
-        , [ 'huminidy_avg', 'white' , 'line', 2, 'huminidy_avg [%]', 1, [] ]
+        , [ 'huminidy_min', 'green' , 'line', 1, 'huminidy_min [%]', 1, [] ]
+        , [ 'huminidy_max', 'ping'  , 'line', 1, 'huminidy_max [%]', 1, [] ]
+        , [ 'huminidy_avg', 'white' , 'line', 1, 'huminidy_avg [%]', 1, [] ]
     ); 
 
     const rain     = new Draw(

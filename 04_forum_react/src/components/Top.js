@@ -13,7 +13,8 @@ const Top = () => {
                 <a className="menu" href="formular.php" target="_top"> Objednávka</a> | 
                 <a className="menu" href="ceny.php" target="_top"> Ceny</a> | 
                 <a className="menu" href="kontakt.php" target="_top"> Kontakt</a> | 
-                <a className="menu" href="frymburk.php" target="_top"> O Frymburku</a>
+                <a className="menu" href="frymburk.php" target="_top"> O Frymburku</a> | 
+                <a className="menu" href="kaliste.php" target="_top"> Kaliště</a>
             </div>
 
             <div className="mainpictures">

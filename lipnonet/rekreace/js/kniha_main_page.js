@@ -34,7 +34,13 @@ const loadForumShort = () => {
   xhr.onerror = function () {
     console.log( JSON.parse('{"status" : "ajax_failed"}') );
 }
-  xhr.send(JSON.stringify({'start' : 0, 'limit' : 5}));
+  xhr.send(JSON.stringify(
+    {
+    'start' : 0,
+    'limit' : 5,
+    'searchCriteria' : searchCriteriaForum
+    }
+  ));
 }
 
 loadForumShort();

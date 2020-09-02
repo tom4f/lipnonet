@@ -74,7 +74,7 @@ const loadPocasiAsync = async () => {
 
         const arrOfObj = arr.map( line => {
             
-            const arrFromLine = line.split(/ +/g);
+            const arrFromLine = line.trim().split(/ +/g);
             
             const [ myDate, Time, TempOut, TempHi, TempLow, HumOut, DewPt, WindSpeed, WindDir, WindRun, HiSpeed, HiDir, WindChill, HeatIndex, THWIndex, Bar, Rain, RainRate, HeatDD, CoolDD, TempIn, HumIn, DewIn, HeatIn, EMCIn, AirDensityIn, WindSamp, WindTx, ISSRecept, ArcInt
                   ] = arrFromLine;
@@ -113,9 +113,8 @@ const loadPocasiAsync = async () => {
 
            objFromLine.WindDir = 22.5 *dirObj[objFromLine.WindDir];
 
-            return objFromLine
+           return objFromLine
         })
-
 
 
         pdoResp = arrOfObj
@@ -146,9 +145,9 @@ const loadPocasiAsync = async () => {
 
     const wind     = new Draw(
         [ canvas3, canvas3_pointer, dateStorage]
-        , [ 'HiSpeed'  , 'lime' , 'area', 1, 'HiSpeed [m/s]'  , 1, [] ]
-        , [ 'WindDir'  , 'white', 'dot' , 6, 'WindDir [\xB0]' , 2, [] ]
-        , [ 'WindSpeed', 'blue' , 'area', 1, 'WindSpeed [m/s]', 1, [] ]
+        , [ 'HiSpeed'  , 'lime', 'area', 1, 'HiSpeed [m/s]'  , 1, [] ]
+        , [ 'WindDir'  , 'orange' , 'dot' , 5, 'WindDir [\xB0]' , 2, [] ]
+        , [ 'WindSpeed', 'blue', 'area', 1, 'WindSpeed [m/s]', 1, [] ]
         ); 
     // show graphs
     //THWIndex.graph();

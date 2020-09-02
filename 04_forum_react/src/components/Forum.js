@@ -6,8 +6,11 @@ const Forum = ( {entries} ) => {
       'Inzerce',
       'Seznamka',
       'K obsahu stránek',
-      'noname1',
-      'noname2',
+      'noname4',
+      'noname5',
+      'noname6',
+      'noname7',
+      'Kaliště 993m n.m.'
     ];
 
     return (

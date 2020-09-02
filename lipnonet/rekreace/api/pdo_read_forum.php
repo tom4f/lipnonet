@@ -13,6 +13,9 @@
   //
   if ( isset($data->limit)) $limit = $data->limit;
     else $limit = 999999;
+  //
+  if ( isset($data->searchCriteria)) $searchCriteria = $data->searchCriteria;
+  else $searchCriteria = '';
 
   include_once '../config/Database.php';
   include_once 'models/Post_forum.php';
@@ -25,7 +28,7 @@
   $post = new Post($db);
 
   // Fotogalery post query
-    $result = $post->read($start, $limit);
+  $result = $post->read($start, $limit, $searchCriteria );
 
 
   // Get row count

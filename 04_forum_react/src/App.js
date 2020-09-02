@@ -26,20 +26,24 @@ export default class App extends Component {
       paginateSize:               10,
       next:                       0,
       searchText:                 '',
-      selectedCategory:           '999999',
-      buttonText:                 '0'
+      // filter based on url
+      selectedCategory:           window.location.search === '?category=8' ? 8 : 999999,
+      buttonText:                 '0',
+      categoryFromUrl:            window.location.search === '?category=8' ? 8 : 999999
    };
 }
 
 // method called after component is rendered
 componentDidMount(){
     let allForum = [];
+    const searchCriteria = this.state.categoryFromUrl === 8 ? 'WHERE typ = 8' : 'WHERE (typ < 4) OR (typ = 8)';
     axios
     //.get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
     //.get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
-      .get(`${apiPath()}pdo_read_forum.php`, {
-      timeout: 5000
-    })
+      .post(`${apiPath()}pdo_read_forum.php`,
+        { 'searchCriteria' : searchCriteria },
+        { timeout: 5000 }
+      )
     .then(res => {
             // allForum = JSON.parse(res.data); --> for native xhr.onload 
             allForum = res.data;
@@ -57,7 +61,7 @@ componentDidMount(){
 render(){
 
 // descructing states, e.g. this.state.allEntrie -> allEntries
-const { allEntries, filteredEntriesBySearch, begin, postsPerPage, paginateSize, next, searchText, selectedCategory, buttonText } = this.state;
+const { allEntries, filteredEntriesBySearch, begin, postsPerPage, paginateSize, next, searchText, selectedCategory, buttonText, categoryFromUrl } = this.state;
 
 // Change page
 const paginate = (begin) => {
@@ -102,6 +106,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
               paginate={paginate}
               postsPerPage={postsPerPage}
               begin={begin}
+              categoryFromUrl = {categoryFromUrl }
             />
         </div>
         <p style={{clear : "both"}}></p>
@@ -113,6 +118,7 @@ const filteredEntriesCalculate = (searchText, selectedCategory) => {
             />
             <SelectForum
               filteredEntriesCalculate={filteredEntriesCalculate}
+              categoryFromUrl = {categoryFromUrl }
               searchText={searchText}
             />
         </div>

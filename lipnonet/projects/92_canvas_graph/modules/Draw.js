@@ -564,6 +564,7 @@ class Draw {
             this.ctx.beginPath();
             this.ctx.setLineDash(this.lineDash);
             this.ctx.strokeStyle = this.color;
+            this.ctx.fillStyle = this.color; 
             //this.ctx.lineWidth = this.lineWidth;
 
         // minutes step

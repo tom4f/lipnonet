@@ -10,7 +10,7 @@ class AddEntry extends Component {
             alert:          'off',
             jmeno :         '',
             email :         '',
-            typ :           '',
+            typ :           this.props.categoryFromUrl !== 8 ? '' : 8,
             text :          '',
             antispam :      new Date().getMilliseconds(),
             antispamForm :  ''
@@ -43,12 +43,12 @@ class AddEntry extends Component {
                         () => this.setState({alert: 'off'}),
                         5000            
                     );
-    
+                    const searchCriteria = this.props.categoryFromUrl === 8 ? 'WHERE typ = 8' : 'WHERE (typ < 4) OR (typ = 8)';
                     axios
                         //.get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-                         .get(`${apiPath()}pdo_read_forum.php`, {
-                        timeout: 5000
-                    })
+                         .post(`${apiPath()}pdo_read_forum.php`,
+                         { 'searchCriteria' : searchCriteria },
+                         { timeout: 5000 })
                     .then(res => {
                             /// allForum = JSON.parse(res.data); --> for native xhr.onload 
                             const allForum = res.data;
@@ -86,6 +86,13 @@ class AddEntry extends Component {
                     : this.state.alert === 'antispamNotOk'
                         ? <h1>Záznam se nepodařilo odeslat !!!</h1>
                         : null;
+        const optionList = this.props.categoryFromUrl !== 8 ? [
+            <option key='1' value="" >  --- vyber kategorii ---</option>,
+            <option key='2' value="0">Fórum</option>,
+            <option key='3' value="1">Inzerce</option>,
+            <option key='4' value="2">Seznamka</option>,
+            <option key='5' value="3">K obsahu stránek</option>,
+        ] : null;
         if (this.state.formVisible) {
             button = 
             <form onSubmit={this.mySubmitHandler} name="formular" encType="multipart/form-data">
@@ -94,11 +101,8 @@ class AddEntry extends Component {
                         <input onChange={this.myChangeHandler} type="text" name="jmeno" placeholder="Jméno" size="10" required />
                         <input onChange={this.myChangeHandler} type="text" name="email" placeholder="E-mail" size="15" />
                         <select onChange={this.myChangeHandler} required name="typ">
-                            <option value="" >  --- vyber kategorii ---</option>
-                            <option value="0">Fórum</option>
-                            <option value="1">Inzerce</option>
-                            <option value="2">Seznamka</option>
-                            <option value="3">K obsahu stránek</option>
+                            { optionList }
+                            <option value="8">Kaliště 993m n.m.</option>
                         </select>
                     </div>
                     <div>
@@ -126,7 +130,7 @@ class AddEntry extends Component {
         }
         return (
             <div>
-                {/* {formSummmary} */}
+                {/*formSummmary*/}
                 {button}
                 {alert}
             </div>

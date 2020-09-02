@@ -18,9 +18,9 @@
 
 
     // [0] Get Posts
-    public function read($start = 0, $limit = 999999) {
+    public function read($start = 0, $limit = 999999, $searchCriteria = 'WHERE (typ < 4) OR (typ = 8)') {
       // Create query
-      $query = 'SELECT * FROM ' . $this->table . ' WHERE typ < 4 order by datum DESC LIMIT ' . $start . ',' . $limit;
+      $query = "SELECT * FROM $this->table $searchCriteria order by datum DESC LIMIT $start , $limit";
       // Prepare statement
       $stmt = $this->conn->prepare($query);
       // Execute query
