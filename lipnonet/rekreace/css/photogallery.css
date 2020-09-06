@@ -1,212 +1,254 @@
 /* @import url('https://fonts.googleapis.com/css?family=Roboto'); */
-
 /* reset values for all elements */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-body{
-	font-family : Verdana, Helvetica, sans-serif;
-    line-height: 1.6;
-    background-color: black;
-    color: white;
+body {
+  font-family: Verdana, Helvetica, sans-serif;
+  line-height: 1.6;
+  background-color: black;
+  color: white;
 }
 
 /* <div class="container"> ===================================== */
 .container {
-    background: black;
-    margin: auto;
-    width: 100%;
-    height: auto;
-    overflow: hidden;
+  background: black;
+  margin: auto;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
 }
 
 /* <div class="menu"> =========================================== */
-
-
-
 /* <div class="imgs"> ============================================= */
 .imgs {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
-.imgs > div{
-    width: 12.5%;
-    margin: 1px;
-    height: 75px;
-    background-size: cover;
-
+.imgs > div {
+  width: 12.5%;
+  margin: 1px;
+  height: 75px;
+  background-size: cover;
 }
 
 /* <div class="main-img"> ========================================= */
 .main-img {
-    top: 0px;
-    height: 100vh;
-    width: auto;
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-position: top;
-    justify-content: center;
-    position: relative;
+  top: 0px;
+  height: 100vh;
+  width: auto;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-position: top;
+  justify-content: center;
+  position: relative;
 }
 
-.photoInfo{
-    width: fit-content;
-    position: absolute;
-    padding: 0;
-    bottom: 0px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 2vw;
-    background-color: rgba(0, 0, 0, 0.3);
-    text-align: center;
+.photoInfo {
+  width: fit-content;
+  position: absolute;
+  padding: 0;
+  bottom: 0px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2vw;
+  background-color: rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
-.photoInfo:hover{
-    background-color: transparent;
-    color: transparent;
+.photoInfo:hover {
+  background-color: transparent;
+  color: transparent;
 }
 
-.homepage{
-    padding: 10px;
-    position: absolute;
-    border: 2px none #fff;
-    background-color: transparent;
-    border-radius: 2%;
-    outline: none;
-    color: white;
-    font-size: 1.5vw;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    top: 2%;
- 
+.homepage {
+  padding: 10px;
+  position: absolute;
+  border: 2px none #fff;
+  background-color: transparent;
+  border-radius: 2%;
+  outline: none;
+  color: white;
+  font-size: 1.5vw;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 2%;
 }
 
-.prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides, .textOn, .textOff{
-    padding: 10px;
-    position: absolute;
-    border: none;
-    /* border: 2px solid #fff; */
-	background-color:rgba(0, 0, 0, 0.2);
-
-    outline: none;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 3vw;
-    top: 1%;
+.prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides, .textOn, .textOff, .category {
+  padding: 10px;
+  position: absolute;
+  border: none;
+  /* border: 2px solid #fff; */
+  background-color: rgba(0, 0, 0, 0.2);
+  outline: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 3vw;
+  top: 1%;
 }
 
-.prevPhotoBig, .nextPhotoBig{
-    padding: 10px;
-    position: absolute;
-    border: none;
-    /* border: 2px solid #fff; */
-	background-color:transparent;
-
-    outline: none;
-    color: transparent;
-    font-size: 3vw;
-    top: 20%;
-    width: 30%;
-    height: 40%;
+.category {
+  left: 45%;
 }
 
-.prevPhotoBig{
-    left: 1%;
+.prevPhotoBig, .nextPhotoBig {
+  padding: 10px;
+  position: absolute;
+  border: none;
+  /* border: 2px solid #fff; */
+  background-color: transparent;
+  outline: none;
+  color: transparent;
+  font-size: 3vw;
+  top: 20%;
+  width: 30%;
+  height: 40%;
 }
 
-.nextPhotoBig{
-    right: 1%;
+.prevPhotoBig {
+  left: 1%;
 }
 
-.nextPhotoBig:hover, .prevPhotoBig:hover
-{
-	background-color:transparent;
-    color: white;
-    cursor: pointer;
+.nextPhotoBig {
+  right: 1%;
 }
 
-.textOn, .textOff{
-    right: 25%;
+.nextPhotoBig:hover, .prevPhotoBig:hover {
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
 }
 
-.next8{
-    right: 13%;
+.textOn, .textOff {
+  right: 25%;
 }
 
-.prev8{
-    left: 13%
+.next8 {
+  right: 13%;
 }
 
-.play, .stop{
-    left: 25%;
+.prev8 {
+  left: 13%;
 }
 
-.slides{
-    right: 25%;
+.play, .stop {
+  left: 25%;
 }
 
-.prevPhoto{
-    left: 1%;
+.slides {
+  right: 25%;
 }
 
-.nextPhoto{
-    right: 1%;
+.prevPhoto {
+  left: 1%;
 }
 
-.homepage a{
-    color: white;
+.nextPhoto {
+  right: 1%;
+}
+
+.homepage a {
+  color: white;
 }
 
 .nextPhoto:hover, .prevPhoto:hover,
 .next8:hover, .prev8:hover,
 .play:hover, .stop:hover,
 .slides:hover,
-.textOn:hover, .textOff:hover{
-    background: white;
-    color: black;
-    cursor: pointer;
+.textOn:hover, .textOff:hover,
+.category:hover {
+  background: white;
+  color: black;
+  cursor: pointer;
+}
+
+.categoryList {
+  position: absolute;
+  top: 5%;
+  left: 45%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.categoryList fieldset {
+  margin: 3px;
+  padding: 3px;
+  font-size: 1rem;
+  border: 2px solid green;
+  border-radius: 8px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.categoryList fieldset legend {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.categoryList fieldset section {
+  display: flex;
+  width: auto;
+}
+
+.categoryList fieldset section header {
+  text-align: right;
+  padding-right: 3px;
+  border-right: 1px dotted #00b300;
+}
+
+.categoryList fieldset section header .oneCategory {
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.categoryList fieldset section header .oneCategory:hover {
+  border: 1px solid lime;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.categoryList fieldset section article {
+  text-align: left;
+  padding-left: 3px;
 }
 
 /* Fade in animation */
 /* film mode property */
 @keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 .fade-in {
-    opacity: 0;
-    animation: fadeIn 0.5s ease-in 1 forwards;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in 1 forwards;
 }
-
 
 @media (max-width: 400px) {
-    .imgs > div{
-        height: 50px;
-    }
-    .photoInfo{
-        font-size: 1.5vh;
-    }
+  .imgs > div {
+    height: 50px;
+  }
+  .photoInfo {
+    font-size: 1.5vh;
+  }
 }
 
-@media (min-width: 1000px){
-    .prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides, .textOn, .textOff{
-        font-size: 30px;
-    }
-    .photoInfo{
-        font-size: 20px;
-    }
-
+@media (min-width: 1000px) {
+  .prevPhoto, .nextPhoto, .next8, .prev8, .play, .stop, .slides, .textOn, .textOff {
+    font-size: 30px;
+  }
+  .photoInfo {
+    font-size: 20px;
+  }
 }
-
-
-  

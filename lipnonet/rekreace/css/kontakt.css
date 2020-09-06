@@ -4,14 +4,9 @@
 }
 
 .address_and_formular .formular {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
   color: white;
   margin: auto;
@@ -23,19 +18,10 @@
 }
 
 .address_and_formular .formular .adresa {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-flow: row wrap;
-          flex-flow: row wrap;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.7);
   width: 90%;
   border-radius: 5px;
@@ -99,7 +85,6 @@
   background-color: transparent;
   border: none;
   margin: 2px 5px;
-  -webkit-transition: none;
   transition: none;
   color: white;
   letter-spacing: 0.1rem;
@@ -113,20 +98,6 @@
 
 .address_and_formular .formular .antispam_booking {
   width: 40%;
-}
-
-.address_and_formular .formular ::-webkit-input-placeholder {
-  /* Edge */
-  color: white;
-}
-
-.address_and_formular .formular :-ms-input-placeholder {
-  /* Internet Explorer */
-  color: white;
-}
-
-.address_and_formular .formular ::-ms-input-placeholder {
-  color: white;
 }
 
 .address_and_formular .formular ::placeholder {
@@ -167,12 +138,8 @@
   padding: 10px;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 

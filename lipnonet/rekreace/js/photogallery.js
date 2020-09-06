@@ -1,5 +1,10 @@
 "use strict";
 
+// get searchCriteria from url
+const urlValue = window.location.search.split('?searchCriteria=')[1];
+// unescape = remove ASCI characters like space %20
+urlValue ? searchCriteria = unescape( urlValue || 'WHERE typ < 10' ).replace(/'/g, "") : null;
+
 // Class UI - all design 
 class UI {
 
@@ -15,7 +20,7 @@ class UI {
       image.onload = () => {
         const height  =  image.height * bigImgBlock.clientWidth /  image.width + 'px';
         //bigImgInfo.style.bottom = '0px';  
-        if(fotoGalleryMainPage === 1 ) {
+        if(isMainPage === 1 ) {
           bigImgBlock.style.height = height;
           } else {
             //bigImgInfo.style.top = `${height}px`;
@@ -43,10 +48,10 @@ class UI {
         `;
   
       // fix font size for index.php
-      if (fotoGalleryMainPage === 1) {  
+      if (isMainPage === 1) {  
         bigImgInfo.style.fontSize = "1rem";
       }
-      if (fotoGalleryMainPage === 2) {
+      if (isMainPage === 2) {
       const formNames = (formName, value) => {
         document.getElementById('formular').elements.namedItem(formName).value = value;
       }
@@ -147,12 +152,9 @@ class UI {
 
 
 
-console.log('fotoGalleryMainPage : ' + fotoGalleryMainPage);
-if (typeof fotoGalleryMainPage === 'undefined') {
-    // why var instead let ???   
-  var fotoGalleryMainPage = 0;
-}
-console.log('fotoGalleryMainPage : ' + fotoGalleryMainPage);
+const isMainPage = typeof fotoGalleryMainPage === 'undefined' ? 0 : fotoGalleryMainPage;
+console.log('isMainPage : ' + isMainPage);
+
 
 let EightPhoto = [];
 let AllPhoto = [];
@@ -175,7 +177,7 @@ const loadPicturesfromAllPhoto = (limit, offset, event) => {
 
 const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
     var xhr = new XMLHttpRequest();
-  //xhr.open('GET', `api/ajax_receive_data_universal.php`, true);
+    //xhr.open('POST', `http://localhost/lipnonet/rekreace/api/pdo_read.php`, true);
     xhr.open('POST', `api/pdo_read.php`, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = function(){
@@ -221,6 +223,52 @@ const textOff = (event) => {
   bigImgInfo.style.display = "none";
 }
 
+const showCategory = (event) => {
+  console.log('category !');
+  const categoryListPlace = document.querySelector('.categoryList');
+  categoryListPlace.style.display = 'block'
+
+  const categoryList = document.querySelector('.categoryList');
+  categoryList.innerHTML = `
+      <fieldset>
+          <legend>Vyber kategorii</legend>
+              <section>    
+                  <header>
+                    <p class="oneCategory" id="0">Ubytování</p>
+                    <p class="oneCategory" id="1">Lipenská přehrada</p>
+                    <p class="oneCategory" id="2">Příroda</p>
+                    <p class="oneCategory" id="3">Obce</p>
+                    <p class="oneCategory" id="4">Historie</p>
+                    <p class="oneCategory" id="5">Sport</p>
+                    <p class="oneCategory" id="6">Ostatní</p>
+                    <p class="oneCategory" id="10">Kaliště</p>
+                  </header>
+                  <article>
+                      <p></p>
+                      <p></p>
+                      <p></p>
+                      <p></p>
+                      <p></p>
+                      <p></p>
+                      <p></p>
+                      <p></p>
+                  </article>
+              </section>
+      </fieldset>
+  `;
+
+  const allCategory = document.querySelectorAll('.oneCategory');
+  allCategory.forEach( value => value.addEventListener('click', () => {
+    console.log(value.id);
+    searchCriteria = `WHERE typ = ${+value.id}`;
+    loadPicturesfromMySqlStartPage (limit, offset, event);
+  }  ) )
+
+  categoryListPlace.addEventListener('mouseleave', () => categoryListPlace.style.display = 'none');
+
+
+}
+
 // main JS script started when DOM loaded
 document                            .addEventListener('DOMContentLoaded',  (event) => loadPicturesfromMySqlStartPage (limit, offset, event));
 
@@ -234,11 +282,11 @@ document.querySelector('.prevPhoto').addEventListener('click', (event) => offset
 //
 document.querySelector('.nextPhotoBig').addEventListener('click', (event) => loadPicturesfromAllPhoto(1, offset+=1, event));
 document.querySelector('.prevPhotoBig').addEventListener('click', (event) => offset > 0 ? loadPicturesfromAllPhoto(1, offset-=1, event) : console.log(`offset: ${offset}`));  
-
 //
 document.querySelector('.textOn')   .addEventListener('click', (event) => textOn(event));
 document.querySelector('.textOff')  .addEventListener('click', (event) => textOff(event));
-
+//
+document.querySelector('.category') .addEventListener('mouseover', (event) => showCategory(event));
 
 
 // button PLAY dummy click from JavaScript - start slideShow at start
