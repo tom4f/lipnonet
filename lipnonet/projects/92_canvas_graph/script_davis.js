@@ -126,7 +126,7 @@ const loadPocasiAsync = async () => {
     const rain     = new Draw(
         [ canvas4, canvas4_pointer, dateStorage]
         , [ 'rain_rate_max', 'orange', 'area', 5, 'rain_rate_max [mm/h]', 1, [] ]
-        , [ 'rain'         , 'white' , 'area', 5, 'rain [mm/h]'         , 2, [] ]
+        , [ 'rain'         , 'white' , 'area', 5, 'rain [mm]'           , 2, [] ]
     ); 
    
     // show graphs

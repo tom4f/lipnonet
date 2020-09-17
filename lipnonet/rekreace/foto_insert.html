@@ -35,9 +35,9 @@
             <button class="play" id="autoEventButton">       <i class="fas fa-play-circle"></i></button>
             <button class="stop">       <i class="fas fa-stop-circle"></i></button>
             <button class="next8">      <i class="fas fa-angle-double-right"></i></button>
-            <!--<a href="index.php">
-                <button class="slides"> <i class="fas fa-home"></i></button>
-            </a>-->
+            <button class="category">      <i class="fas fa-align-justify"></i></button>
+
+            <section class="categoryList"></section>
             <span id="imgLocation"></span>		<!-- slideshow end -->
 
 		<div id="logindiv" class="login">
@@ -66,7 +66,8 @@
 							<option value="5">Sport</option>
 							<option value="6">Ostatní</option>
 							<option value="7">Všechny</option>
-							<option value="10">Kaliště</option>
+							<option value="10">Kaliště - kniha</option>
+							<option value="11">Kaliště</option>
 						</SELECT>
 				<br><b>Datum focení fotografie!!!</b>
 				<br><INPUT id="date" NAME=date VALUE="" size="10" required>
@@ -88,6 +89,18 @@
 		var fotoGalleryMainPage = 2;
 		var fotoGalleryOwner = '_ubytovani';
 		var searchCriteria = '';
+		const categoryName = {
+            0  : 'Ubytování',
+            1  : 'Lipenská přehrada',
+            2  : 'Příroda',
+            3  : 'Obce',
+            4  : 'Historie',
+            5  : 'Sport',
+            6  : 'Ostatní',
+            10 : 'Kaliště - kniha',
+            11 : 'Kaliště',
+            99999 : 'Všechny'
+        }
 	</script>
 <script src="js/photogallery.js"></script>
 <script src="js/main_foto_insert.js"></script>

@@ -1,15 +1,10 @@
 "use strict";
 
-// get searchCriteria from url
-const urlValue = window.location.search.split('?searchCriteria=')[1];
-// unescape = remove ASCI characters like space %20
-urlValue ? searchCriteria = unescape( urlValue || 'WHERE typ < 10' ).replace(/'/g, "") : null;
-
 // Class UI - all design 
 class UI {
 
     static loadImgBig(bigImgUrl) {
-
+      const bigImgInfo  =   document.querySelector('.photoInfo');
 
       const bigImgBlock =   document.querySelector('.main-img');
       
@@ -36,7 +31,7 @@ class UI {
         .split(`fotogalerie${fotoGalleryOwner}/`)[1]
           .replace(/b.jpg/g,'');
 
-      const objOneFoto = EightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
+      const objOneFoto = eightPhoto.find(onePhotoObject => onePhotoObject.id === currentPhotoId);
 
        bigImgInfo.innerHTML = `
         <b>${objOneFoto.id}</b>
@@ -78,45 +73,41 @@ class UI {
 
     static loadImgList(limit, offset, event) {
 
-      EightPhoto = AllPhoto.slice(offset, offset + limit);
-      console.log(`offset = ${offset}, limit = ${limit}`);
+      eightPhoto = filteredPhoto.slice(offset, offset + limit);
 
-      if (event !=0) console.log(`event.target.classList: ${event.target.classList}`);
+      const photoUrlPath   = `fotogalerie${fotoGalleryOwner}/`;
+      const eightImgsPlace =  document.querySelector('#imgsLocation');
+      const eightImgsBlock =  document.querySelector('.imgs');
+      const eightImgsAll   =  document.querySelectorAll('.eightImgsAll');
 
-        const photoUrlPath   = `fotogalerie${fotoGalleryOwner}/`;
-        const eightImgsPlace =  document.querySelector('#imgsLocation');
-        const eightImgsBlock =  document.querySelector('.imgs');
-        const eightImgsAll   =  document.querySelectorAll('.eightImgsAll');
+      let bigImgUrl = "";
+      
+      // hide 8 photos for some clicks
+        if (
+            event.target.classList == 'fas fa-arrow-right'  || event.target.classList == 'fas fa-arrow-left' ||
+            event.target.classList == 'nextPhoto'           || event.target.classList == 'prevPhoto' ||
+            event.target.classList == 'nextPhotoBig'        || event.target.classList == 'prevPhotoBig' ||           
+            event.target.classList == 'fas fa-play-circle'  || event.target.classList == 'play'
+            ) {
+          showEightPhoto = false;
+        } else {
+          showEightPhoto = true;
+        }
 
-        let bigImgUrl = "";
-        
-        // hide 8 photos for some clicks
-        if (event !=0) {
-          if (
-              event.target.classList == 'fas fa-arrow-right'  || event.target.classList == 'fas fa-arrow-left' ||
-              event.target.classList == 'nextPhoto'           || event.target.classList == 'prevPhoto' ||
-              event.target.classList == 'nextPhotoBig'        || event.target.classList == 'prevPhotoBig' ||           
-              event.target.classList == 'fas fa-play-circle'  || event.target.classList == 'play'
-              ) {
-            showEightPhoto = 0;
-          } else {
-            showEightPhoto = 1;
-          }
-        } 
 
         // remove 8 small photo
         // if (eightImgsAll.length > 7)  eightImgsAll.forEach(img => img.remove());
         eightImgsAll.forEach(img => img.remove());
         
         // create 8 small photo 
-        EightPhoto
+        eightPhoto
           .forEach(onePhoto => {
               const div = document.createElement('div');
               div.style.backgroundImage = "url('" + photoUrlPath + onePhoto.id + ".jpg')";
               div.classList.add('eightImgsAll');
               div.innerHTML = onePhoto.id;
               if (bigImgUrl == "") bigImgUrl = `${photoUrlPath}${onePhoto.id}b.jpg`;
-              if (showEightPhoto == 1) {eightImgsBlock.insertBefore(div, eightImgsPlace);}
+              if (showEightPhoto === true) {eightImgsBlock.insertBefore(div, eightImgsPlace);}
             })
     
       // load big img
@@ -147,33 +138,38 @@ class UI {
         const eightImgsAll =   document.querySelectorAll('.eightImgsAll');
         eightImgsAll.forEach(img => img.addEventListener('click', (event) => UI.imgClick(event) ));
     }
+
+
+    static textOn() {
+      const bigImgInfo  =   document.querySelector('.photoInfo');
+      document.querySelector('.textOn').style.display = "none";
+      document.querySelector('.textOff').style.display = "block";
+      bigImgInfo.style.display = "block";
+    }
+    
+    static textOff() {
+      const bigImgInfo  =   document.querySelector('.photoInfo');
+      document.querySelector('.textOn').style.display = "block";
+      document.querySelector('.textOff').style.display = "none";
+      bigImgInfo.style.display = "none";
+  }
+    static loadPicturesfromallPhoto(limit, offset, event){
+      // show 8 small imgs
+      UI.loadImgList(limit, offset, event);
+      // add eventListeners for new 8 imgs
+      UI.slideShow();
+    }
+
 }
-// end of UI class
+// end of UI clas
 
 
+// geearchCriteria from url
+const urlValue = window.location.search.split('?searchCriteria=')[1];
+// unescape = remove ASCI characters like space %20
+urlValue ? searchCriteria = unescape( urlValue || 'WHERE typ < 10' ).replace(/'/g, "") : null;
 
 const isMainPage = typeof fotoGalleryMainPage === 'undefined' ? 0 : fotoGalleryMainPage;
-console.log('isMainPage : ' + isMainPage);
-
-
-let EightPhoto = [];
-let AllPhoto = [];
-let limit = 8;
-let offset = 0;
-let timer;
-let showEightPhoto = 1;
-let infoText = 1;
-const bigImgInfo  =   document.querySelector('.photoInfo');
-document.querySelector('.textOn').style.display = "none";
-
-
-
-const loadPicturesfromAllPhoto = (limit, offset, event) => {
-    // show 8 small imgs
-    UI.loadImgList(limit, offset, event);
-    // add eventListeners for new 8 imgs
-    UI.slideShow();
-}
 
 const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
     var xhr = new XMLHttpRequest();
@@ -182,8 +178,8 @@ const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = function(){
       if (this.readyState == 4 && this.status == 200) {
-        AllPhoto = JSON.parse(this.responseText);
-        loadPicturesfromAllPhoto(limit, offset, event);
+        filteredPhoto = allPhoto = JSON.parse(this.responseText);
+        UI.loadPicturesfromallPhoto(limit, offset, event);
       }
     }
     xhr.send(JSON.stringify({
@@ -193,8 +189,12 @@ const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
 }
 
 const startPresentation = (event) => {
-  console.log('autoEvent')
-  const Presentation = () => loadPicturesfromAllPhoto(1, (Math.floor(Math.random() * AllPhoto.length) + 1), event);
+  console.log('autoEvent');
+  offset = 0;
+  const Presentation = () => {
+    const randomNumber = Math.floor(Math.random() * filteredPhoto.length);
+    UI.loadPicturesfromallPhoto(1, randomNumber, event);
+  }
   timer = setInterval(Presentation, 5000);
   document.querySelector('.play').style.display = "none";
   document.querySelector('.stop').style.display = "block";
@@ -204,90 +204,110 @@ const stopPresentation = (event) => {
   clearInterval(timer);
   document.querySelector('.play').style.display = "block";
   document.querySelector('.stop').style.display = "none";
-  console.log(infoText);
 }
 
-const textOn = (event) => {
-  infoText = 1;
-  document.querySelector('.textOn').style.display = "none";
-  document.querySelector('.textOff').style.display = "block";
-  console.log(infoText);
-  bigImgInfo.style.display = "block";
-}
 
-const textOff = (event) => {
-  infoText = -1;
-  document.querySelector('.textOn').style.display = "block";
-  document.querySelector('.textOff').style.display = "none";
-  console.log(infoText);
-  bigImgInfo.style.display = "none";
+
+const createCategoryList = () =>{
+
+  const allPhotoSum = allPhoto.length;
+
+  // calculate number of photos per category
+  const reducer = (sumPerCat, oneEntry) => {
+    if (oneEntry.typ in sumPerCat) {
+        sumPerCat[oneEntry.typ]++;
+    } else {
+        sumPerCat[oneEntry.typ] = 1;
+    }
+    return sumPerCat
+  }
+
+  const summary = { 
+    99999 : allPhotoSum,
+    ...allPhoto.reduce(reducer, {})
+  }
+
+  dynamicSelect = {
+    header : '',
+    article : ''
+  };
+
+  // using `for...of` loop
+  // for (const element of array1) {
+  for (const [key, value] of Object.entries(summary) ) {
+    dynamicSelect.header  += `<p class="oneCategory" id="${key}">${categoryName[key]}</p>`;
+    dynamicSelect.article += `<p class="oneCategory" id="${key}">${value}</p>`;
+  }
 }
 
 const showCategory = (event) => {
-  console.log('category !');
-  const categoryListPlace = document.querySelector('.categoryList');
-  categoryListPlace.style.display = 'block'
+
+  createCategoryList();
 
   const categoryList = document.querySelector('.categoryList');
+  
+  categoryList.style.display = 'block';
   categoryList.innerHTML = `
       <fieldset>
-          <legend>Vyber kategorii</legend>
+          <legend>Kategorie / počet fotek</legend>
               <section>    
                   <header>
-                    <p class="oneCategory" id="0">Ubytování</p>
-                    <p class="oneCategory" id="1">Lipenská přehrada</p>
-                    <p class="oneCategory" id="2">Příroda</p>
-                    <p class="oneCategory" id="3">Obce</p>
-                    <p class="oneCategory" id="4">Historie</p>
-                    <p class="oneCategory" id="5">Sport</p>
-                    <p class="oneCategory" id="6">Ostatní</p>
-                    <p class="oneCategory" id="10">Kaliště</p>
+                    ${dynamicSelect.header}
                   </header>
                   <article>
-                      <p></p>
-                      <p></p>
-                      <p></p>
-                      <p></p>
-                      <p></p>
-                      <p></p>
-                      <p></p>
-                      <p></p>
+                    ${dynamicSelect.article}
                   </article>
               </section>
       </fieldset>
   `;
 
   const allCategory = document.querySelectorAll('.oneCategory');
+
   allCategory.forEach( value => value.addEventListener('click', () => {
-    console.log(value.id);
-    searchCriteria = `WHERE typ = ${+value.id}`;
-    loadPicturesfromMySqlStartPage (limit, offset, event);
-  }  ) )
+    filteredPhoto = value.id === '99999'
+      ? allPhoto
+      : allPhoto.filter( one => one.typ === value.id );
+    UI.loadPicturesfromallPhoto(limit, offset, event);
+  }))
 
-  categoryListPlace.addEventListener('mouseleave', () => categoryListPlace.style.display = 'none');
-
-
+  categoryList.addEventListener('mouseleave', () => categoryList.style.display = 'none');
 }
+
+
+
+
+let eightPhoto = [];
+let allPhoto = [];
+let filteredPhoto = [];
+let limit = 8;
+let offset = 0;
+let timer;
+let showEightPhoto = true;
+let dynamicSelect = {};
+
+document.querySelector('.textOn').style.display = "none";
+document.querySelector('.stop')  .style.display = "none";
+
 
 // main JS script started when DOM loaded
 document                            .addEventListener('DOMContentLoaded',  (event) => loadPicturesfromMySqlStartPage (limit, offset, event));
-
-document.querySelector('.stop')     .style.display = "none";
-document.querySelector('.play')     .addEventListener('click', (event) => startPresentation(event));
+//
 document.querySelector('.stop')     .addEventListener('click', (event) => stopPresentation(event));
-document.querySelector('.next8')    .addEventListener('click', (event) => loadPicturesfromAllPhoto(limit, offset+=limit, event));
-document.querySelector('.prev8')    .addEventListener('click', (event) => offset > 7 ? loadPicturesfromAllPhoto(limit, offset-=limit, event) : console.log(`offset: ${offset}`));
-document.querySelector('.nextPhoto').addEventListener('click', (event) => loadPicturesfromAllPhoto(1, offset+=1, event));
-document.querySelector('.prevPhoto').addEventListener('click', (event) => offset > 0 ? loadPicturesfromAllPhoto(1, offset-=1, event) : console.log(`offset: ${offset}`));  
+document.querySelector('.play')     .addEventListener('click', (event) => startPresentation(event));
 //
-document.querySelector('.nextPhotoBig').addEventListener('click', (event) => loadPicturesfromAllPhoto(1, offset+=1, event));
-document.querySelector('.prevPhotoBig').addEventListener('click', (event) => offset > 0 ? loadPicturesfromAllPhoto(1, offset-=1, event) : console.log(`offset: ${offset}`));  
+document.querySelector('.next8')    .addEventListener('click', (event) => UI.loadPicturesfromallPhoto(limit, offset+=limit, event));
+document.querySelector('.prev8')    .addEventListener('click', (event) => offset > 7 ? UI.loadPicturesfromallPhoto(limit, offset-=limit, event) : console.log(`offset: ${offset}`));
 //
-document.querySelector('.textOn')   .addEventListener('click', (event) => textOn(event));
-document.querySelector('.textOff')  .addEventListener('click', (event) => textOff(event));
+document.querySelector('.nextPhoto').addEventListener('click', (event) => UI.loadPicturesfromallPhoto(1, offset+=1, event));
+document.querySelector('.prevPhoto').addEventListener('click', (event) => offset > 0 ? UI.loadPicturesfromallPhoto(1, offset-=1, event) : console.log(`offset: ${offset}`));  
+//
+document.querySelector('.nextPhotoBig').addEventListener('click', (event) => UI.loadPicturesfromallPhoto(1, offset+=1, event));
+document.querySelector('.prevPhotoBig').addEventListener('click', (event) => offset > 0 ? UI.loadPicturesfromallPhoto(1, offset-=1, event) : console.log(`offset: ${offset}`));  
+//
+document.querySelector('.textOn')   .addEventListener('click', () => UI.textOn());
+document.querySelector('.textOff')  .addEventListener('click', () => UI.textOff());
 //
 document.querySelector('.category') .addEventListener('mouseover', (event) => showCategory(event));
-
 
 // button PLAY dummy click from JavaScript - start slideShow at start
 //let autoEvent = new CustomEvent('click');

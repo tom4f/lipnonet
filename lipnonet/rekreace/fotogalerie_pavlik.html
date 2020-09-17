@@ -34,15 +34,23 @@
             <button class="play" id="autoEventButton">       <i class="fas fa-play-circle"></i></button>
             <button class="stop">       <i class="fas fa-stop-circle"></i></button>
             <button class="next8">      <i class="fas fa-angle-double-right"></i></button>
-            <!--<a href="index.php">
-                <button class="slides"> <i class="fas fa-home"></i></button>
-            </a>-->
+            <button class="category">      <i class="fas fa-align-justify"></i></button>
+
+            <section class="categoryList"></section>
             <span id="imgLocation"></span>
         </div>
     </div>
     <script>
         var fotoGalleryOwner = '_pavlik';
         var searchCriteria = 'WHERE typ < 10';
+        const categoryName = {
+            0  : 'Výlety',
+            1  : 'Výrobky',
+            2  : 'Sport',
+            3  : 'E-sporty',
+            4  : 'Ostatní',
+            99999 : 'Všechny'
+        }
 	</script>
     <script src="js/photogallery.js"></script>
 </body>
