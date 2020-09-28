@@ -1,5 +1,7 @@
 "use strict"
 
+import Draw from './modules/Draw.js';
+
 // data from DB
 let pdoResp = [];
 // data from DB should be downloaded only once
@@ -87,14 +89,14 @@ const loadPocasiAsync = async () => {
     // Instantiate Object
 
     const hladina     = new Draw(
-        [ canvas, canvas_pointer, dateStorage ]
+        [ canvas, canvas_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi ]
         , [ 'pritok' , 'lime' , 'line', 2, 'pritok [m\xB3/s]', 1, [] ]
         , [ 'hladina', 'red', 'line', 2, 'hladina [m n.m.]', 2, [] ]
         , [ 'odtok'  , 'white' , 'line', 2, 'odtok [m\xB3/s]' , 1, [] ]
     ); 
 
     const teplota     = new Draw(
-        [ canvas1, canvas1_pointer, dateStorage ]
+        [ canvas1, canvas1_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi ]
         , [ 'voda'  , 'white', 'line', 2, 'voda [\xB0C]'  , 1, [] ]
         , [ 'vzduch', 'lime' , 'line', 2, 'vzduch ráno [\xB0C]', 1, []  ]
     ); 

@@ -90,3 +90,36 @@ nav {
             
 
 }
+
+/* Canvas graph */
+
+#all-graphs {
+    text-align: left;
+    max-width: 724px;
+    .one-graph {
+        position: relative;
+        left: 0px;
+        height: 300px;
+
+        .canvas {
+          background: black;
+          position: absolute;
+          z-index: 1;
+        }
+
+        .canvas_pointer {
+          background: transparent;
+          position: absolute;
+          z-index: 2;
+        }
+    }
+}
+
+.pointerOn {
+  cursor: crosshair;
+}
+
+.pointerOnGrab {
+  cursor: pointer;
+}
+

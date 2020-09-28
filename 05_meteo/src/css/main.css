@@ -1,6 +1,5 @@
 * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -62,17 +61,10 @@ body {
 }
 
 .happyMeteo {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .happyMeteo fieldset {
@@ -84,8 +76,6 @@ body {
 }
 
 .happyMeteo fieldset section {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   width: auto;
 }
@@ -163,13 +153,9 @@ body {
   height: auto;
   background-color: rgba(0, 0, 0, 0.4);
   left: 50%;
-  -webkit-transition: bottom 2s, color 2s, -webkit-transform 2s;
-  transition: bottom 2s, color 2s, -webkit-transform 2s;
   transition: bottom 2s, color 2s, transform 2s;
-  transition: bottom 2s, color 2s, transform 2s, -webkit-transform 2s;
   bottom: 0%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   color: white;
   white-space: nowrap;
   border-radius: 8px;
@@ -189,8 +175,7 @@ body {
 .meteo_box_transition_out {
   bottom: 100px;
   color: transparent;
-  -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 table.page {

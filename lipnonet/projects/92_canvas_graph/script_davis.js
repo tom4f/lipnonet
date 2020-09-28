@@ -1,5 +1,7 @@
 "use strict"
 
+import Draw from './modules/Draw.js';
+
 // data from DB
 let pdoResp = [];
 // data from DB should be downloaded only once
@@ -27,16 +29,16 @@ const canvas4_pointer = document.getElementById('canvas4_pointer');
 
 // set canvas size
 
-const canvasSize = ( can, can_pointer, size ) => {
-    const clientWidth  = document.documentElement.clientWidth;
-    const clientHeight = document.documentElement.clientHeight;
-    can.width  = clientWidth;
-    can.height = clientHeight / size;
-    can_pointer.width  = clientWidth;
-    can_pointer.height = clientHeight / size;
-}
-
 const allCanvasSize = () => {
+    const canvasSize = ( can, can_pointer, size ) => {
+        const clientWidth  = document.documentElement.clientWidth;
+        const clientHeight = document.documentElement.clientHeight;
+        can.width  = clientWidth;
+        can.height = clientHeight / size;
+        can_pointer.width  = clientWidth;
+        can_pointer.height = clientHeight / size;
+    }
+
     canvasSize(canvas , canvas_pointer , graphHeight);
     canvasSize(canvas1, canvas1_pointer, graphHeight);
     canvasSize(canvas2, canvas2_pointer, graphHeight);
@@ -97,34 +99,34 @@ const loadPocasiAsync = async () => {
     // Instantiate Object
        //
     const temp     = new Draw(
-        [ canvas, canvas_pointer, dateStorage ]
+        [ canvas, canvas_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi ]
         , [ 'temp_low' , 'lime'  , 'line', 1, 'temp_low [\xB0C]' , 1, []  ]
         , [ 'temp_high', 'yellow', 'line', 1, 'temp_high [\xB0C]', 1, [] ]
         , [ 'temp_mean', 'white' , 'line', 1, 'temp_mean [\xB0C]', 1, []  ]
     ); 
 
     const wind     = new Draw(
-        [ canvas1, canvas1_pointer, dateStorage]
+        [ canvas1, canvas1_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi]
         , [ 'wind_speed_high', 'red'  , 'area', 5, 'wind_speed_high [m/s]', 1, [] ]
         , [ 'wind_speed_avg' , 'white', 'area', 5, 'wind_speed_avg [m/s]' , 1, [] ]
     ); 
 
     const bar     = new Draw(
-        [ canvas2, canvas2_pointer, dateStorage]
+        [ canvas2, canvas2_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi]
         , [ 'bar_min', 'green', 'line', 1, 'bar_min [hPa]', 1, [] ]
         , [ 'bar_max', 'red'  , 'line', 1, 'bar_max [hPa]', 1, [] ]
         , [ 'bar_avg', 'white', 'line', 1, 'bar_avg [hPa]', 1, [] ]
     ); 
 
     const huminidy     = new Draw(
-        [ canvas3, canvas3_pointer, dateStorage]
+        [ canvas3, canvas3_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi]
         , [ 'huminidy_min', 'green' , 'line', 1, 'huminidy_min [%]', 1, [] ]
         , [ 'huminidy_max', 'ping'  , 'line', 1, 'huminidy_max [%]', 1, [] ]
         , [ 'huminidy_avg', 'white' , 'line', 1, 'huminidy_avg [%]', 1, [] ]
     ); 
 
     const rain     = new Draw(
-        [ canvas4, canvas4_pointer, dateStorage]
+        [ canvas4, canvas4_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi]
         , [ 'rain_rate_max', 'orange', 'area', 5, 'rain_rate_max [mm/h]', 1, [] ]
         , [ 'rain'         , 'white' , 'area', 5, 'rain [mm]'           , 2, [] ]
     ); 

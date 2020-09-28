@@ -108,7 +108,6 @@ export const ShowDayTable = () => {
 
     return (
         <>  
-            <br/>
             <header className="header" >
                 Historie : &nbsp; 
                 <button onClick={ () => davis.length === limit ? setStart( start + limit ) : null } > &nbsp; {'<'} &nbsp; </button>

@@ -19,20 +19,11 @@ export const App = () => {
   const btnOn  = { background: `#555555`, color: 'white' };
   const btnOff = { background: `white`  , color: 'black' };
 
-  const newMeteo = { color: 'white', fontSize: '20px' };
-
   // render based on menu : elements per clicked button
   return (
     <div className="top_container">
       <Top/>
-      <div className="graphs">
-        Testujeme nové interaktivní grafy:<br/>
-          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/index_davis.html">Meteostanice Frymburk / roky - klikněte zde </a>
-          <br/>
-          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/day.html">Meteostanice Frymburk / minuty - klikněte zde </a>
-          <br/>
-          <a style={ newMeteo } href="https://www.frymburk.com/projects/92_canvas_graph/">Lipno u hráze - klikněte zde </a>
-      </div>
+
       <nav>
           <button style={ menu === 'start'      ? btnOn : btnOff } onClick={ () => setMenu('start') } >meteostanice<br/>Davis Vantage Pro<br/>Frymburk</button>
           <button style={ menu === 'povodi'     ? btnOn : btnOff } onClick={ () => setMenu('povodi') } ><br/>denní hodnoty<br/>Lipno u hráze</button>

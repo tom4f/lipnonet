@@ -1,8 +1,6 @@
 .graphs {
   margin: auto;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   text-align: center;
   color: white;
 }
@@ -13,22 +11,14 @@
 }
 
 nav {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 }
 
 nav button {
   font-size: 15px;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
   border-style: solid;
   border-bottom: 5px;
   border-color: white;
@@ -97,4 +87,36 @@ nav button:hover {
   cursor: pointer;
   background: #555555;
   color: white;
+}
+
+/* Canvas graph */
+#all-graphs {
+  text-align: left;
+  max-width: 724px;
+}
+
+#all-graphs .one-graph {
+  position: relative;
+  left: 0px;
+  height: 300px;
+}
+
+#all-graphs .one-graph .canvas {
+  background: black;
+  position: absolute;
+  z-index: 1;
+}
+
+#all-graphs .one-graph .canvas_pointer {
+  background: transparent;
+  position: absolute;
+  z-index: 2;
+}
+
+.pointerOn {
+  cursor: crosshair;
+}
+
+.pointerOnGrab {
+  cursor: pointer;
 }
