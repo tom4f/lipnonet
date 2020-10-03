@@ -33,5 +33,28 @@
             return $stmt;
         }
 
+        // Read Pocasi by Date
+        public function readByDate($start = '2001-07-13', $end = '2012-08-22', $orderBy = 'datum', $sort = 'DESC'){
+            // Create query
+            $query = "SELECT * FROM $this->table WHERE date >= '$start' AND date <= '$end' order by $orderBy $sort";
+
+            // Prepare statement
+            // A prepared statement is a feature used to execute the same (or similar)
+            // SQL statements repeatedly with high efficiency
+            $stmt = $this->conn->prepare($query);
+            // Execute query
+            // $stmt->execute();
+            // return $stmt;
+    
+            try {
+                $stmt->execute();
+            }
+            catch( PDOException $Exception ) {
+                return(false);
+            }
+            return($stmt);
+        }
+        
+
     }
 ?>
