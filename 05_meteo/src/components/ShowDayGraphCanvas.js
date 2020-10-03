@@ -84,7 +84,26 @@ export const ShowDayGraphCanvas = () => {
             const canvas4 = canvas4Ref.current;
             const canvas4_pointer = canvas4_pointerRef.current;
 
+            const allCanvasSize = () => {
+                const canvasSize = ( can, can_pointer, size ) => {
+                    const clientWidth  = document.documentElement.clientWidth;
+                    const clientHeight = document.documentElement.clientHeight;
+                    can.width  = clientWidth > 724 ? 724 : clientWidth;
+                    //can.width  = clientWidth;
+                    //can.height = clientHeight / size;
+                    can.height = 300;
+                    can_pointer.width  = clientWidth;
+                    can_pointer.height = clientHeight / size;
+                }
+            
+                canvasSize(canvas , canvas_pointer , graphHeight);
+                canvasSize(canvas1, canvas1_pointer, graphHeight);
+                canvasSize(canvas2, canvas2_pointer, graphHeight);
+                canvasSize(canvas3, canvas3_pointer, graphHeight);
+                canvasSize(canvas4, canvas4_pointer, graphHeight);
+            }
 
+            allCanvasSize();
 
             const temp     = new Draw(
                 [ canvas, canvas_pointer, dateStorage, pdoResp, isAllDownloaded, loadPocasi ]
@@ -119,27 +138,7 @@ export const ShowDayGraphCanvas = () => {
             ); 
 
 
-            const allCanvasSize = () => {
-                const canvasSize = ( can, can_pointer, size ) => {
-                    const clientWidth  = document.documentElement.clientWidth;
-                    const clientHeight = document.documentElement.clientHeight;
-                    can.width  = clientWidth > 724 ? 724 : clientWidth;
-                    //can.width  = clientWidth;
-                    //can.height = clientHeight / size;
-                    can.height = 300;
-                    can_pointer.width  = clientWidth;
-                    can_pointer.height = clientHeight / size;
-                }
-            
-                canvasSize(canvas , canvas_pointer , graphHeight);
-                canvasSize(canvas1, canvas1_pointer, graphHeight);
-                canvasSize(canvas2, canvas2_pointer, graphHeight);
-                canvasSize(canvas3, canvas3_pointer, graphHeight);
-                canvasSize(canvas4, canvas4_pointer, graphHeight);
-            }
-
-            allCanvasSize();
-            
+           
             temp.resizeCanvas();
             wind.resizeCanvas();
             bar.resizeCanvas();
@@ -157,9 +156,6 @@ export const ShowDayGraphCanvas = () => {
                 rain.resizeCanvas();
             });
         }
-
-
-
 
 
     useEffect( () => {

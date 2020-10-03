@@ -113,6 +113,25 @@ export const ShowDayGraphCanvasToday = () => {
             const canvas3 = canvas3Ref.current;
             const canvas3_pointer = canvas3_pointerRef.current;
 
+            const allCanvasSize = () => {
+                const canvasSize = ( can, can_pointer, size ) => {
+                    const clientWidth  = document.documentElement.clientWidth;
+                    const clientHeight = document.documentElement.clientHeight;
+                    can.width  = clientWidth > 724 ? 724 : clientWidth;
+                    //can.width  = clientWidth;
+                    //can.height = clientHeight / size;
+                    can.height = 300;
+                    can_pointer.width  = clientWidth;
+                    can_pointer.height = clientHeight / size;
+                }
+            
+                canvasSize(canvas , canvas_pointer , graphHeight);
+                canvasSize(canvas1, canvas1_pointer, graphHeight);
+                canvasSize(canvas2, canvas2_pointer, graphHeight);
+                canvasSize(canvas3, canvas3_pointer, graphHeight);
+            }
+
+            allCanvasSize();
 
             const temp     = new Draw(
                 [ canvas, canvas_pointer, dateStorage, pdoResp, isAllDownloaded, null]
@@ -146,25 +165,7 @@ export const ShowDayGraphCanvasToday = () => {
             huminidy.graph();
             
 
-            const allCanvasSize = () => {
-                const canvasSize = ( can, can_pointer, size ) => {
-                    const clientWidth  = document.documentElement.clientWidth;
-                    const clientHeight = document.documentElement.clientHeight;
-                    can.width  = clientWidth > 724 ? 724 : clientWidth;
-                    //can.width  = clientWidth;
-                    //can.height = clientHeight / size;
-                    can.height = 300;
-                    can_pointer.width  = clientWidth;
-                    can_pointer.height = clientHeight / size;
-                }
-            
-                canvasSize(canvas , canvas_pointer , graphHeight);
-                canvasSize(canvas1, canvas1_pointer, graphHeight);
-                canvasSize(canvas2, canvas2_pointer, graphHeight);
-                canvasSize(canvas3, canvas3_pointer, graphHeight);
-            }
 
-            allCanvasSize();
             
             temp.resizeCanvas();
             wind.resizeCanvas();
