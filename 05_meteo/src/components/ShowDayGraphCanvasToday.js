@@ -190,7 +190,7 @@ export const ShowDayGraphCanvasToday = () => {
     useEffect( () => {
        // load data + show graphs
         loadPocasiAsync();
-    });
+    }, []);
 
     return (
             <>

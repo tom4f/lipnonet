@@ -137,7 +137,7 @@ export const ShowYearGraphCanvas = () => {
     useEffect( () => {
        // load data + show graphs
         loadPocasiAsync();
-    });
+    }, []);
 
     return (
             <>

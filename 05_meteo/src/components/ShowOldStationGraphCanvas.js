@@ -158,7 +158,7 @@ export const ShowOldStationGraphCanvas = () => {
     useEffect( () => {
        // load data + show graphs
         loadPocasiAsync();
-    });
+    }, []);
 
     return (
             <>

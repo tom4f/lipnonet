@@ -161,7 +161,7 @@ export const ShowDayGraphCanvas = () => {
     useEffect( () => {
        // load data + show graphs
         loadPocasiAsync();
-    });
+    }, []);
 
     return (
             <>
