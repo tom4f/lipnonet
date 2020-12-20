@@ -130,6 +130,7 @@ const loadPocasiAsync = async () => {
         [ canvas, canvas_pointer, dateStorage, pdoResp, isAllDownloaded, null]
         , [ 'THWIndex' , 'lime'  , 'line', 1, 'THWIndex [\xB0C]', 1, [] ]
         , [ 'TempOut'  , 'white' , 'line', 1, 'TempOut [\xB0C]' , 1, [] ]
+        , [ 'DewPt'  , 'blue' , 'line', 1, 'DewPt [\xB0C]' , 1, [] ]
     ); 
 
     const huminidy     = new Draw(
