@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css?family=BenchNine");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "BenchNine", Arial, Helvetica, sans-serif;
+  background: url("./components/windsurf.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.container-top {
+  height: 100vh;
+  position: relative;
+}
+
+.container-login, .container-forget-password, .container-new-user, .container-show-values {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  max-width: 400px;
+  color: white;
+  border: 2px solid #555;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.header-top {
+  text-align: right;
+}
+
+.header-top span {
+  font-size: 15px;
+  margin: 10px;
+}
+
+.header-top span:hover {
+  text-decoration-line: underline;
+  color: lime;
+  cursor: pointer;
+}
+
+.header-main {
+  color: black;
+  font-size: 50px;
+  text-align: center;
+}
+
+.header-label {
+  color: white;
+  font-size: 30px;
+  text-align: center;
+}
+
+.alert {
+  text-align: center;
+  color: lime;
+  margin: 0;
+}
+
+.alert .header {
+  font-size: 30px;
+}
+
+.alert .text {
+  font-size: 20px;
+}
+
+.input-section input, .input-section select, .submit-section input {
+  font-size: 1.0rem;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  margin: 2px 5px;
+  transition: none;
+  color: white;
+  letter-spacing: 0.1rem;
+  display: inline-block;
+}
+
+.input-section {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 90%;
+  border-radius: 5px;
+  border: 1px solid white;
+  padding: 10px;
+  margin: 10px auto;
+}
+
+.input-section:hover {
+  border: 1px solid black;
+}
+
+.input-section label {
+  font-size: 1.5rem;
+  color: white;
+  text-align: left;
+  margin: 2px 5px;
+}
+
+.input-section input:focus, .input-section select:focus {
+  border: none;
+  outline: none;
+}
+
+.input-section option {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.input-section ul {
+  list-style-type: none;
+}
+
+.input-section ul li {
+  width: 100%;
+}
+
+.input-section ul input[type=checkbox] {
+  width: 10px;
+}
+
+.submit-section {
+  border-radius: 5px;
+  border: 1px solid white;
+  margin: 5px auto;
+  text-align: left;
+  background-color: rgba(0, 255, 0, 0.4);
+  width: 90%;
+}
+
+.submit-section:hover {
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.submit-section input {
+  margin: 0;
+  padding: 20px;
+}
+
+.submit-section input:focus {
+  border: none;
+  outline: none;
+  color: lime;
+}
+
+.password input {
+  display: inline-block;
+  width: 70%;
+}
+
+.password span {
+  display: inline-block;
+  color: gray;
+  width: 25%;
+  text-align: right;
+}
+
+.password span:hover {
+  text-decoration-line: underline;
+  cursor: pointer;
+  color: lime;
+}
+
+/* formular.php */
+
+::placeholder {
+  color: white;
+}

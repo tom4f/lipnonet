@@ -1,0 +1,200 @@
+// can be late in separate file _config.scss
+@import url('https://fonts.googleapis.com/css?family=BenchNine');
+$font-stack: 'BenchNine', Arial, Helvetica, sans-serif;
+//$font-stack: Oswald, Arial, Helvetica, sans-serif;
+$primary-color: white;
+
+//--------------------------------------------
+
+// initial reset
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-stack;
+
+  background: url("./components/windsurf.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.container-top {
+	height: 100vh;
+	//border: 10px dashed red;
+	position: relative;
+}
+
+.container-login, .container-forget-password, .container-new-user, .container-show-values {
+
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+
+	justify-content: center;
+	align-items: center;
+
+	width: 90%;
+	max-width: 400px;
+
+	color: white;
+	border: 2px solid #555;
+	border-radius: 5px;
+	background-color: rgba($color: #000000, $alpha: 0.5);
+
+	margin: 0 auto;
+	//top: 0%;
+	left: 50%;
+	transform: translateX(-50%);
+	
+	//padding: 10px;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+
+}
+
+.header-top {
+	text-align: right;
+	span {
+		font-size: 15px;
+		margin: 10px;
+		&:hover {
+			text-decoration-line: underline;
+			color: lime;
+			cursor: pointer;
+		}
+	}
+}
+
+.header-main {
+	color:black;
+	font-size: 50px;
+	text-align: center;
+}
+
+.header-label {
+	color:white;
+	font-size: 30px;
+	text-align: center;
+}
+
+.alert {
+	text-align: center;
+	color: lime;
+	margin: 0;
+	.header {
+		font-size: 30px;
+	}
+	.text {
+		font-size: 20px;
+	}
+}
+
+%input-select {
+    font-size: 1.0rem;;
+	width: 100%;
+	background-color: transparent;
+	border: none;
+	margin: 2px 5px;
+	transition: none;
+	color: white;
+	letter-spacing: 0.1rem;
+	display: inline-block;
+}
+
+.input-section {
+	background-color:rgba(0, 0, 0, 0.4);
+	width: 90%;
+	border-radius: 5px;
+	border: 1px solid white;
+	padding: 10px;
+	margin: 10px auto;
+	&:hover {
+		border: 1px solid black;	
+	}
+	label {
+		font-size: 1.5rem;
+		color: white;
+		text-align: left;
+		margin: 2px 5px;
+	}
+	input, select {
+		@extend %input-select;
+		&:focus {
+			border: none;
+			outline: none;
+		}
+	}
+	option {
+			background-color: rgba($color: #000000, $alpha: 0.5);
+	}
+	ul {
+		
+		list-style-type: none;
+		li {
+			width: 100%;
+		}
+		input[type=checkbox] {
+			width: 10px;;
+		}
+	}
+}
+
+
+.submit-section {
+	border-radius: 5px;
+	border: 1px solid white;
+	//padding: 10px;
+	margin: 5px auto;
+	text-align: left;
+	background-color:rgba(0, 255, 0, 0.4);
+	width: 90%;
+	&:hover {
+		border: 1px solid black;	
+		border-radius: 5px;
+	}
+	input {
+		@extend %input-select;
+		margin: 0;
+		padding: 20px;
+		&:focus {
+			border: none;
+			outline: none;
+			color: lime;
+		}
+	}
+}
+
+.password {
+	input {
+		display: inline-block;
+		width: 70%;
+	}
+	span {
+		display: inline-block;
+		color:gray;
+		width: 25%;
+		text-align: right;
+		&:hover {
+			text-decoration-line: underline;
+			cursor: pointer;
+			color:lime;
+		}
+	}
+}
+
+
+
+  /* formular.php */
+::-webkit-input-placeholder { /* Edge */
+	color: white;
+}
+:-ms-input-placeholder { /* Internet Explorer */
+	color: white;
+}
+::placeholder {
+	color: white;
+}
