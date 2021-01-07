@@ -5,7 +5,7 @@
 
 
 <div class="header">
-    (C)1998-2020
+    (C)1998-2021
     <a href="mailto:ubytovani@lipnonet.cz">ubytovani@lipnonet.cz</a>
     <br>
     <a href="http://www.lipnonet.cz/">LIPNOnet.cz</a> | 

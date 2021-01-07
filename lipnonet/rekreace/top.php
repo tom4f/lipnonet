@@ -55,7 +55,7 @@
     <a class="menu" href="aktuality.html" target="_top">Meteostanice</a> | 
     <a class="menu" href="kniha.html" target="_top">Fórum</a> | 
     <a class="menu" href="fotogalerie.html" target="_top">Fotogalerie</a> | 
-    <a class="menu" href="profisolar.php" target="_top">Solární ohřev</a> | 
+    <a class="menu" href="windsms/" target="_top">MeteoAlert</a> | 
     <a class="menu" href="../4f/" target="_top">Windsurfing</a>
   </div>
 

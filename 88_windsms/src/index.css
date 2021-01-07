@@ -18,7 +18,11 @@ body {
   position: relative;
 }
 
-.container-login, .container-forget-password, .container-new-user, .container-show-values {
+.container-login,
+.container-forget-password,
+.container-new-user,
+.container-show-values,
+.container-about {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -37,18 +41,27 @@ body {
   padding-bottom: 1rem;
 }
 
-.header-top {
-  text-align: right;
+.about-specific {
+  max-width: 1000px;
 }
 
-.header-top span {
-  font-size: 15px;
+.about-specific p, .about-specific ul {
   margin: 10px;
 }
 
-.header-top span:hover {
+.menu {
+  text-align: right;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.menu span {
+  color: black;
+  font-size: 20px;
+  margin: 10px;
+}
+
+.menu span:hover {
   text-decoration-line: underline;
-  color: lime;
   cursor: pointer;
 }
 
@@ -61,6 +74,12 @@ body {
 .header-label {
   color: white;
   font-size: 30px;
+  text-align: center;
+}
+
+.header-counter {
+  color: white;
+  font-size: 15px;
   text-align: center;
 }
 
@@ -129,6 +148,10 @@ body {
 
 .input-section ul input[type=checkbox] {
   width: 10px;
+}
+
+.input-section a {
+  color: white;
 }
 
 .submit-section {

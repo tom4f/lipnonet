@@ -27,6 +27,8 @@ interface ShowValuesTypes  {
 const ShowValues = ( { items, setItems, origSettings, setOrigSettings }: ShowValuesTypes ) => {
 
   const [ alert, setAlert ] = useState( { header: '', text: '' } );
+  const [ showPassword, setShowPassword ] = useState( false );
+  const [ showPasswordAgain, setShowPasswordAgain ] = useState( false );
 
   //{ items, setItems, origSettings, setOrigSettings }: ShowValuesTypes = props;
 
@@ -102,26 +104,34 @@ return (
           }} name="formular" encType="multipart/form-data">
               <ShowWindDays items={items} setItems={setItems} />
               <ShowWindSpeed items={items} setItems={setItems} />
-              <section className="input-section">
-                  <label>password:</label>
+              <section className="input-section password">
+                  <label>Heslo:</label><br/>
                   <input
-                      type="password"
-                      placeholder="Password..."
+                      type={ showPassword ? "text" : "password" }
+                      placeholder="heslo..."
                       onChange={ (e) => changePassword( e.target.value )}
                       value={items.password}
                       autoComplete="on"
                   />
+                  <span onMouseOver={ () => setShowPassword( true ) }
+                        onMouseOut ={ () => setShowPassword( false ) } >
+                        Show
+                  </span>
                   <input
-                      type="password"
-                      placeholder="Password again..."
+                      type={ showPasswordAgain ? "text" : "password" }
+                      placeholder="heslo znovu..."
                       onChange={ (e) => setPasswordAgain( e.target.value )}
                       value={passwordAgain}
                       autoComplete="on"
                   />
+                  <span onMouseOver={ () => setShowPasswordAgain( true ) }
+                        onMouseOut ={ () => setShowPasswordAgain( false ) } >
+                        Show
+                  </span>
               </section>
 
               <section className="input-section">
-                <label>full name:</label>
+                <label>Celé jméno:</label>
                 <input
                     placeholder="Full Name..."
                     onChange={ (e) => setItems( { ...items, name: e.target.value } )}
@@ -130,7 +140,7 @@ return (
               </section>
 
               <section className="input-section">
-                  <label>email</label>
+                  <label>E-mail</label>
                   <input
                       placeholder="Email..."
                       onChange={ (e) => setItems( { ...items, email: e.target.value } )}

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import './index.css';
+import Menu           from './components/Menu';
 import LoginPage      from './components/LoginPage';
 import ShowValues     from './components/ShowValues';
 import ForgetPassword from './components/ForgetPassword';
 import NewUser        from './components/NewUser';
+import About          from './components/About';
 
 //const App = ():React.ReactNode => {
 const App: React.FC = () => {
@@ -20,47 +22,50 @@ const App: React.FC = () => {
   }
 
   const initShow = {
-    login          : true,
-    forgetPassword : false,
-    newUser        : false
+    login  : false,
+    forget : false,
+    new    : false,
+    about  : false,
+    values : false
   }
 
   const [ items, setItems ]               = useState( initItems );
   const [ origSettings, setOrigSettings ] = useState( initItems );
   const [ isLogged, setIsLogged ]         = useState( false );
-  const [ showStatus, setShowStatus ]     = useState( initShow );
+  const [ showStatus, setShowStatus ]     = useState( { ...initShow, login: true } );
+
+  const loginStatus = (status : boolean) => {
+    setIsLogged( status );
+    setShowStatus( { ...initShow, values:  status, login: !status } );
+}
 
   return (
     <div className="container-top">
-        <header className="header-top">
-        { 
-          isLogged
-          ? <span onClick={ () => setIsLogged( current => !current ) }>odhlášení</span>
-          : <span onClick={ () => setShowStatus( current => ({ ...current, login: !showStatus.login, forgetPassword: false, newUser: false })  ) }>přihlášení</span>
-        }
-            <span onClick={ () => setShowStatus( current => ({ ...current, forgetPassword: !showStatus.forgetPassword, login: false, newUser: false })  ) }>zapomenuté heslo?</span>
-            <span onClick={ () => setShowStatus( current => ({ ...current, newUser: !showStatus.newUser, login: false, forgetPassword: false })  ) }>registrace nového uživatele</span>
-        </header>
-        <header className="header-main">Lipno Wind SMS</header>
-        { 
-        isLogged
-        ? <ShowValues
-              items           = { items }
-              setItems        = { setItems }
-              origSettings    = { origSettings }
-              setOrigSettings = { setOrigSettings }
-          />
-          : <span>
-                { showStatus.login ? <LoginPage
-                    setOrigSettings = { setOrigSettings }
-                    setItems        = { setItems }
-                    setIsLogged     = { setIsLogged }
-                /> : null }
-                { showStatus.forgetPassword ? <ForgetPassword /> : null }
-                { showStatus.newUser        ? <NewUser />        : null }
-            </span> 
-        }
+        <Menu
+            isLogged      = { isLogged }
+            showStatus    = { showStatus }
+            setShowStatus = { setShowStatus }
+            loginStatus   = { loginStatus }
+            initShow      = { initShow }
+        />
+        <header className="header-main">Lipno Meteo Alert</header>
+        <span>
+            { showStatus.values  ? <ShowValues
+                  items           = { items }
+                  setItems        = { setItems }
+                  origSettings    = { origSettings }
+                  setOrigSettings = { setOrigSettings }
+              /> : null }
 
+            { showStatus.login  ? <LoginPage
+                  setOrigSettings = { setOrigSettings }
+                  setItems        = { setItems }
+                  loginStatus     = { loginStatus }
+              /> : null }
+            { showStatus.forget ? <ForgetPassword /> : null }
+            { showStatus.new    ? <NewUser />        : null }
+            { showStatus.about  ? <About />          : null }
+        </span> 
     </div>
   );
 };

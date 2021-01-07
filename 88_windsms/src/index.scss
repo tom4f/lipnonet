@@ -28,7 +28,11 @@ body {
 	position: relative;
 }
 
-.container-login, .container-forget-password, .container-new-user, .container-show-values {
+.container-login,
+.container-forget-password,
+.container-new-user,
+.container-show-values,
+.container-about {
 
 	display: flex;
 	flex-direction: column;
@@ -56,14 +60,24 @@ body {
 
 }
 
-.header-top {
+.about-specific {
+	max-width: 1000px;
+	p, ul {
+		margin: 10px;
+	}
+}
+
+.menu {
 	text-align: right;
+	background-color: rgba($color: white, $alpha: 0.5);
 	span {
-		font-size: 15px;
+		color:black;
+
+		font-size: 20px;
 		margin: 10px;
 		&:hover {
 			text-decoration-line: underline;
-			color: lime;
+			//color: white;
 			cursor: pointer;
 		}
 	}
@@ -78,6 +92,12 @@ body {
 .header-label {
 	color:white;
 	font-size: 30px;
+	text-align: center;
+}
+
+.header-counter {
+	color:white;
+	font-size: 15px;
 	text-align: center;
 }
 
@@ -140,6 +160,9 @@ body {
 		input[type=checkbox] {
 			width: 10px;;
 		}
+	}
+	a {
+		color: white;
 	}
 }
 

@@ -69,14 +69,14 @@ const ForgetPassword: React.FC = (): React.ReactElement => {
                 event.preventDefault();
                 getPasw();
             }} name="formular" encType="multipart/form-data">
-                <article className="input-section">
+                <section className="input-section">
                     <label>Zadeje uživatelské jméno, nebo email</label>
                     <input
                         placeholder="Username or Email..."
                         onChange={ (e) => setIdentification( e.target.value  ) }
                         value={identification}
                     />
-                </article>
+                </section>
                 { alert.header ? <AlertBox alert={ alert } /> : null }
                 <div className="submit-section">
                     <input type="submit" name="odesli" value="Send Password" />
