@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { AlertBox }   from './AlertBox';
 import axios from 'axios';
-import { apiPath } from './apiPath';
+
+import { apiPath }  from './apiPath';
+import { AlertBox } from './AlertBox';
+import { Delay }    from './AlertBox';
 
 const NewUser: React.FC = (): React.ReactElement => {
     
@@ -10,7 +12,15 @@ const NewUser: React.FC = (): React.ReactElement => {
         email: string;
     }
 
-    const [ alert, setAlert ] = useState( { header: '', text: '' } );
+    // alert definition
+    interface alertTypes {
+        header : string;
+        text   : string;
+        color? : string;
+    }
+    const [ alert, setAlert ] = useState<alertTypes>( { header: '', text: '' } );
+    // if 'alert' changed - wait 5s and clear 'alert'
+    Delay( alert, setAlert );
 
     const [ newUser, setNewUser ] = useState<newUserTypes>({ username: '', email: '' });
 
@@ -19,13 +29,13 @@ const NewUser: React.FC = (): React.ReactElement => {
         const { username, email } = newUser;
 
         if (!username || !email) {
-            setAlert( { header: 'No item entered', text: 'Please enter username or password' } );
+            setAlert( { header: 'Uživatelské jméno / email', text: 'vyplňte údaje' } );
             return null
         }
 
         // check if min 3 characters
-        if (!/[0-9a-zA-Z]{3,}/.test(username)) {
-            setAlert( { header: 'short username', text: 'Please enter at least 3 characters' } );
+        if (!/^[a-zA-Z0-9.\-_]{3,10}$/.test(username)) {
+            setAlert( { header: 'Špatné uživatelské jméno', text: 'vyplňte údaje' } );
             return null;
         } 
 
@@ -41,7 +51,7 @@ const NewUser: React.FC = (): React.ReactElement => {
         // check email
         //or without possibility of more @:  /\S+@\S+\.\S+/;
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-            setAlert( { header: 'wrong email', text: 'Please enter valid email' } );
+            setAlert( { header: 'Špatný email', text: 'vyplňte údaje' } );
             return null;
         } 
         
@@ -68,7 +78,7 @@ const NewUser: React.FC = (): React.ReactElement => {
                         if (resp.sms_new === 'user_exists' ) { setAlert( { header: '', text: '' } ); setAlert( { header: 'Error !', text: 'user exists...' } ) };
                         if (resp.sms_new === 'email_exists') { setAlert( { header: '', text: '' } ); setAlert( { header: 'Error !', text: 'email exists...' } ) };
                         if (resp.sms_new === 'error'       ) { setAlert( { header: '', text: '' } ); setAlert( { header: 'Error !', text: 'heslo se nepodařilo odeslat...' } ) };
-                        if (resp.sms_new === 'user_added'  ) { setAlert( { header: '', text: '' } ); setAlert( { header: `Heslo pro ${resp.username} odesláno na`, text: `${resp.email}...` } ) };
+                        if (resp.sms_new === 'user_added'  ) { setAlert( { header: '', text: '' } ); setAlert( { header: `Heslo pro ${resp.username} odesláno na`, text: `${resp.email}...`, color: 'lime'  } ) };
                     } else {
                         setAlert( { header: 'unknown Error !', text: 'try later...' } );
 

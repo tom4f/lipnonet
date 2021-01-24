@@ -34,7 +34,7 @@ const App: React.FC = () => {
   const [ isLogged, setIsLogged ]         = useState( false );
   const [ showStatus, setShowStatus ]     = useState( { ...initShow, login: true } );
 
-  const loginStatus = (status : boolean) => {
+  const loginStatus = (status : boolean): void => {
     setIsLogged( status );
     setShowStatus( { ...initShow, values:  status, login: !status } );
 }

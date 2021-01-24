@@ -1,43 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { apiPath } from './apiPath';
-
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import axios from 'axios';
-import { AlertBox }   from './AlertBox';
+
+import { apiPath }  from './apiPath';
+import { AlertBox } from './AlertBox';
+import { Delay }    from './AlertBox';
+
+type myItems = {
+    date: string;
+    days: number;
+    email: string;
+    id: number;
+    name: string;
+    password: string;
+    sms: number;
+    username: string;
+  };
 
 interface LoginPageTypes {
-    setOrigSettings: Function;
-    setItems: Function;
-    loginStatus: Function;
+    setOrigSettings: Dispatch<SetStateAction<myItems>>;
+    setItems       : Dispatch<SetStateAction<myItems>>;
+    loginStatus    : (status : boolean) => void;
 }
-
-interface loginParamsTypes {
-    username: string;
-    password: string;
-}
-
 const LoginPage = ( { setOrigSettings, setItems, loginStatus }: LoginPageTypes ) => {
 
+    // login definition
+    interface loginParamsTypes {
+        username: string;
+        password: string;
+    }
     const [ loginParams, setLoginParams ]   = useState<loginParamsTypes>( { username: '', password: '' } );
+    
+    // alert definition
+    interface alertTypes {
+        header : string;
+        text   : string;
+        color? : string;
+    }
+    const [ alert, setAlert ] = useState<alertTypes>( { header: '', text: '' } );
+    // if 'alert' changed - wait 5s and clear 'alert'
+    Delay( alert, setAlert );
 
-    const [ alert, setAlert ] = useState( { header: '', text: '' } );
     const [ showPassword, setShowPassword ] = useState( false );
-    const [ showOnPhone, setShowOnPhone ] = useState( '');
+    const [ showOnPhone , setShowOnPhone  ] = useState( '');
 
     const getData = () => {
 
         if (!loginParams.username || !loginParams.password) {
-          setAlert( { header: 'Uživatelské jméno / heslo', text: 'vyplňte údaje' } );
-          return null
-      }
+            setAlert( { header: 'Uživatelské jméno / heslo', text: 'vyplňte údaje' } );
+            return null
+        }
 
-      if (!/[0-9a-zA-Z]{3,}/.test(loginParams.username)) {
-        setAlert( { header: 'Uživatelské jméno', text: 'zadejte minimálně 3 znaky' } );
-        return null;
-    } 
-    if (!/[0-9a-zA-Z]{3,}/.test(loginParams.password)) {
-        setAlert( { header: 'Heslo', text: 'zadejte minimálně 3 znaky' } );
-        return null;
-    } 
+        if (!/^[a-zA-Z0-9\-_]{3,10}$/.test(loginParams.username)) {
+            setAlert( { header: 'Špatné jméno', text: 'zadejte 3 až 10 znaků (0-9 a..z A..Z - _ )' } );
+            return null;
+        } 
+
+        if (!/^[a-zA-Z0-9.\-_]{3,10}$/.test(loginParams.password)) {
+            setAlert( { header: 'Špatné heslo!', text: 'zadejte 3 až 10 znaků (0-9 a..z A..Z - . _ )' } );
+            return null;
+        } 
 
     
           axios
@@ -124,9 +145,12 @@ const LoginPage = ( { setOrigSettings, setItems, loginStatus }: LoginPageTypes )
             .then( (res)  => res.text() )
                 .then( (lastData) => 
                 {
-                    const limitedText = lastData.split('!');
-                    const smsDate =  limitedText[1].split('_');
-                setShowOnPhone(limitedText[0] + smsDate[0]);
+                    const limitedText = lastData
+                        // Select from string 'Vitr' included
+                        .split(/(?=Vitr)/)[1]
+                        // Till character '_'
+                        .split('_')[0];
+                    setShowOnPhone(limitedText);
                 })
             .catch( (error) => console.log(error) )
       }
@@ -171,9 +195,12 @@ const LoginPage = ( { setOrigSettings, setItems, loginStatus }: LoginPageTypes )
                 </section>
             </form>
             <header className="header-counter">Počet uživatelů: {counter}</header>
-            <section className="input-section password">
-                    <label>Zobrazení SMS na mobilu / emailu:</label><br/>
-                    { showOnPhone }
+            <section className="input-section ">
+                    <label>Zobrazení SMS na mobilu / emailu:</label>
+                    <span className="smsText">
+                        <br/>From: 4f@lipno.net
+                        <br/>Text: { showOnPhone }
+                    </span>
                 </section>
         </article>
     );

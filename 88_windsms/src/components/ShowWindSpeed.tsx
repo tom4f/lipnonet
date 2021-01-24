@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState, Dispatch, SetStateAction } from 'react';
+
+type myItems = {
+    date: string;
+    days: number;
+    email: string;
+    id: number;
+    name: string;
+    password: string;
+    sms: number;
+    username: string;
+  };
 
 interface ShowWindSpeedTypes {
-    items: {
-        date: string;
-        days: number;
-        email: string;
-        id: number;
-        name: string;
-        password: string;
-        sms: number;
-        username: string;
-    }
-    setItems: any;
+    items: myItems;
+    setItems: Dispatch<SetStateAction<myItems>>;
 }
 
 const ShowWindSpeed = ( { items, setItems }: ShowWindSpeedTypes ) => {
@@ -51,10 +52,5 @@ return (
         </section>
     );
 };
-
-ShowWindSpeed.propTypes = {
-    items        : PropTypes.object,
-    setItems     : PropTypes.func,
-}
 
 export { ShowWindSpeed };

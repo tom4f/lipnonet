@@ -1,26 +1,37 @@
 import React, { useState } from 'react';
-import { AlertBox }   from './AlertBox';
 import axios from 'axios';
-import { apiPath } from './apiPath'
+
+import { apiPath }  from './apiPath';
+import { AlertBox } from './AlertBox';
+import { Delay }    from './AlertBox';
+
 
 const ForgetPassword: React.FC = (): React.ReactElement => {
 
+    // alert definition
+    interface alertTypes {
+        header : string;
+        text   : string;
+        color? : string;
+    }
+    const [ alert, setAlert ] = useState<alertTypes>( { header: '', text: '' } );
+    // if 'alert' changed - wait 5s and clear 'alert'
+    Delay( alert, setAlert );
 
-    const [ alert, setAlert ] = useState( { header: '', text: '' } );
 
     const [ identification, setIdentification ] = useState('');
 
     const getPasw = () => {
 
         if (!identification) {
-            setAlert( { header: 'No item entered', text: 'Please enter username or password' } );
+            setAlert( { header: 'Uživatelské jméno / email', text: 'vyplňte údaje' } );
             return null
-      }
+        }
 
-      if (!/[0-9a-zA-Z]{3,}/.test(identification)) {
-        setAlert( { header: 'short userid or email', text: 'Please enter at least 3 characters' } );
-        return null;
-    } 
+        if (!/^[a-zA-Z0-9.\-_@]{3,}$/.test(identification)) {
+            setAlert( { header: 'Špatné uživatelské jméno / email', text: 'vyplňte údaje' } );
+            return null;
+        } 
     
           axios
               .post(
@@ -40,7 +51,7 @@ const ForgetPassword: React.FC = (): React.ReactElement => {
                     // if error in response
                     if (typeof resp.sms_pasw === 'string') {
                         resp.sms_pasw === 'error' && setAlert( { header: 'Error !', text: 'heslo se nepodařilo odeslat...' } );
-                        resp.sms_pasw === 'password_sent' && setAlert( { header: 'Heslo bylo odesláno na email:', text: `${resp.email}...` } );
+                        resp.sms_pasw === 'password_sent' && setAlert( { header: 'Heslo bylo odesláno na email:', text: `${resp.email}...`, color: 'lime'} );
                         return null
                     }
                     setAlert( { header: 'unknown Error !', text: 'try later...' } );

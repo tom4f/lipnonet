@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 
 import { ShowOneValue } from './ShowOneValue';
 
+// alias
+// type Dispatcher<S> = Dispatch<SetStateAction<S>>;
+
+type myItems = {
+    date: string;
+    days: number;
+    email: string;
+    id: number;
+    name: string;
+    password: string;
+    sms: number;
+    username: string;
+  };
+
 interface ShowWindDaysTypes {
-    items: {
-        date: string;
-        days: number;
-        email: string;
-        id: number;
-        name: string;
-        password: string;
-        sms: number;
-        username: string;
-    }
-    setItems: ( items: {} ) => void;
+    items: myItems;
+    setItems: Dispatch<SetStateAction<myItems>>;
 }
 
-const ShowWindDays = ( { items, setItems }: ShowWindDaysTypes ) => {
+export const ShowWindDays = ( { items, setItems }: ShowWindDaysTypes ) => {
 
     const multiSelectItems = [
         //{ id:  "0", name: 'Dummy' },
@@ -39,7 +44,7 @@ const ShowWindDays = ( { items, setItems }: ShowWindDaysTypes ) => {
         if ( days === 0 ) return []; 
         const bin = days.toString(2);
         // bin to array
-        const arr = [ ...bin ];
+        const arr = [ ...bin ].reverse();
         // calculate array of selected values in multiSelectItems
         return arr.map( (value, index) => ( parseInt(value) * Math.pow(2, index) ) );
     }
@@ -74,5 +79,3 @@ const ShowWindDays = ( { items, setItems }: ShowWindDaysTypes ) => {
         </section>
     );
 };
-
-export { ShowWindDays };

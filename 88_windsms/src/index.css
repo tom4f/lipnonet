@@ -197,6 +197,11 @@ body {
   color: lime;
 }
 
+.smsText {
+  font-family: 'courier';
+  font-size: 15px;
+}
+
 /* formular.php */
 
 ::placeholder {

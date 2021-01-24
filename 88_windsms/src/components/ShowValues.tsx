@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
+import axios from 'axios';
+
+import { apiPath } from './apiPath';
 import { AlertBox }   from './AlertBox';
+import { Delay } from './AlertBox';
 import { ShowWindDays } from './ShowWindDays';
 import { ShowWindSpeed } from './ShowWindSpeed';
-import axios from 'axios';
-import { apiPath } from './apiPath';
 
+// alias
+type Dispatcher<S> = Dispatch<SetStateAction<S>>;
 
 type myItems = {
   date: string;
@@ -19,14 +23,23 @@ type myItems = {
 
 interface ShowValuesTypes  {
   items: myItems;
-  setItems: any;
+  setItems: Dispatcher<myItems>;
   origSettings: myItems;
-  setOrigSettings: any;
+  setOrigSettings: Dispatcher<myItems>;
 }
 
 const ShowValues = ( { items, setItems, origSettings, setOrigSettings }: ShowValuesTypes ) => {
 
-  const [ alert, setAlert ] = useState( { header: '', text: '' } );
+  // alert definition
+  interface alertTypes {
+      header : string;
+      text   : string;
+      color? : string;
+  }
+  const [ alert, setAlert ] = useState<alertTypes>( { header: '', text: '' } );
+  // if 'alert' changed - wait 5s and clear 'alert'
+  Delay( alert, setAlert )
+
   const [ showPassword, setShowPassword ] = useState( false );
   const [ showPasswordAgain, setShowPasswordAgain ] = useState( false );
 
@@ -58,7 +71,7 @@ const ShowValues = ( { items, setItems, origSettings, setOrigSettings }: ShowVal
            if (typeof resp.smsResult === 'string') {
               if (resp.smsResult === 'value_changed') {
                 setOrigSettings( items );
-                setAlert( { header: 'Success !', text: 'data updated...' } );
+                setAlert( { header: 'Success !', text: 'data updated...', color: 'lime' } );
 
               } else setAlert( { header: 'Error...resp.smsResult', text: 'Please try later...' } );
            } else {
@@ -83,74 +96,86 @@ const ShowValues = ( { items, setItems, origSettings, setOrigSettings }: ShowVal
 
   }
 
-  const sendEdit = () => {
+  const sendEdit = (event:React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (origSettings === items) {
+          setAlert( { header: 'Žádná změna!', text: 'neni co odesílat' } );
+          return null
+      }
+
       // password validation
-      passwordAgain === items.password
-          ? passwordAgain.length > 2
-              ? updateData()
-              : setAlert( { header: 'No change', text: 'short password?' } )
-          : setAlert( { header: 'No change', text: 'wrong password?' } );
+      if (passwordAgain !== items.password) {
+          setAlert( { header: 'Špatné heslo!', text: 'zadejte 2x stejné heslo' } );
+          return null
+      }
+      if (!/^[a-zA-Z0-9.\-_]{3,10}$/.test(items.password)) {
+          setAlert( { header: 'Špatné heslo!', text: 'zadejte 3 až 10 znaků (0-9 a..z A..Z - . _ )' } );
+          return null
+      }
+      // email validation
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(items.email)) {
+          setAlert( { header: 'Špatný email', text: 'zadejte platný email' } );
+          return null
+      }
+
+      updateData()
   }
 
 return (
     <article className="container-show-values">
         <header className="header-label">Administrace - <label ><small>user (id):</small> {items.username} ({items.id})</label></header>
 
-        <form onSubmit={(event) => {
-          event.preventDefault();
-          origSettings === items
-              ? setAlert( { header: 'No change', text: 'blabla' } )
-              : sendEdit();
-          }} name="formular" encType="multipart/form-data">
-              <ShowWindDays items={items} setItems={setItems} />
-              <ShowWindSpeed items={items} setItems={setItems} />
-              <section className="input-section password">
-                  <label>Heslo:</label><br/>
-                  <input
-                      type={ showPassword ? "text" : "password" }
-                      placeholder="heslo..."
-                      onChange={ (e) => changePassword( e.target.value )}
-                      value={items.password}
-                      autoComplete="on"
-                  />
-                  <span onMouseOver={ () => setShowPassword( true ) }
-                        onMouseOut ={ () => setShowPassword( false ) } >
-                        Show
-                  </span>
-                  <input
-                      type={ showPasswordAgain ? "text" : "password" }
-                      placeholder="heslo znovu..."
-                      onChange={ (e) => setPasswordAgain( e.target.value )}
-                      value={passwordAgain}
-                      autoComplete="on"
-                  />
-                  <span onMouseOver={ () => setShowPasswordAgain( true ) }
-                        onMouseOut ={ () => setShowPasswordAgain( false ) } >
-                        Show
-                  </span>
-              </section>
-
-              <section className="input-section">
-                <label>Celé jméno:</label>
+        <form onSubmit={(event) => sendEdit(event)} name="formular" encType="multipart/form-data">
+            <ShowWindDays items={items} setItems={setItems} />
+            <ShowWindSpeed items={items} setItems={setItems} />
+            <section className="input-section password">
+                <label>Heslo:</label><br/>
                 <input
-                    placeholder="Full Name..."
-                    onChange={ (e) => setItems( { ...items, name: e.target.value } )}
-                    value={items.name}
-                  />
-              </section>
+                    type={ showPassword ? "text" : "password" }
+                    placeholder="heslo..."
+                    onChange={ (e) => changePassword( e.target.value )}
+                    value={items.password}
+                    autoComplete="on"
+                />
+                <span onMouseOver={ () => setShowPassword( true ) }
+                      onMouseOut ={ () => setShowPassword( false ) } >
+                      Show
+                </span>
+                <input
+                    type={ showPasswordAgain ? "text" : "password" }
+                    placeholder="heslo znovu..."
+                    onChange={ (e) => setPasswordAgain( e.target.value )}
+                    value={passwordAgain}
+                    autoComplete="on"
+                />
+                <span onMouseOver={ () => setShowPasswordAgain( true ) }
+                      onMouseOut ={ () => setShowPasswordAgain( false ) } >
+                      Show
+                </span>
+            </section>
 
-              <section className="input-section">
-                  <label>E-mail</label>
-                  <input
-                      placeholder="Email..."
-                      onChange={ (e) => setItems( { ...items, email: e.target.value } )}
-                      value={items.email}
-                  />
-              </section>
-              { alert.header ? <AlertBox alert={ alert } /> : null }
-              <section className="submit-section">
-                  <input type="submit" name="odesli" value="Odeslat" />
-              </section>
+            <section className="input-section">
+              <label>Celé jméno:</label>
+              <input
+                  placeholder="Full Name..."
+                  onChange={ (e) => setItems( { ...items, name: e.target.value } )}
+                  value={items.name}
+                />
+            </section>
+
+            <section className="input-section">
+                <label>E-mail</label>
+                <input
+                    placeholder="Email..."
+                    onChange={ (e) => setItems( { ...items, email: e.target.value } )}
+                    value={items.email}
+                />
+            </section>
+            { alert.header ? <AlertBox alert={ alert } /> : null }
+            <section className="submit-section">
+                <input type="submit" name="odesli" value="Odeslat" />
+            </section>
         </form>
     </article>
 
