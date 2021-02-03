@@ -444,44 +444,51 @@ export default class Draw {
         this.ctx.beginPath();
         this.ctx.strokeStyle = 'red';
         this.ctx.lineWidth = 2;
-        this.ctx.setLineDash([1, 0]);
+        this.ctx.setLineDash( [1, 0] );
 
         let firstDate;
         let lastDate;
+        let step;
+        let sliceText;
+        let lineDate;
 
         // days step
         if (this.dataReduced[0][this.date].length === 24){
-            firstDate = new Date( this.start ).getDate() - 1;
-            lastDate  = new Date( this.end   ).getDate();
+            firstDate = new Date( this.start.slice(0,10) ).getTime();
+            lastDate = new Date( this.end.slice(0,10) ).getTime();
+            step = this.MILISECONDS_FOR_ONE_DAY;
+            sliceText = ( lineDate ) => lineDate.slice( -2 );
         }
 
         // year step
         if (this.dataReduced[0][this.date].length === 10){
-            firstDate = new Date( this.start ).getFullYear();
+            firstDate = new Date( this.start ).getFullYear() + 1;
             lastDate  = new Date( this.end   ).getFullYear();
+            step = 1;
+            sliceText = ( lineDate ) => lineDate.slice( 0, 4 );
         }
 
-        let lineDate;
 
-        for (let dayStep = firstDate + 1; dayStep <= lastDate; dayStep++) {
+        for (let lineStep = firstDate; lineStep <= lastDate; lineStep = lineStep + step ) {
 
             // days step
             if (this.dataReduced[0][this.date].length === 24){
-                lineDate = `${this.start.slice(0,7)}-` + `0${dayStep}`.slice(-2);
-            }
-            // year step
-            if (this.dataReduced[0][this.date].length === 10){
-                lineDate = `${dayStep}-01-01`;
+                lineDate = new Date ( lineStep ).toISOString().slice(0, 10);
             }
 
-            // line for dayStep
+            // year step
+            if (this.dataReduced[0][this.date].length === 10){
+                lineDate = `${lineStep}-01-01`;
+            }
+
+            // line for lineStep
             this.ctx.moveTo( this.xPositionFromDate(lineDate), this.graphSpaceBtn );
             this.ctx.lineTo( this.xPositionFromDate(lineDate), this.clientHeight - this.graphSpaceBtn );
-            // text for dayStep
+            // text for lineStep
             this.ctx.font = '12px Arial';
             this.ctx.textAlign = 'left';
             this.ctx.fillStyle = 'white';
-            this.ctx.fillText( `${dayStep}`, this.xPositionFromDate(lineDate), this.graphSpaceBtn );
+            this.ctx.fillText( `${ sliceText( lineDate ) }`, this.xPositionFromDate(lineDate), this.graphSpaceBtn );
         }
         this.ctx.stroke();
     }

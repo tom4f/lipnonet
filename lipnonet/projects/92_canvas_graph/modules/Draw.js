@@ -451,8 +451,9 @@ export default class Draw {
 
         // days step
         if (this.dataReduced[0][this.date].length === 24){
-            firstDate = new Date( this.start ).getDate() - 1;
             lastDate  = new Date( this.end   ).getDate();
+            // if lastDate of month = 1, than firstDate is 0 instead of e.g. 30
+            firstDate = lastDate === 1 ? lastDate - 1 : new Date( this.start ).getDate() - 1;
         }
 
         // year step
@@ -467,7 +468,12 @@ export default class Draw {
 
             // days step
             if (this.dataReduced[0][this.date].length === 24){
-                lineDate = `${this.start.slice(0,7)}-` + `0${dayStep}`.slice(-2);
+                // if lastDate of month = 1, than firstDate is 0 instead of e.g. 30
+                if ( lastDate === 1 ) {
+                    lineDate = `${this.end.slice(0,7)  }-` + `0${dayStep}`.slice(-2);
+                } else {
+                    lineDate = `${this.start.slice(0,7)}-` + `0${dayStep}`.slice(-2);
+                }
             }
             // year step
             if (this.dataReduced[0][this.date].length === 10){
