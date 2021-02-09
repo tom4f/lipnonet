@@ -55,18 +55,33 @@ const SOURCE_FILE = '../../davis/downld02.txt';
 const loadPocasiAsync = async () => {
     try { 
         console.time('Start');
-        const response = await fetch(SOURCE_FILE)
-        console.timeEnd('Start');
-        if (response.status != 200) return null
-        
-        const text = await response.text()
 
-        // lines to array
-        const arr = text.trim().split('\n')
-        // remove first 3 lines
-        arr.shift()
-        arr.shift()
-        arr.shift()
+        const loadOneFile = async ( txtFile ) => {
+            const response = await fetch( txtFile )
+            // this response check not works if .httaccess show default html page instead text file
+            if (response.status !== 200) return []
+            const text = await response.text()
+            // lines to array
+            const arr = text.trim().split('\n')
+            // remove first 3 lines
+            arr.shift()
+            arr.shift()
+            arr.shift()
+            // return empty arr if not valid text file
+            return !arr[0].search( /..\...\.......:../ ) ? arr : []
+        }
+
+        let mergedArr = [];
+        const dayOfWeekNow = new Date().getUTCDay();
+        for ( let day = dayOfWeekNow + 1; day < dayOfWeekNow + 6; day++ ) {
+            const dayForArr = day > 6 ? day - 7 : day;
+            const oneArr = await loadOneFile( `../../davis/archive/downld02-${ dayForArr }.txt` );
+            mergedArr = [ ...mergedArr, ...oneArr ]
+        }
+        const arrNow = await loadOneFile( '../../davis/downld02.txt' );
+        const arr = [ ...mergedArr, ...arrNow ];
+
+        // in react folder: /public/davis/downld02.txt
 
         // create array of meteo data array
         // one or more spaces for split
@@ -92,8 +107,8 @@ const loadPocasiAsync = async () => {
             'NNE' : 1,
             'N' : 0
        }
-
-        const arrOfObj = arr.map( line => {
+// orig. solution with map instead reduce
+/*                 const arrOfObj = arr.map( line => {
             
             const arrFromLine = line.trim().split(/ +/g);
             
@@ -104,18 +119,45 @@ const loadPocasiAsync = async () => {
                 Date: myDate, Time, TempOut: +TempOut, TempHi, TempLow, HumOut, DewPt, WindSpeed, WindDir, WindRun, HiSpeed, HiDir, WindChill, HeatIndex, THWIndex, Bar, Rain, RainRate, HeatDD, CoolDD, TempIn, HumIn, DewIn, HeatIn, EMCIn, AirDensityIn, WindSamp, WindTx, ISSRecept, ArcInt
             }
 
+            // UTC used to disable time offset effect
             const [ day, month, year ] = myDate.split('.');
             const [ hour, minute ] = Time.split(':');
+            const dateString = new Date(Date.UTC( `20${year}`, month - 1, day, hour, minute) ).toJSON();
+            objFromLine.Date    = dateString;
+            // Wind dir - degrees from string
+            objFromLine.WindDir = 22.5 *dirObj[objFromLine.WindDir];
+    
+            return objFromLine
+        }) */
+
+
+        const arrOfObj = arr.reduce( ( accumulator, line, index ) => {
+            
+            const arrFromLine = line.trim().split(/ +/g);
+            
+            const [ myDate, Time, TempOut, TempHi, TempLow, HumOut, DewPt, WindSpeed, WindDir, WindRun, HiSpeed, HiDir, WindChill, HeatIndex, THWIndex, Bar, Rain, RainRate, HeatDD, CoolDD, TempIn, HumIn, DewIn, HeatIn, EMCIn, AirDensityIn, WindSamp, WindTx, ISSRecept, ArcInt
+                  ] = arrFromLine;
+            
+            const  objFromLine = {
+                Date: myDate, Time, TempOut: +TempOut, TempHi, TempLow, HumOut, DewPt, WindSpeed, WindDir, WindRun, HiSpeed, HiDir, WindChill, HeatIndex, THWIndex, Bar, Rain, RainRate, HeatDD, CoolDD, TempIn, HumIn, DewIn, HeatIn, EMCIn, AirDensityIn, WindSamp, WindTx, ISSRecept, ArcInt
+            }
 
             // UTC used to disable time offset effect
+            const [ day, month, year ] = myDate.split('.');
+            const [ hour, minute ] = Time.split(':');
             const dateString = new Date(Date.UTC( `20${year}`, month - 1, day, hour, minute) ).toJSON();
+            objFromLine.Date    = dateString;
+            // Wind dir - degrees from string
+            objFromLine.WindDir = 22.5 *dirObj[objFromLine.WindDir];
+    
+            // tricky index is from 1
+            // skip duplicated entries when merging more text files
+            const result = index > 0 && objFromLine.Date < accumulator[ accumulator.length - 1 ].Date
+                         ? accumulator
+                         : [ ...accumulator, objFromLine ];
 
-            objFromLine.Date = dateString;
-
-           objFromLine.WindDir = 22.5 *dirObj[objFromLine.WindDir];
-
-           return objFromLine
-        })
+            return result
+        }, [])
 
 
         pdoResp = arrOfObj
