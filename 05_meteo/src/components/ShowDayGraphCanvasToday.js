@@ -1,9 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Draw from './Draw';
 //import SOURCE_FILE from './downld02.txt';
 
 export const ShowDayGraphCanvasToday = () => {
     
+    const [ isGraphLoading, setIsGraphLoading ] = useState( true );
+
     const graphHeight = 3;
     let pdoResp = [];
     let isAllDownloaded = true;
@@ -27,8 +29,9 @@ export const ShowDayGraphCanvasToday = () => {
         // start AJAX async
         const loadPocasiAsync = async () => {
             try { 
-                console.time('Start');
+                //console.time('Start');
 
+                // get meteodata array for one file
                 const loadOneFile = async ( txtFile ) => {
                     const response = await fetch( txtFile )
                     // this response check not works if .httaccess show default html page instead text file
@@ -40,19 +43,32 @@ export const ShowDayGraphCanvasToday = () => {
                     arr.shift()
                     arr.shift()
                     arr.shift()
-                    // return empty arr if not valid text file
+                    // return empty arr if not valid text file - return (-1) = FALSE
                     return !arr[0].search( /..\...\.......:../ ) ? arr : []
                 }
 
-                let mergedArr = [];
+
+
+                // create filePaths array with correct days order
+                let meteoFiles = [];
                 const dayOfWeekNow = new Date().getUTCDay();
                 for ( let day = dayOfWeekNow + 1; day < dayOfWeekNow + 6; day++ ) {
-                    const dayForArr = day > 6 ? day - 7 : day;
-                    const oneArr = await loadOneFile( `../davis/archive/downld02-${ dayForArr }.txt` );
-                    mergedArr = [ ...mergedArr, ...oneArr ]
+                    const correctedDay = day > 6 ? day - 7 :  day;
+                    const meteoFile = `../davis/archive/downld02-${ correctedDay }.txt`;
+                    meteoFiles = [ ...meteoFiles, meteoFile ];
                 }
-                const arrNow = await loadOneFile( '../davis/downld02.txt' );
-                const arr = [ ...mergedArr, ...arrNow ];
+                meteoFiles = [ ...meteoFiles, '../davis/downld02.txt' ];
+ 
+
+
+                // create meteo array for all 7 days
+                let arr = [];
+                const myPromises = meteoFiles.map( filePath => loadOneFile( filePath ) )
+                await Promise.all( myPromises )
+                    .then( responses => responses.forEach(
+                        response => arr = [ ...arr, ...response ]
+                    ))
+                
 
                 // in react folder: /public/davis/downld02.txt
 
@@ -60,7 +76,6 @@ export const ShowDayGraphCanvasToday = () => {
                 // one or more spaces for split
                 //const arrOfArr = arr.map( line => line.split(/  +/g) )
         
-
                 const dirObj = {
                     '---' : 16,
                     'NNW' : 15,
@@ -121,10 +136,10 @@ export const ShowDayGraphCanvasToday = () => {
                     const dateString = new Date(Date.UTC( `20${year}`, month - 1, day, hour, minute) ).toJSON();
                     objFromLine.Date    = dateString;
                     // Wind dir - degrees from string
-                    objFromLine.WindDir = 22.5 *dirObj[objFromLine.WindDir];
+                    objFromLine.WindDir = 22.5 * dirObj[ objFromLine.WindDir ];
             
                     // tricky index is from 1
-                    // skip duplicated entries when merging more text files
+                    // skip duplicated entries when merging more text files ( optional? )
                     const result = index > 0 && objFromLine.Date < accumulator[ accumulator.length - 1 ].Date
                                  ? accumulator
                                  : [ ...accumulator, objFromLine ];
@@ -226,11 +241,20 @@ export const ShowDayGraphCanvasToday = () => {
                 huminidy.resizeCanvas();
             });
 
-            console.timeEnd('Start');
+            //console.timeEnd('Start');
+            setIsGraphLoading( false );
         }
 
 
-
+        const ShowLoading = ( { isGraphLoading } ) => {
+            return  isGraphLoading
+                ? <div id="isLoading">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" overflow="visible" stroke="#FFF" strokeWidth="1">
+                        <circle  pathLength="1" cx="50" cy="50" r="40" stroke="#ff0" strokeWidth="20" fill="#ff0" />
+                    </svg>
+                  </div>
+                : null  
+        }
 
 
     useEffect( () => {
@@ -242,25 +266,29 @@ export const ShowDayGraphCanvasToday = () => {
             <>
                 <header id="detail_graphs" className="header">
                     <a href="https://www.frymburk.com/projects/92_canvas_graph/day.html">
-                        DNES - dynamické grafy - na celou obrazovku &nbsp;
+                        Posledních 7 dní - dynamické grafy - na celou obrazovku &nbsp;
                         <i className="fas fa-expand-arrows-alt"></i>
                     </a>
                 </header>
                
                 <div id="all-graphs">
                     <article id="one-graph" className="one-graph">
+                        <ShowLoading isGraphLoading={ isGraphLoading } />
                         <canvas ref={canvasRef} className="canvas" />
                         <canvas ref={canvas_pointerRef} className="canvas_pointer" />
                     </article>
                     <article id="one-graph" className="one-graph">
+                        <ShowLoading isGraphLoading={ isGraphLoading } />
                         <canvas ref={canvas1Ref} className="canvas" />
                         <canvas ref={canvas1_pointerRef} className="canvas_pointer" />
                     </article>
                     <article id="one-graph" className="one-graph">
+                        <ShowLoading isGraphLoading={ isGraphLoading } />
                         <canvas ref={canvas2Ref} className="canvas"></canvas>
                         <canvas ref={canvas2_pointerRef} className="canvas_pointer"></canvas>
                     </article>
                     <article id="one-graph" className="one-graph">
+                        <ShowLoading isGraphLoading={ isGraphLoading } />
                         <canvas ref={canvas3Ref} className="canvas"></canvas>
                         <canvas ref={canvas3_pointerRef} className="canvas_pointer"></canvas>
                     </article>

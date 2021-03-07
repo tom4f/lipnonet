@@ -6,6 +6,8 @@ import { AlertBox }   from './AlertBox';
 import { Delay } from './AlertBox';
 import { ShowWindDays } from './ShowWindDays';
 import { ShowWindSpeed } from './ShowWindSpeed';
+import { ShowTodayRainLimit } from './ShowTodayRainLimit';
+import { ShowRainConfig } from './ShowRainConfig';
 
 // alias
 type Dispatcher<S> = Dispatch<SetStateAction<S>>;
@@ -19,6 +21,8 @@ type myItems = {
   password: string;
   sms: number;
   username: string;
+  todayRainLimit: number;
+  todayRainSent: number;
 };
 
 interface ShowValuesTypes  {
@@ -55,7 +59,6 @@ const ShowValues = ( { items, setItems, origSettings, setOrigSettings }: ShowVal
      )
 
   const updateData = () => {
-
     axios
       .post(
             `${apiPath()}pdo_update_sms.php`,
@@ -124,11 +127,13 @@ const ShowValues = ( { items, setItems, origSettings, setOrigSettings }: ShowVal
 
 return (
     <article className="container-show-values">
-        <header className="header-label">Administrace - <label ><small>user (id):</small> {items.username} ({items.id})</label></header>
+        <header className="header-label">Administrace - <label ><small>uživatel (id):</small> {items.username} ({items.id})</label></header>
 
         <form onSubmit={(event) => sendEdit(event)} name="formular" encType="multipart/form-data">
             <ShowWindDays items={items} setItems={setItems} />
             <ShowWindSpeed items={items} setItems={setItems} />
+            <ShowTodayRainLimit items={items} setItems={setItems} />
+            <ShowRainConfig items={items} setItems={setItems} />
             <section className="input-section password">
                 <label>Heslo:</label><br/>
                 <input
@@ -174,7 +179,7 @@ return (
             </section>
             { alert.header ? <AlertBox alert={ alert } /> : null }
             <section className="submit-section">
-                <input type="submit" name="odesli" value="Odeslat" />
+                <input type="submit" />
             </section>
         </form>
     </article>

@@ -44,7 +44,7 @@ export default class Draw {
             clearInterval(this.timer);
         });
         // for touch devicess (tablet)
-        this.canvas_pointer.addEventListener('touchstart', (event) => this.dynamicInterval(event));
+        this.canvas_pointer.addEventListener('touchstart', (event) => this.dynamicInterval(event), { passive: false } );
         this.canvas_pointer.addEventListener('touchend', () => {
             this.reducerStep = 1;
             clearInterval(this.timer);

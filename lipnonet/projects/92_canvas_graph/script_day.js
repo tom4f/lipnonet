@@ -47,15 +47,16 @@ allCanvasSize();
 
 console.log(window.location.hostname);
 
-//const SOURCE_FILE = 'https://www.frymburk.com/davis/downld02.txt'
-const SOURCE_FILE = '../../davis/downld02.txt';
-//const SOURCE_FILE = 'downld02.txt';
+// const SOURCE_FILE = 'https://www.frymburk.com/davis/downld02.txt'
+// const SOURCE_FILE = '../../davis/downld02.txt';
+// const SOURCE_FILE = 'downld02.txt';
 
 
 const loadPocasiAsync = async () => {
     try { 
-        console.time('Start');
+        //console.time('Start');
 
+        // get meteodata array for one file
         const loadOneFile = async ( txtFile ) => {
             const response = await fetch( txtFile )
             // this response check not works if .httaccess show default html page instead text file
@@ -67,20 +68,31 @@ const loadPocasiAsync = async () => {
             arr.shift()
             arr.shift()
             arr.shift()
-            // return empty arr if not valid text file
+            // return empty arr if not valid text file - return (-1) = FALSE
             return !arr[0].search( /..\...\.......:../ ) ? arr : []
         }
 
-        let mergedArr = [];
+
+
+        // create filePaths array with correct days order
+        let meteoFiles = [];
         const dayOfWeekNow = new Date().getUTCDay();
         for ( let day = dayOfWeekNow + 1; day < dayOfWeekNow + 6; day++ ) {
-            const dayForArr = day > 6 ? day - 7 : day;
-            const oneArr = await loadOneFile( `../../davis/archive/downld02-${ dayForArr }.txt` );
-            mergedArr = [ ...mergedArr, ...oneArr ]
+            const correctedDay = day > 6 ? day - 7 :  day;
+            const meteoFile = `../../davis/archive/downld02-${ correctedDay }.txt`;
+            meteoFiles = [ ...meteoFiles, meteoFile ];
         }
-        const arrNow = await loadOneFile( '../../davis/downld02.txt' );
-        const arr = [ ...mergedArr, ...arrNow ];
+        meteoFiles = [ ...meteoFiles, '../../davis/downld02.txt' ];
 
+
+
+        // create meteo array for all 7 days
+        let arr = [];
+        const myPromises = meteoFiles.map( filePath => loadOneFile( filePath ) )
+        await Promise.all( myPromises )
+            .then( responses => responses.forEach(
+                response => arr = [ ...arr, ...response ]
+            ))
         // in react folder: /public/davis/downld02.txt
 
         // create array of meteo data array
@@ -212,8 +224,10 @@ const loadPocasiAsync = async () => {
         wind.resizeCanvas();
     });
 
+    // hide isLoading when graph loaded
+    const isLoading = document.getElementById( 'isLoading' );
+    isLoading.style.visibility = 'hidden';
+    
 }
 
 loadPocasiAsync();
-
-

@@ -14,6 +14,8 @@
         public $username;
         public $password;
         public $days;
+        public $todayRainLimit;
+        public $todayRainSent;
 
         public $identification;
 
@@ -108,7 +110,10 @@
                             sms = :sms,
                             username = :username,
                             password = :password,
-                            days = :days
+                            days = :days,
+                            todayRainLimit = :todayRainLimit,
+                            todayRainSent = :todayRainSent,
+                            lastUpdate = now()
                         WHERE id = :id";
           
             // Prepare statement
@@ -122,6 +127,8 @@
             $this->username = htmlspecialchars(strip_tags($this->username));
             $this->password = htmlspecialchars(strip_tags($this->password));
             $this->days     = htmlspecialchars(strip_tags($this->days));
+            $this->todayRainLimit     = htmlspecialchars(strip_tags($this->todayRainLimit));
+            $this->todayRainSent     = htmlspecialchars(strip_tags($this->todayRainSent));
 
             $this->id       = htmlspecialchars(strip_tags($this->id));
           
@@ -132,6 +139,9 @@
             $stmt->bindParam(':username', $this->username);
             $stmt->bindParam(':password', $this->password);
             $stmt->bindParam(':days',     $this->days);    
+            $stmt->bindParam(':todayRainLimit',     $this->todayRainLimit);    
+            $stmt->bindParam(':todayRainSent',      $this->todayRainSent);    
+
 
             $stmt->bindParam(':id',       $this->id);
           

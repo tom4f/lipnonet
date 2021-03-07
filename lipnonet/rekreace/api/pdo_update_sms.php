@@ -19,14 +19,15 @@
   $post = new Post($db);
 
   // Set ID to update
-  $post->id   = $data->id;
-  $post->name = $data->name;
-  $post->email = $data->email;
-  $post->sms = $data->sms;
-  $post->username = $data->username;
-  $post->password = $data->password;
-  $post->days = $data->days;
-
+  $post->id             = $data->id;
+  $post->name           = $data->name;
+  $post->email          = $data->email;
+  $post->sms            = $data->sms;
+  $post->username       = $data->username;
+  $post->password       = $data->password;
+  $post->days           = $data->days;
+  $post->todayRainLimit = $data->todayRainLimit;
+  $post->todayRainSent  = $data->todayRainSent;
 
   // Update post
 

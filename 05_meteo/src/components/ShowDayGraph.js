@@ -18,8 +18,8 @@ export const ShowDayGraph = () => {
     month = month < 10 ? `0${month}` : month;
     day = day < 10 ? `0${day}` : day;
 
-    const imgUrl = ( type ) => `../davis/archive/${type}-${year}-${month}-${day}.gif`;
-    const imgBig = `./aktuality_big_graph.php?width_graph=1480&id=${year}-${month}-${day}`;
+    const imgUrl = ( type ) => `../davis/archive/${year}/${type}-${year}-${month}-${day}.gif`;
+    const imgBig = `./aktuality_big_graph.php?width_graph=1480&year=${year}&id=${year}-${month}-${day}`;
 
     return (
         <>

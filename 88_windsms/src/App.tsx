@@ -19,6 +19,8 @@ const App: React.FC = () => {
     password: '',
     sms     : 0,
     username: '',
+    todayRainLimit: 0,
+    todayRainSent: 0,
   }
 
   const initShow = {

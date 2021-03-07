@@ -1,5 +1,5 @@
 import React, {useState}             from 'react';
-import { ShowYearGraph } from './ShowYearGraph';
+//import { ShowYearGraph } from './ShowYearGraph';
 import { ShowYearTable } from './ShowYearTable';
 
 import { ShowYearGraphCanvas } from './ShowYearGraphCanvas';
@@ -11,8 +11,8 @@ export const SelectYear = () => {
     return (
         <>
             <ShowYearGraphCanvas />
-            <ShowYearGraph />
             <ShowYearTable pocasi={pocasi} setPocasi={setPocasi} />
+            {/* <ShowYearGraph /> */}
         </>
     )
 }

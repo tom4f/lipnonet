@@ -20,15 +20,7 @@
     <meta name="Author" content="Ing. Tomáš Kučera, Tom4F@seznam.cz">
     <meta name="Keywords" content="Lipno, lipensko, Frymburk, jezero, lake, Vltava, šumava, houby, dovolena, rekreace, kamera, meteostanice, Kramolín, brusle, solární, panely, ohřev, vody, Apricus">
     <meta name="description" content="Ubytování na břehu lipenského jezera v malebném městečku Frymburk. Aktuální počasí na Lipně, webkamera, teplota, vítr, srážky. Solární ohřev vody">
-    </head>
-
-<?php
-  // $domain=$_SERVER['HTTP_HOST']; 
-  // if ($domain == "www.lipnonet.cz")  include "google_analytics_lipnonet_cz.js";
-  // if ($domain == "www.lipno.net")    include "google_analytics_lipno_net.js";
-  // if ($domain == "www.frymburk.com") include "google_analytics_frymburk_com.js";
-  // if ($domain == "www.frymburk.eu")  include "google_analytics_frymburk_eu.js";
-?>
+</head>
 
 <body>
     <!-- set <title> and <css> based on page file -->

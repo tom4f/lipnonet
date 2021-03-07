@@ -14,6 +14,8 @@ type myItems = {
     password: string;
     sms: number;
     username: string;
+    todayRainLimit: number;
+    todayRainSent: number;
   };
 
 interface ShowWindDaysTypes {
@@ -25,16 +27,16 @@ export const ShowWindDays = ( { items, setItems }: ShowWindDaysTypes ) => {
 
     const multiSelectItems = [
         //{ id:  "0", name: 'Dummy' },
-        { id:  1, name: 'Neděle' },
-        { id:  2, name: 'Pondělí' },
-        { id:  4, name: 'Úterý' },
-        { id:  8, name: 'Středa' },
-        { id: 16, name: 'Čtvrtek' },
-        { id: 32, name: 'Pátek' },
-        { id: 64, name: 'Sobota' },
-        { id:128, name: '[1] Posílat jednu SMS za den' },
-        { id:256, name: '[2] Dnes SMS již posláno' },
-        { id:512, name: 'Posilat jen při sílící tendenci, vypina [1] a [2]' },
+        { id:  1, name: 'neděle' },
+        { id:  2, name: 'pondělí' },
+        { id:  4, name: 'úterý' },
+        { id:  8, name: 'středa' },
+        { id: 16, name: 'čtvrtek' },
+        { id: 32, name: 'pátek' },
+        { id: 64, name: 'sobota' },
+        { id:128, name: '[1] posílat jednu zprávu za den' },
+        { id:256, name: '[2] dnešní zpráva již poslána' },
+        { id:512, name: 'posilat jen při sílící tendenci, vypíná [1] a [2]' },
     ];
 
 
@@ -62,6 +64,7 @@ export const ShowWindDays = ( { items, setItems }: ShowWindDaysTypes ) => {
     return (
 
         <section className="input-section">
+            <label>Nastavení větru</label>
             <ul>
                 {
                     multiSelectItems.map( (one) => {

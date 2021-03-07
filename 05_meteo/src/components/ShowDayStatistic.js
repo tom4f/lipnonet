@@ -14,7 +14,7 @@ export const ShowDayStatistic = ( ) => {
     month = month < 10 ? `0${month}` : month;
     
     useEffect(() => {
-        fetch(`../davis/archive/NOAAMO-${year}-${month}.TXT`)
+        fetch(`../davis/archive/${year}/NOAAMO-${year}-${month}.TXT`)
         .then( res  => res.text() )
         .then( output => {
             const [,,,,, ...reducedOutput] =  output.split('\r\n');
@@ -25,7 +25,7 @@ export const ShowDayStatistic = ( ) => {
     }, [ davisStat, month, year ]);
 
     useEffect(() => {
-        fetch(`../davis/archive/NOAAYR-${year}.TXT`)
+        fetch(`../davis/archive/${year}/NOAAYR-${year}.TXT`)
         .then( res  => res.text() )
         .then( output => {
             const [,,,,, ...reducedOutput] =  output.split('\r\n');

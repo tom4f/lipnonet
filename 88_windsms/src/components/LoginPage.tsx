@@ -14,6 +14,8 @@ type myItems = {
     password: string;
     sms: number;
     username: string;
+    todayRainLimit: number;
+    todayRainSent: number;
   };
 
 interface LoginPageTypes {
@@ -81,7 +83,12 @@ const LoginPage = ( { setOrigSettings, setItems, loginStatus }: LoginPageTypes )
       
                     // if no user data
                     if (typeof resp.id === 'string') {
-                        resp.days = 1 * resp.days;
+                        // convert string from mySQL to number
+                        resp.days = +resp.days;
+                        resp.id   = +resp.id;
+                        resp.sms  = +resp.sms;
+                        resp.todayRainLimit = +resp.todayRainLimit;
+                        resp.todayRainSent  = +resp.todayRainSent;
                         setOrigSettings( resp );
                         setItems( resp ); 
                         loginStatus(true);

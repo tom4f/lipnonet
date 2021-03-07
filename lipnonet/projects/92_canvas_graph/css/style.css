@@ -33,3 +33,27 @@ body {
 .pointerOnGrab {
   cursor: pointer;
 }
+
+#isLoading {
+  position: absolute;
+  z-index: 3;
+  width: 100%;
+}
+
+#isLoading svg {
+  margin: auto;
+  display: block;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 5s backwards infinite;
+  fill-opacity: 0.3;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

@@ -7,7 +7,7 @@ import { SelectYear }       from './components/SelectYear';
 import { SelectOldStation } from './components/SelectOldStation';
 import { ModifyPocasi }     from './components/ModifyPocasi';
 
-import './css/main.css';
+//import './css/main.css';
 import './css/meteo.css';
 
 export const App = () => {
@@ -21,8 +21,8 @@ export const App = () => {
 
   // render based on menu : elements per clicked button
   return (
-    <div className="top_container">
-      <Top/>
+    <>
+      {/* <Top/> */}
 
       <nav>
           <button style={ menu === 'start'      ? btnOn : btnOff } onClick={ () => setMenu('start') } >meteostanice<br/>Davis Vantage Pro<br/>Frymburk</button>
@@ -40,7 +40,7 @@ export const App = () => {
             }
         </DateProvider>
       </div>
-      <Bottom/>
-    </div>
+      {/* <Bottom/> */}
+    </>
   );
 }

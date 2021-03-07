@@ -123,3 +123,29 @@ nav {
   cursor: pointer;
 }
 
+#isLoading {
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    svg {
+        margin:auto;
+        display:block;
+    
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;  
+        animation: draw 5s backwards infinite;
+        fill-opacity: 0.3;
+        // we set a delay of 2s so it won't start until our drawing is finished
+        //animation: fadeOpacity 2s forwards 2s infinite;
+    }
+}
+@keyframes draw {
+    from {
+        stroke-dashoffset: 1;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+    

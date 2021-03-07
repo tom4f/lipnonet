@@ -12,9 +12,6 @@
     <a href="http://www.lipno.net/">LIPNO.net</a> | 
     <a href="http://www.frymburk.com/">FRYMBURK.com</a> | 
     <a href="http://www.frymburk.eu/">FRYMBURK.eu</a>
-    <script>
-      document.write("<img src=\"visit.php?pageid=<?php echo $_SERVER["SCRIPT_NAME"];?>&referer=" + escape(top.document.referrer) + "&screenres=" + screen.width + "x" + screen.height + "&colordepth=" + screen.colorDepth + "\" width=\"1\" height=\"1\" alt=\"\">");
-    </script> 
 </div>
 
 <div class="bottom">

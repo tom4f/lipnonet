@@ -9,6 +9,7 @@
     'fotogalerie_pavlik.html' : ['Foto galerie', 'css/photogallery.css'],
     'fotogalerie_pavlik_.html' : ['Foto galerie', 'css/photogallery.css', 'css/foto_insert_style.css'],
     'aktuality.php' : ['Meteostanice, počasí', 'css/aktuality.css'],
+    'aktuality.html' : ['Meteostanice, počasí'],
     'formular.php' : ['Formulář, objednávka', 'css/formular.css'],
     'bedrich_new.php' : ['Formulář, objednávka', 'css/formular.css', 'css/formular_edit.css'],
     'kniha.php' : ['Diskusní fórum', 'css/kniha_vanila.css'],

@@ -134,6 +134,7 @@ export const ShowDayTable = () => {
                                 <th><button id="wind_speed_avg" onClick={ (e) => sort(e) } >prů</button></th>
                                 <th><button id="wind_speed_high" onClick={ (e) => sort(e) } >max</button></th>
                                 <th><button id="dir" onClick={ (e) => sort(e) } >směr</button></th>
+                                
                                 <th><button id="temp_low" onClick={ (e) => sort(e) } >min</button></th>
                                 <th><button id="temp_mean" onClick={ (e) => sort(e) } >prů</button></th>
                                 <th><button id="temp_high" onClick={ (e) => sort(e) } >max</button></th>
