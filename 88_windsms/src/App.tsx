@@ -50,7 +50,7 @@ const App: React.FC = () => {
             loginStatus   = { loginStatus }
             initShow      = { initShow }
         />
-        <header className="header-main">Lipno Meteo Alert</header>
+        <header className="header-main">Lipno Meteo Alarm</header>
         <span>
             { showStatus.values  ? <ShowValues
                   items           = { items }

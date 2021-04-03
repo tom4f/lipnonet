@@ -34,9 +34,9 @@ export const ShowWindDays = ( { items, setItems }: ShowWindDaysTypes ) => {
         { id: 16, name: 'čtvrtek' },
         { id: 32, name: 'pátek' },
         { id: 64, name: 'sobota' },
-        { id:128, name: '[1] posílat jednu zprávu za den' },
+        { id:128, name: '[1] jedna zpráva za den' },
         { id:256, name: '[2] dnešní zpráva již poslána' },
-        { id:512, name: 'posilat jen při sílící tendenci, vypíná [1] a [2]' },
+        { id:512, name: 'jen při sílící tendenci, vypíná [1] a [2]' },
     ];
 
 

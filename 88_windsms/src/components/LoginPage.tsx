@@ -44,6 +44,7 @@ const LoginPage = ( { setOrigSettings, setItems, loginStatus }: LoginPageTypes )
 
     const [ showPassword, setShowPassword ] = useState( false );
     const [ showOnPhone , setShowOnPhone  ] = useState( '');
+    const [ showRainOnPhone , setShowRainOnPhone  ] = useState( '');
 
     const getData = () => {
 
@@ -146,6 +147,7 @@ const LoginPage = ( { setOrigSettings, setItems, loginStatus }: LoginPageTypes )
     
       useEffect( getCounter, [] );
     
+      // get wind data shown in mobile
       const getLastSmsData = () => {
         
         fetch('../../davis/data_davis.txt')
@@ -163,6 +165,23 @@ const LoginPage = ( { setOrigSettings, setItems, loginStatus }: LoginPageTypes )
       }
 
       useEffect( getLastSmsData, [] );
+
+      // get rain data shown in mobile
+      const getLastRainData = () => {
+        
+        fetch('../../davis/data_davis_json.txt')
+            .then( (res)  => res.text() )
+                .then( (lastData) => 
+                {
+                    const { raincelk, Rain_rate_max } = JSON.parse( lastData )
+
+                    setShowRainOnPhone( `todayRain : ${raincelk}mm, todayRainMaxRate : ${Rain_rate_max}mm/h, LIPNO.net` );
+                })
+            .catch( (error) => console.log(error) )
+      }
+
+      useEffect( getLastRainData, [] );
+
 
     return (
         <article className="container-login">
@@ -203,12 +222,19 @@ const LoginPage = ( { setOrigSettings, setItems, loginStatus }: LoginPageTypes )
             </form>
             <header className="header-counter">Počet uživatelů: {counter}</header>
             <section className="input-section ">
-                    <label>Zobrazení SMS na mobilu / emailu:</label>
-                    <span className="smsText">
-                        <br/>From: 4f@lipno.net
-                        <br/>Text: { showOnPhone }
-                    </span>
-                </section>
+                <label>Zobrazení větru na mobilu / emailu:</label>
+                <span className="smsText">
+                    <br/>From: 4f@lipno.net
+                    <br/>Text: { showOnPhone }
+                </span>
+            </section>
+            <section className="input-section ">
+                <label>Zobrazení deště na mobilu / emailu:</label>
+                <span className="smsText">
+                    <br/>From: 4f@lipno.net
+                    <br/>Text: { showRainOnPhone }
+                </span>
+            </section>
         </article>
     );
 };

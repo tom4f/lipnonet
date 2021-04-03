@@ -127,7 +127,7 @@ const ShowValues = ( { items, setItems, origSettings, setOrigSettings }: ShowVal
 
 return (
     <article className="container-show-values">
-        <header className="header-label">Administrace - <label ><small>uživatel (id):</small> {items.username} ({items.id})</label></header>
+        <header className="header-label">Administrace - <label ><small>uživatel :</small> {items.username} </label></header>
 
         <form onSubmit={(event) => sendEdit(event)} name="formular" encType="multipart/form-data">
             <ShowWindDays items={items} setItems={setItems} />
