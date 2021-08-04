@@ -13,7 +13,7 @@
                 : '';
 
     include_once '../config/Database.php';
-    include_once 'models/Post_blog.php';
+    include_once 'models/Post_blog_tomas.php';
 
     // Instantiate DB & connect
     $database = new Database();

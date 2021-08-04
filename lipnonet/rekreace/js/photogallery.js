@@ -1,3 +1,4 @@
+
 "use strict";
 
 // Class UI - all design 
@@ -5,8 +6,9 @@ class UI {
 
     static loadImgBig(bigImgUrl) {
       const bigImgInfo  =   document.querySelector('.photoInfo');
-
       const bigImgBlock =   document.querySelector('.main-img');
+
+
       
       // if index.php page than change css height from '100vh' to smaler
       const image = new Image();
@@ -14,13 +16,11 @@ class UI {
       // add event handler 'onload' - execute function after img loaded
       image.onload = () => {
         const height  =  image.height * bigImgBlock.clientWidth /  image.width + 'px';
-        //bigImgInfo.style.bottom = '0px';  
         if(isMainPage === 1 ) {
           bigImgBlock.style.height = height;
-          } else {
-            //bigImgInfo.style.top = `${height}px`;
-            console.log(height);
-          }
+        } else {
+            bigImgBlock.style.height = showEightPhoto ? `calc(100vh - 77px)` : '100vh'
+        }
       }
 
       // create big background photo
@@ -189,7 +189,6 @@ const loadPicturesfromMySqlStartPage = (limit, offset, event) => {
 }
 
 const startPresentation = (event) => {
-  console.log('autoEvent');
   offset = 0;
   const Presentation = () => {
     const randomNumber = Math.floor(Math.random() * filteredPhoto.length);

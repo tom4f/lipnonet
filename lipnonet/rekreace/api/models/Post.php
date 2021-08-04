@@ -153,4 +153,37 @@ public function update() {
 } 
 
 
+public function read_lucka() {
+  global $fotoGalleryOwner;
+  // Create query
+  $query = "SELECT * FROM fotogalerie_lucka order by insertDate DESC";
+  // Prepare statement
+  $stmt = $this->conn->prepare($query);
+  // Execute query
+  $stmt->execute();
+  return $stmt;
+}
+
+public function read_tomas() {
+  global $fotoGalleryOwner;
+  // Create query
+  $query = "SELECT * FROM fotogalerie_tomas order by insertDate DESC";
+  // Prepare statement
+  $stmt = $this->conn->prepare($query);
+  // Execute query
+  $stmt->execute();
+  return $stmt;
+}
+
+public function read_ubytovani() {
+  global $fotoGalleryOwner;
+  // Create query
+  $query = "SELECT * FROM fotogalerie_ubytovani order by insertDate DESC";
+  // Prepare statement
+  $stmt = $this->conn->prepare($query);
+  // Execute query
+  $stmt->execute();
+  return $stmt;
+}
+
 }

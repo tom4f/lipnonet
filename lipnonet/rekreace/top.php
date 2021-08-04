@@ -28,7 +28,7 @@
 <div class="top_container">
 
   <div class="header">
-    <a class="menu" href="index.php" target="_top">Start</a> | 
+    <a class="menu" href="index.html" target="_top">Start</a> | 
     <a class="menu" href="rekreace.php" target="_top">Apartmány</a> | 
     <a class="menu" href="formular.php" target="_top">Objednávka</a> | 
     <a class="menu" href="ceny.php" target="_top">Ceny</a> | 
@@ -43,10 +43,9 @@
   </div>
 
   <div class="header">
-    <a class="menu" href="webcam_ip_archive.html" target="_top">Kamera</a> | 
-    <a class="menu" href="aktuality.html" target="_top">Meteostanice</a> | 
-    <a class="menu" href="kniha.html" target="_top">Fórum</a> | 
-    <a class="menu" href="fotogalerie.html" target="_top">Fotogalerie</a> | 
+    <a class="menu" href="meteo/" target="_top">Meteostanice</a> | 
+    <a class="menu" href="forum/" target="_top">Fórum</a> | 
+    <a class="menu" href="photo-gallery/" target="_top">Fotogalerie</a> | 
     <a class="menu" href="windsms/" target="_top">MeteoAlarm</a> | 
     <a class="menu" href="../4f/" target="_top">Windsurfing</a>
   </div>

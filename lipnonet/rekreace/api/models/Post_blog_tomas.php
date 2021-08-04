@@ -4,7 +4,7 @@
 
         // private : the property or method can ONLY be accessed within the class
         private $conn;
-        private $table = 'blog';
+        private $table = 'blog_tomas';
 
         //Post Properties
         public $id;

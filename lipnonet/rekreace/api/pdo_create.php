@@ -50,15 +50,14 @@
     );
   }
 
-
 // if image in update request ($dataUrl present) => upload file
 if (isset($data->dataUrl)) {
   
-    $fileNumber =   $data->name;
-    $fileType =   $data->type;
-    $dataUrl =    $data->dataUrl;
-
-    $rotate =    $data->rotate;
+    //$fileNumber = $data->name;
+    $fileNumber = $data->id;  
+    $fileType   = $data->type;
+    $dataUrl    = $data->dataUrl;
+    $rotate     = $data->rotate;
 
     $remote_folder="../fotogalerie". $fotoGalleryOwner ."/";
 
@@ -68,7 +67,7 @@ if (isset($data->dataUrl)) {
     $remote_path_small = $remote_folder . $fileNumber . ".jpg";
     $remote_path_big   = $remote_folder . $fileNumber . "b.jpg";
 
-    function img_resize($filePathOrig, $newwidth, $filePathDest, $rotate){
+    function img_resize($filePathOrig, $newWidth, $filePathDest, $rotate){
       $source = imagecreatefromjpeg($filePathOrig);
       // Rotate
       if ($rotate > 0) {
@@ -83,11 +82,17 @@ if (isset($data->dataUrl)) {
         list($width, $height) = getimagesize($filePathOrig);  
       }
 
-      $newheight = $height / ($width / $newwidth);
-      $destination = imagecreatetruecolor($newwidth, $newheight);
-      imagecopyresampled($destination, $rotate1, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+      if ( $newWidth < $width ) {
+        $newheight = $height / ($width / $newWidth);
+        $destination = imagecreatetruecolor($newWidth, $newheight);
+        imagecopyresampled($destination, $rotate1, 0, 0, 0, 0, $newWidth, $newheight, $width, $height);
+        imagejpeg($destination, $filePathDest, 100);
+      } else {
+        $destination = imagecreatetruecolor($width, $height);
+        imagejpeg($rotate1, $filePathDest, 100);
+      }
       imagejpeg($destination, $filePathDest, 100);
-      //echo "newwidth: ".$newwidth. "newheight: ".$newheight."width: ".$width."height: ".$height;
+      //echo "newWidth: ".$newWidth. "newheight: ".$newheight."width: ".$width."height: ".$height;
     }
 
     // Reads the EXIF headers from an image file
@@ -105,5 +110,4 @@ if (isset($data->dataUrl)) {
 
     img_resize("$filePathOrig", 200,  "$remote_path_small", $rotate);
     img_resize("$filePathOrig", 1000, "$remote_path_big"  , $rotate);
-  
 }

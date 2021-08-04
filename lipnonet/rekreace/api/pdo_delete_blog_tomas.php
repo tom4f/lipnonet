@@ -1,16 +1,16 @@
-<?php declare(strict_types=1);
+<?php 
   // Headers
+  include_once '../config/cor.php';
   header('Content-Type: application/json');
   header('Access-Control-Allow-Methods: PUT');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-  include_once '../config/cor.php';
-  include_once '../config/Database.php';
-  include_once 'models/Post.php';
-
   // Get raw posted data - Array from JSON
   $data = json_decode(file_get_contents("php://input"));
   $fotoGalleryOwner = $data->fotoGalleryOwner;
+
+  include_once '../config/Database.php';
+  include_once 'models/Post_blog_tomas.php';
 
   // Instantiate DB & connect
   $database = new Database();
@@ -20,13 +20,8 @@
   $post = new Post($db);
 
   // Set ID to update
+
   $post->id     = $data->id;
-  $post->date   = $data->date;
-  $post->text   = $data->text;
-  $post->autor  = $data->autor;
-  $post->email  = $data->email;
-  $post->typ    = $data->typ;
-  $post->header = $data->header;
 
   // Update post
 
@@ -36,14 +31,14 @@
 
   if($webToken == $webTokenCalculated) {
     // if update OK
-    if($post->update()) {
+    if($post->delete()) {
       echo json_encode(
-        array('message' => 'Photo Updated :-)')
+        array('message' => 'Blog updated :-)')
       );
     // if update failed
     } else {
       echo json_encode(
-        array('message' => 'Post Not Updated :-(')
+        array('message' => 'Blog not updated :-(')
       );
     }
     // if login failed
@@ -52,8 +47,3 @@
       array('message' => 'Login error :-(')
     );
   }
-
-include_once './Image_resize.php';
-
-Image_resize( 'small',  200, $fotoGalleryOwner, $data );
-Image_resize( 'big'  , 1000, $fotoGalleryOwner, $data );

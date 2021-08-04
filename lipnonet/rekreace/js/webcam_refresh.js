@@ -9,8 +9,6 @@ const loadPocasi = (davisResult) => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const pocasiResult = JSON.parse(xhr.responseText);
             // show one year table baed on JSON data from MYSQL
-            console.log(pocasiResult[0]);
-            console.log(davisResult[0]);
             meteoTable(davisResult[0], pocasiResult[0], lastMeteoData.split('|'));
         } 
     }
@@ -188,7 +186,7 @@ const showMeteoBox = ([, date, time, temp, huminidy, presure, wind, dir, rainDum
         meteoDataPlace.classList.remove('meteo_box_transition_out');
         meteoDataPlace.innerHTML = `
             <fieldset class="meteo_value">
-                <legend>${date.substr(0,6)}</legend>
+                <legend>${ ('0' + date).slice(-8).slice(0,6) }</legend>
                 ${time}
             </fieldset>
             <fieldset class="meteo_value">
@@ -271,5 +269,3 @@ const updateImage = () => {
 
 // webCam update every 5s
 setInterval(updateImage, 5000);
-
-

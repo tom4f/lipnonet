@@ -101,17 +101,27 @@ const sendImgToMySql = (event) => {
     // all form data to object
     let object = {};
     FD.forEach( (value, key) => object[key] = value );
-    console.log(object); 
     let xhr = new XMLHttpRequest();
     xhr.open(action, `api/pdo_${path}.php`, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     // if img file updated
+    
     let objectWithImg;
     if (resp) objectWithImg = Object.assign(resp, object);
       else objectWithImg = object; 
-      
-      objectWithImg['fotoGalleryOwner'] = fotoGalleryOwner;
-      objectWithImg['webToken'] = webToken;
+
+    if ( path === 'create' && resp ) {
+      objectWithImg.id = objectWithImg.name;
+    } 
+    
+    
+
+      objectWithImg.fotoGalleryOwner = fotoGalleryOwner;
+      objectWithImg.webToken = webToken;
+
+      console.log('id: ' + objectWithImg.id); 
+      console.log('name: ' + objectWithImg.name); 
+      console.log(path)
       
       xhr.onload = function(){
       if (this.readyState == 4 && this.status == 200) {

@@ -18,7 +18,7 @@ body {
   background: black;
   margin: auto;
   width: 100%;
-  height: auto;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -39,7 +39,7 @@ body {
 /* <div class="main-img"> ========================================= */
 .main-img {
   top: 0px;
-  height: 100vh;
+  height: auto;
   width: auto;
   max-width: 100%;
   margin-left: auto;
